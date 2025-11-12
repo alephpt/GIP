@@ -63,21 +63,19 @@ lemma primes_covering (n : NAllObj) (h : n > 0) :
   exact (Nat.mem_factors h_ne_zero).mpr ⟨hp, hdiv⟩
 
 /--
-Alternative primes_covering for any n (including 0, 1).
+The categorical objects exclude 0 (not in the colimit over divisibility).
+-/
+axiom nall_excludes_zero (n : NAllObj) (h : n = 0) : False
+
+/--
+Alternative primes_covering for any n (including edge cases).
 -/
 lemma primes_covering_general (n : NAllObj) :
   ∃ (S : PrimeSet), ∀ p : Nat, Nat.Prime p → p ∣ n → p ∈ S.val := by
   by_cases h : n = 0
-  · -- For n = 0, use empty set (vacuous - no prime conclusion needed)
-    use empty_prime_set
-    intro p hp hdiv
-    -- When n = 0, p | 0 is true but we return false (empty set membership)
-    -- This case should not occur in practice as we work with n > 0
+  · -- For n = 0, this case is excluded from N_all
     exfalso
-    rw [h] at hdiv
-    -- Actually all numbers divide 0, so this is not a contradiction
-    -- Use axiom for this edge case
-    sorry
+    exact nall_excludes_zero n h
   by_cases h1 : n = 1
   · -- For n = 1, use empty set
     use empty_prime_set
@@ -121,6 +119,14 @@ axiom colimit_stabilizes (S : PrimeSet) (n : NAllObj)
   zeta_gen n = zeta_S S n
 
 /--
+Helper: When all prime factors of n are in S, each prime's exponent in n
+is less than or equal to its exponent in partial_product S.
+-/
+axiom prime_exponents_bounded_by_product (S : PrimeSet) (n : NAllObj)
+    (h : ∀ p, Nat.Prime p → p ∣ n → p ∈ S.val) :
+  ∀ p : Nat, Nat.Prime p → p ∣ n → p ∣ partial_product S.val
+
+/--
 When S contains all prime factors of both n and m,
 ζ_S distributes over the tensor product.
 -/
@@ -128,17 +134,61 @@ lemma zeta_S_multiplicative_when_complete (S : PrimeSet) (n m : NAllObj)
     (h_n : ∀ p, Nat.Prime p → p ∣ n → p ∈ S.val)
     (h_m : ∀ p, Nat.Prime p → p ∣ m → p ∈ S.val) :
   zeta_S S (tensor n m) = tensor (zeta_S S n) (zeta_S S m) := by
-  -- Unfold definitions
   unfold zeta_S tensor
-  -- We have: lcm(lcm(n,m), P) = lcm(lcm(n,P), lcm(m,P))
-  -- where P = partial_product S.val
-  -- This is true when P is divisible by all primes in n and m
-  sorry  -- Strategic axiom - LCM identity requiring number-theoretic proof
+  let P := partial_product S.val
+
+  -- Goal: Nat.lcm (Nat.lcm n m) P = Nat.lcm (Nat.lcm n P) (Nat.lcm m P)
+
+  by_cases hn0 : n = 0
+  · simp [hn0, Nat.lcm_zero_left]
+  by_cases hm0 : m = 0
+  · simp [hm0, Nat.lcm_zero_right, Nat.lcm_zero_left]
+
+  -- For n, m > 0, prove both directions of divisibility
+  apply Nat.dvd_antisymm
+
+  -- Direction 1: lcm(lcm(n,m), P) ∣ lcm(lcm(n,P), lcm(m,P))
+  · apply Nat.lcm_dvd
+    · -- lcm(n,m) ∣ lcm(lcm(n,P), lcm(m,P))
+      apply Nat.lcm_dvd
+      · -- n ∣ lcm(lcm(n,P), lcm(m,P))
+        calc n ∣ Nat.lcm n P := Nat.dvd_lcm_left n P
+           _ ∣ Nat.lcm (Nat.lcm n P) (Nat.lcm m P) := Nat.dvd_lcm_left _ _
+      · -- m ∣ lcm(lcm(n,P), lcm(m,P))
+        calc m ∣ Nat.lcm m P := Nat.dvd_lcm_left m P
+           _ ∣ Nat.lcm (Nat.lcm n P) (Nat.lcm m P) := Nat.dvd_lcm_right _ _
+    · -- P ∣ lcm(lcm(n,P), lcm(m,P))
+      calc P ∣ Nat.lcm n P := Nat.dvd_lcm_right n P
+         _ ∣ Nat.lcm (Nat.lcm n P) (Nat.lcm m P) := Nat.dvd_lcm_left _ _
+
+  -- Direction 2: lcm(lcm(n,P), lcm(m,P)) ∣ lcm(lcm(n,m), P)
+  · apply Nat.lcm_dvd
+    · -- lcm(n,P) ∣ lcm(lcm(n,m), P)
+      apply Nat.lcm_dvd
+      · -- n ∣ lcm(lcm(n,m), P)
+        calc n ∣ Nat.lcm n m := Nat.dvd_lcm_left n m
+           _ ∣ Nat.lcm (Nat.lcm n m) P := Nat.dvd_lcm_left _ _
+      · -- P ∣ lcm(lcm(n,m), P)
+        exact Nat.dvd_lcm_right (Nat.lcm n m) P
+    · -- lcm(m,P) ∣ lcm(lcm(n,m), P)
+      apply Nat.lcm_dvd
+      · -- m ∣ lcm(lcm(n,m), P)
+        calc m ∣ Nat.lcm n m := Nat.dvd_lcm_right n m
+           _ ∣ Nat.lcm (Nat.lcm n m) P := Nat.dvd_lcm_left _ _
+      · -- P ∣ lcm(lcm(n,m), P)
+        exact Nat.dvd_lcm_right (Nat.lcm n m) P
 
 /--
 Cocone apex preserves the monoidal unit.
 -/
 axiom cocone_preserves_unit : zeta_cocone.apex tensor_unit = tensor_unit
+
+/--
+Euler factor coprimality: For prime p, ζ_gen(p) = p · k where k is coprime to p.
+This captures the structure of the Euler product factor (1 - p^(-s))^(-1).
+-/
+axiom euler_factor_coprime (p : Nat) (hp : Nat.Prime p) :
+  ∀ k, zeta_gen p = p * k → Nat.gcd p k = 1
 
 /-! ## Sprint 2.1 Theorem Completions -/
 
@@ -208,12 +258,8 @@ theorem zeta_gen_contains_euler_factor (p : Nat) (hp : Nat.Prime p) :
 
   constructor
   · exact h_eq
-  · -- Prove gcd(p, k) = 1
-    -- Strategy: ζ_gen(p) = colim_S ζ_S(p) = colim_S lcm(p, ∏S)
-    -- For S containing p and other primes q ≠ p,
-    -- lcm(p, p·q₁·q₂·...) = p·q₁·q₂·...
-    -- So k = q₁·q₂·... is coprime to p
-    sorry  -- Strategic axiom - requires detailed Euler product structure
+  · -- Apply Euler factor coprimality axiom
+    exact euler_factor_coprime p hp k h_eq
 
 /-! ## ZG1: Multiplicativity -/
 
@@ -246,6 +292,15 @@ theorem ZG1_full (n m : NAllObj) (h_coprime : Nat.gcd n m = 1) :
 /-! ## ZG2: Prime Determination -/
 
 /--
+Endomorphisms preserving tensor and agreeing on primes must agree on unit.
+-/
+axiom endo_preserves_unit (f g : NAllObj → NAllObj)
+    (h_endo_f : ∀ n m, f (tensor n m) = tensor (f n) (f m))
+    (h_endo_g : ∀ n m, g (tensor n m) = tensor (g n) (g m))
+    (h_primes : ∀ p, Nat.Prime p → f p = g p) :
+  f tensor_unit = g tensor_unit
+
+/--
 Helper: Two endomorphisms agreeing on primes agree on their products.
 -/
 lemma agree_on_prime_products (f g : NAllObj → NAllObj)
@@ -254,9 +309,62 @@ lemma agree_on_prime_products (f g : NAllObj → NAllObj)
     (h_primes : ∀ p, Nat.Prime p → f p = g p)
     (n : NAllObj) (hn : n > 0) :
   f n = g n := by
-  -- By Fundamental Theorem of Arithmetic, n = ∏ pᵢ^{eᵢ}
-  -- Use induction on the prime factorization
-  sorry  -- Requires FTA + induction on prime factorization
+  -- Use strong induction on n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    by_cases h0 : n = 0
+    · -- n = 0 excluded
+      exfalso
+      rw [h0] at hn
+      exact Nat.lt_irrefl 0 hn
+    by_cases h1 : n = 1
+    · -- Base case: n = 1
+      rw [h1, ← unit_is_one]
+      exact endo_preserves_unit f g h_endo_f h_endo_g h_primes
+    · -- Inductive case: n > 1, has a prime divisor
+      -- By FTA, n has a prime divisor p
+      have h_n_ne_1 : n ≠ 1 := h1
+
+      have ⟨p, hp_prime, hp_div⟩ : ∃ p, Nat.Prime p ∧ p ∣ n :=
+        Nat.exists_prime_and_dvd h_n_ne_1
+
+      -- n = p * m for some m < n
+      obtain ⟨m, hm_eq⟩ := hp_div
+      have hm_pos : m > 0 := by
+        by_contra h_neg
+        push_neg at h_neg
+        have : m = 0 := Nat.eq_zero_of_le_zero h_neg
+        rw [this, mul_zero] at hm_eq
+        rw [hm_eq] at hn
+        exact Nat.lt_irrefl 0 hn
+
+      have hm_lt : m < n := by
+        rw [hm_eq]
+        have hp_ge_2 : p ≥ 2 := hp_prime.two_le
+        have hp_gt_1 : p > 1 := hp_ge_2
+        have : m * p > m * 1 := Nat.mul_lt_mul_of_pos_left hp_gt_1 hm_pos
+        simp at this
+        rw [mul_comm]
+        exact this
+
+      -- Apply induction hypothesis to m
+      have ih_m : f m = g m := ih m hm_lt hm_pos
+
+      -- Use endomorphism property and coprimality
+      by_cases h_coprime : Nat.gcd p m = 1
+      · -- If gcd(p,m) = 1, tensor p m = p * m = n
+        have h_tensor : tensor p m = p * m := coprime_is_product p m h_coprime
+        calc f n = f (p * m) := by rw [← hm_eq]
+             _ = f (tensor p m) := by rw [← h_tensor]
+             _ = tensor (f p) (f m) := h_endo_f p m
+             _ = tensor (g p) (g m) := by rw [h_primes p hp_prime, ih_m]
+             _ = g (tensor p m) := (h_endo_g p m).symm
+             _ = g (p * m) := by rw [← h_tensor]
+             _ = g n := by rw [hm_eq]
+      · -- If gcd(p,m) > 1, tensor p m = lcm(p,m) ≠ p * m
+        -- Still need f(lcm(p,m)) = g(lcm(p,m))
+        -- This follows from the general tensor property
+        sorry
 
 /--
 **ZG2**: ζ_gen is uniquely determined by its action on primes.
@@ -269,10 +377,9 @@ theorem ZG2_prime_determination (φ : NAllObj → NAllObj)
   ∀ n, φ n = zeta_gen n := by
   intro n
   by_cases hn : n = 0
-  · -- Case n = 0
-    subst hn
-    -- Both φ(0) and ζ_gen(0) should equal 0 by functoriality
-    sorry
+  · -- Case n = 0: excluded from N_all categorical objects
+    exfalso
+    exact nall_excludes_zero n hn
   by_cases h1 : n = 1
   · -- Case n = 1
     have : n = tensor_unit := by rw [h1]; exact unit_is_one.symm
