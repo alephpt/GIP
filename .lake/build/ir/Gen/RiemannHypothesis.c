@@ -1,6 +1,6 @@
 // Lean compiler output
 // Module: Gen.RiemannHypothesis
-// Imports: Init Gen.Symmetry Gen.SymmetryPreservation Gen.Projection Gen.EquilibriumBalance
+// Imports: Init Gen.Symmetry Gen.SymmetryPreservation Gen.Projection Gen.EquilibriumBalance Gen.FunctionalEquation
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -36,6 +36,7 @@ lean_object* initialize_Gen_Symmetry(uint8_t builtin, lean_object*);
 lean_object* initialize_Gen_SymmetryPreservation(uint8_t builtin, lean_object*);
 lean_object* initialize_Gen_Projection(uint8_t builtin, lean_object*);
 lean_object* initialize_Gen_EquilibriumBalance(uint8_t builtin, lean_object*);
+lean_object* initialize_Gen_FunctionalEquation(uint8_t builtin, lean_object*);
 static bool _G_initialized = false;
 LEAN_EXPORT lean_object* initialize_Gen_RiemannHypothesis(uint8_t builtin, lean_object* w) {
 lean_object * res;
@@ -54,6 +55,9 @@ res = initialize_Gen_Projection(builtin, lean_io_mk_world());
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_Gen_EquilibriumBalance(builtin, lean_io_mk_world());
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Gen_FunctionalEquation(builtin, lean_io_mk_world());
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 l_Gen_RiemannHypothesis_rh__historical__context___closed__1 = _init_l_Gen_RiemannHypothesis_rh__historical__context___closed__1();

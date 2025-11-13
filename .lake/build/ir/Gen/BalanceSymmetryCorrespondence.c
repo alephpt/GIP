@@ -1,6 +1,6 @@
 // Lean compiler output
-// Module: Gen.SymmetryPreservation
-// Imports: Init Gen.Symmetry Gen.Projection Gen.Comp Gen.FunctionalEquation
+// Module: Gen.BalanceSymmetryCorrespondence
+// Imports: Init Gen.Basic Gen.MonoidalStructure Gen.EulerProductColimit Gen.EquilibriumBalance Gen.Symmetry Gen.Projection Gen.FunctionalEquation
 #include <lean/lean.h>
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wunused-parameter"
@@ -13,24 +13,32 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-LEAN_EXPORT lean_object* l_Gen_SymmetryPreservation_CriticalLine;
-static lean_object* _init_l_Gen_SymmetryPreservation_CriticalLine() {
-_start:
-{
-return lean_box(0);
-}
-}
 lean_object* initialize_Init(uint8_t builtin, lean_object*);
+lean_object* initialize_Gen_Basic(uint8_t builtin, lean_object*);
+lean_object* initialize_Gen_MonoidalStructure(uint8_t builtin, lean_object*);
+lean_object* initialize_Gen_EulerProductColimit(uint8_t builtin, lean_object*);
+lean_object* initialize_Gen_EquilibriumBalance(uint8_t builtin, lean_object*);
 lean_object* initialize_Gen_Symmetry(uint8_t builtin, lean_object*);
 lean_object* initialize_Gen_Projection(uint8_t builtin, lean_object*);
-lean_object* initialize_Gen_Comp(uint8_t builtin, lean_object*);
 lean_object* initialize_Gen_FunctionalEquation(uint8_t builtin, lean_object*);
 static bool _G_initialized = false;
-LEAN_EXPORT lean_object* initialize_Gen_SymmetryPreservation(uint8_t builtin, lean_object* w) {
+LEAN_EXPORT lean_object* initialize_Gen_BalanceSymmetryCorrespondence(uint8_t builtin, lean_object* w) {
 lean_object * res;
 if (_G_initialized) return lean_io_result_mk_ok(lean_box(0));
 _G_initialized = true;
 res = initialize_Init(builtin, lean_io_mk_world());
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Gen_Basic(builtin, lean_io_mk_world());
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Gen_MonoidalStructure(builtin, lean_io_mk_world());
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Gen_EulerProductColimit(builtin, lean_io_mk_world());
+if (lean_io_result_is_error(res)) return res;
+lean_dec_ref(res);
+res = initialize_Gen_EquilibriumBalance(builtin, lean_io_mk_world());
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
 res = initialize_Gen_Symmetry(builtin, lean_io_mk_world());
@@ -39,13 +47,9 @@ lean_dec_ref(res);
 res = initialize_Gen_Projection(builtin, lean_io_mk_world());
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-res = initialize_Gen_Comp(builtin, lean_io_mk_world());
-if (lean_io_result_is_error(res)) return res;
-lean_dec_ref(res);
 res = initialize_Gen_FunctionalEquation(builtin, lean_io_mk_world());
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
-l_Gen_SymmetryPreservation_CriticalLine = _init_l_Gen_SymmetryPreservation_CriticalLine();
 return lean_io_result_mk_ok(lean_box(0));
 }
 #ifdef __cplusplus
