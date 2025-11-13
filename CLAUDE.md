@@ -269,6 +269,118 @@ def Truth (H : Hypothesis T) := Nonempty (Proof H)
 
 ---
 
+## Project Directory Hierarchy
+
+### 13. File Organization Standards
+
+**Purpose**: Maintain consistent organization across multi-year research program.
+
+**Directory Structure**:
+
+```
+categorical/lean/
+├── lib/                          # Core GIP Framework (reusable)
+│   ├── gip/                      # Register 0, 1, 2, Morphisms, Projection
+│   ├── monoidal/                 # Monoidal theory, balance, symmetry
+│   └── colimits/                 # Colimit theory, Euler products
+│
+├── proofs/                       # Specific Proof Applications
+│   └── riemann/                  # Riemann Hypothesis proof modules
+│
+├── test/                         # Test suites
+│   ├── gip/                      # Core framework tests
+│   ├── riemann/                  # RH proof validation
+│   └── integration/              # End-to-end tests
+│
+├── docs/                         # Documentation (formal deliverables)
+│   ├── framework/                # Core GIP framework docs
+│   │   ├── NALL_CONSTRUCTION.md
+│   │   ├── ZETA_DESIGN.md
+│   │   └── ENTELECHY.md
+│   │
+│   ├── proofs/                   # Proof-specific documentation
+│   │   └── riemann/              # RH proof docs
+│   │       ├── HONEST_ASSESSMENT.md
+│   │       ├── CIRCULARITY_ELIMINATED.md
+│   │       └── GIP_Riemann_Hypothesis_FRAMEWORK_REVISED.md
+│   │
+│   ├── research/                 # Research notes by topic
+│   │   ├── colimits/             # Colimit theory research
+│   │   ├── symmetry/             # Symmetry research
+│   │   ├── balance/              # Balance condition research
+│   │   └── overdetermination/    # Overdetermination theory (NEW)
+│   │
+│   └── development/              # Sprint tracking & progress
+│       ├── sprints/
+│       │   ├── phase1/           # Phase 1 sprint docs
+│       │   ├── phase2/           # Phase 2 sprint docs
+│       │   └── phase3/           # Phase 3 sprint docs
+│       │       ├── SPRINT_3_1_COMPLETE.md
+│       │       ├── SPRINT_3_2_COMPLETE.md
+│       │       ├── SPRINT_3_3_COMPLETE.md
+│       │       ├── SPRINT_3_4_COMPLETE.md
+│       │       └── SPRINT_3_5_*.md (ongoing)
+│       │
+│       └── *.md                  # General development docs
+│
+├── Gen/                          # Legacy utilities (to be migrated)
+├── archive/                      # Deprecated/superseded work
+└── scripts/                      # Build and validation scripts
+```
+
+**Documentation Rules**:
+
+**Formal Documentation** (goes in `docs/`):
+- ✅ Framework design documents → `docs/framework/`
+- ✅ Proof completion reports → `docs/proofs/riemann/`
+- ✅ Research findings → `docs/research/<topic>/`
+- ✅ Sprint completion reports → `docs/development/sprints/phase<N>/SPRINT_<X>_<Y>_COMPLETE.md`
+- ✅ Phase summaries → `docs/development/sprints/phase<N>/PHASE_<N>_COMPLETE.md`
+
+**Working Documentation** (goes in `notepad`):
+- ✅ Ongoing sprint work-in-progress notes
+- ✅ QA verification reports (internal)
+- ✅ Implementation strategies (during development)
+- ✅ Debug logs and troubleshooting
+- ✅ Meeting notes and decisions
+
+**Sprint Documentation Standards**:
+
+**During Sprint**: Use `mcp__notepad__*` for all work-in-progress tracking
+
+**Sprint Complete**: Create formal doc in `docs/development/sprints/phase<N>/`:
+- `SPRINT_<X>_<Y>_PLAN.md` - Sprint planning (if complex)
+- `SPRINT_<X>_<Y>_COMPLETE.md` - Sprint completion report (required)
+- `SPRINT_<X>_<Y>_<TOPIC>.md` - Topic-specific deep dives (optional)
+
+**Example Sprint 3.5**:
+```
+docs/development/sprints/phase3/
+├── SPRINT_3_5_PLAN.md              # Initial plan (optional)
+├── SPRINT_3_5_COMPLETE.md          # Completion report (required at end)
+└── SPRINT_3_5_AXIOM_RESEARCH.md    # Research deep-dive (if needed)
+```
+
+**Research Documentation Standards**:
+
+**New Research Topic**: Create folder in `docs/research/<topic>/`
+
+**Example - Overdetermination Theory**:
+```
+docs/research/overdetermination/
+├── OVERDETERMINATION_HYPOTHESIS.md    # Mathematical hypothesis
+├── AXIOM_JUSTIFICATION.md             # Axiom definition & justification
+├── PROOF_ATTEMPTS.md                  # Proof strategies explored
+└── LITERATURE_REVIEW.md               # Academic sources
+```
+
+**Quality Gate**: Before creating files in `docs/`, verify:
+1. Is this a formal deliverable? (Yes → `docs/`, No → `notepad`)
+2. Correct subdirectory? (framework/proofs/research/development)
+3. Naming convention followed? (SCREAMING_SNAKE_CASE.md)
+
+---
+
 ## Conclusion
 
 **Mission**: Maintain GIP integrity across multi-year, multi-problem research program.
