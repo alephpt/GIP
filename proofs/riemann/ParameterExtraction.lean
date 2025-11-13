@@ -137,18 +137,26 @@ For n ∈ N_all, param(n) returns the complex value s such that:
 
 **Note**: This is THE key function that bridges categorical balance to analytic symmetry.
 
-**Refined Definition Strategy** (Sprint 3.3 Step 2):
-The parameter is defined via logarithmic mapping that respects monoidal structure:
-- For n = 0 or n = 1: param(n) = 0 (unit case)
-- For other n: param(n) = 1/2 (critical line, derived from balance constraint)
+**Refined Definition Strategy** (Sprint 3.3 Step 4 - Non-Circular):
+The parameter is extracted WITHOUT assuming Re(s) = 1/2. Instead, we:
+- For n = 0 or n = 1: param(n) = 0 (unit case - definitional)
+- For other n: param(n) is extracted via balance constraint (noncomputable, requires proof)
 
-The key insight: Under balance, the monoidal structure param(n⊗m) = param(n) + param(m)
-for coprime n,m follows from the logarithmic nature of the Dirichlet series exponent.
-This will be proven in param_preserves_monoidal_structure using Nat.gcd_mul_lcm.
+The key insight: param must be defined WITHOUT assuming the conclusion.
+The value Re(s) = 1/2 will be PROVEN in param_balance_constraint using the
+universal balance property, NOT assumed in the definition.
+
+**Non-Circularity**: This definition uses `sorry` for extraction, which is honest -
+we don't know the parameter until we prove param_balance_constraint. The definition
+framework is correct; the proof obligation is explicit.
 -/
 noncomputable def param (n : NAllObj) : ℂ :=
   if n = 0 ∨ n = 1 then 0
-  else Complex.mk (1/2) 0  -- Critical line value for all non-unit values
+  else
+    -- Parameter extraction for non-units via balance constraint
+    -- This is noncomputable and requires proof in param_balance_constraint
+    -- We do NOT assume Re(s) = 1/2 here - that must be proven
+    sorry  -- TODO: Extract parameter from F_R projection and balance structure
 
 /-! ## 2. Existence and Uniqueness -/
 
@@ -224,7 +232,7 @@ but we define it canonically via a chosen construction (e.g., default to Re(s) =
 - Balance forces Re(s) = Re(1-s), hence Re(s) = 1/2 uniquely
 - This uniqueness is key to proving balance → symmetry axis
 
-**Status**: Proven (Sprint 3.3 Step 2)
+**Status**: Proven (trivial - param is a function)
 -/
 lemma param_uniqueness (n : NAllObj) (s₁ s₂ : ℂ)
     (h₁ : param n = s₁)
@@ -293,20 +301,10 @@ lemma param_euler_product_coherence (n : NAllObj)
       ∃ (relationship : ℂ → ℂ → Prop),
         relationship (param n) (param p) := by
   intro p hp hdiv
-  -- The relationship is equality: param(n) = param(p) for all n,p
-  -- since all map to critical line value 1/2
-  use (· = ·)
-  unfold param
-  have hn_ne_zero : n ≠ 0 := Nat.pos_iff_ne_zero.mp h_factorization
-  have hn_ne_one : n ≠ 1 := by
-    intro h
-    rw [h] at hdiv
-    have hp_pos : p > 0 := Nat.Prime.pos hp
-    have : p = 1 := Nat.eq_one_of_dvd_one hdiv
-    exact Nat.Prime.ne_one hp this
-  have hp_ne_zero : p ≠ 0 := Nat.Prime.ne_zero hp
-  have hp_ne_one : p ≠ 1 := Nat.Prime.ne_one hp
-  simp [hn_ne_zero, hn_ne_one, hp_ne_zero, hp_ne_one]
+  -- The relationship exists but is determined by Euler product structure
+  -- This requires proving the coherence via prime factorization
+  use (· = ·)  -- Placeholder relationship
+  sorry  -- TODO: Prove coherence via Euler product structure
 
 /--
 **Lemma**: Prime contribution to parameter extraction.
@@ -352,10 +350,8 @@ lemma param_prime_contribution (p : ℕ) (hp : Nat.Prime p) :
   constructor
   · rfl
   · intro h_bal
-    unfold param
-    have hp_ne_zero : p ≠ 0 := Nat.Prime.ne_zero hp
-    have hp_ne_one : p ≠ 1 := Nat.Prime.ne_one hp
-    simp [hp_ne_zero, hp_ne_one]
+    -- This follows from param_balance_constraint
+    exact param_balance_constraint p h_bal
 
 /-! ## 4. Monoidal Structure Preservation -/
 
@@ -402,80 +398,20 @@ param must respect this max operation in the exponents.
 - Nat.gcd (Mathlib)
 - F_R_tensor_functions (Projection.lean)
 
-**Status**: Proven (Sprint 3.3 Step 2)
+**Status**: Requires proof via monoidal structure coherence
 
-**Proof Strategy**: For the current definition where all non-units map to 1/2,
-the relation is equality. The deeper structure (logarithmic additivity for coprime
-elements) will emerge when param is refined to distinguish different balanced points.
-
-For now, we establish that param respects the monoidal structure by showing
-that param(lcm(n,m)) relates consistently to param(n) and param(m).
+**Proof Strategy**: Must prove that param respects the monoidal structure
+without assuming param values. This requires:
+1. Showing tensor (lcm) coherence with param extraction
+2. Using prime factorization to relate param(lcm(n,m)) to param(n), param(m)
+3. Leveraging Euler product structure
 -/
 lemma param_preserves_monoidal_structure (n m : NAllObj) :
   -- param of tensor relates to params of factors
   ∃ (relation : ℂ → ℂ → ℂ → Prop),
     relation (param (tensor n m)) (param n) (param m) := by
-  -- The relation we establish: all three are equal (since all non-units map to 1/2)
-  use fun a b c => a = b ∧ b = c
-  unfold param tensor
-
-  -- Case analysis on n and m
-  by_cases hn : n = 0 ∨ n = 1
-  · by_cases hm : m = 0 ∨ m = 1
-    · -- Both n and m are units/zero
-      simp [hn, hm]
-      cases hn with
-      | inl hn0 =>
-        rw [hn0]
-        simp [Nat.lcm_zero_left]
-      | inr hn1 =>
-        rw [hn1]
-        cases hm with
-        | inl hm0 => rw [hm0]; simp [Nat.lcm_zero_right]
-        | inr hm1 => rw [hm1]; simp [Nat.lcm_one_right]
-    · -- n is unit/zero, m is not
-      push_neg at hm
-      cases hn with
-      | inl hn0 =>
-        rw [hn0]
-        simp [Nat.lcm_zero_left, hm]
-        constructor <;> rfl
-      | inr hn1 =>
-        rw [hn1]
-        simp [Nat.lcm_one_left, hm]
-        constructor <;> rfl
-  · by_cases hm : m = 0 ∨ m = 1
-    · -- n is not unit/zero, m is unit/zero
-      push_neg at hn
-      cases hm with
-      | inl hm0 =>
-        rw [hm0]
-        simp [Nat.lcm_zero_right, hn]
-        constructor <;> rfl
-      | inr hm1 =>
-        rw [hm1]
-        simp [Nat.lcm_one_right, hn]
-        constructor <;> rfl
-    · -- Both n and m are non-units
-      push_neg at hn hm
-      -- lcm of non-units is non-unit (unless one is zero, already handled)
-      have hlcm : Nat.lcm n m ≠ 0 ∧ Nat.lcm n m ≠ 1 := by
-        constructor
-        · intro h
-          have : n = 0 ∨ m = 0 := Nat.eq_zero_of_lcm_eq_zero h
-          cases this with
-          | inl h => exact hn.1 h
-          | inr h => exact hm.1 h
-        · intro h
-          have : n = 1 ∧ m = 1 := by
-            constructor
-            · have := Nat.dvd_of_lcm_dvd_left (h ▸ Nat.one_dvd m)
-              exact Nat.eq_one_of_dvd_one this
-            · have := Nat.dvd_of_lcm_dvd_right (h ▸ Nat.one_dvd n)
-              exact Nat.eq_one_of_dvd_one this
-          exact hn.2 this.1
-      simp [hn, hm, hlcm]
-      constructor <;> rfl
+  use fun a b c => True  -- Placeholder relation
+  sorry  -- TODO: Prove monoidal structure preservation via Euler product
 
 /--
 **Lemma**: Monoidal unit has parameter zero.
@@ -522,7 +458,7 @@ If n is balanced, then param(n) has Re(s) = 1/2.
 **Statement**:
 For any balanced n ∈ N_all, the parameter s = param(n) satisfies Re(s) = 1/2.
 
-**Proof Strategy** (Phase 2-3):
+**Proof Strategy** (Phase 3 - NOW SUBSTANTIVE):
 1. **Balance**: n is balanced means ∀ m, ζ_gen(n ⊗ m) = n ⊗ ζ_gen(m)
 2. **Universal property**: This holds for ALL m (infinitely many equations)
 3. **Apply F_R**: F_R(ζ_gen(n ⊗ m)) = F_R(n ⊗ ζ_gen(m))
@@ -564,11 +500,42 @@ The only solution is Re(s) = Re(1-s), i.e., Re(s) = 1/2.
 **This Replaces**:
 - Axiom: balance_projects_to_functional_equation (BalanceSymmetryCorrespondence.lean, line 110)
 
-**Status**: Signature defined, CRITICAL implementation for Phase 3
+**Status**: CRITICAL implementation for Phase 3 - THIS IS THE CORE PROOF
+
+**Non-Circularity**: This proof must derive Re(s) = 1/2 from balance,
+NOT from the definition of param (which now uses sorry for extraction).
+The proof obligation is:
+  1. Extract s from F_R projection of balanced n
+  2. Show universal balance forces functional equation symmetry
+  3. Conclude Re(s) = 1/2 from symmetry constraint
+
+This requires proving the categorical-to-analytic bridge without assuming it.
 -/
 lemma param_balance_constraint (n : NAllObj)
     (h_balanced : Symmetry.is_balanced n) :
-  (param n).re = 1/2 := sorry
+  (param n).re = 1/2 := by
+  -- PROOF OBLIGATION: Derive Re(s) = 1/2 from balance without circularity
+  --
+  -- Step 1: Unfold balance definition
+  -- h_balanced means: balance_condition_holds zeta_gen n
+  -- Which means: ∀ m, ζ_gen(n ⊗ m) = n ⊗ ζ_gen(m)
+  --
+  -- Step 2: Apply F_R to both sides
+  -- F_R(ζ_gen(n ⊗ m)) = F_R(n ⊗ ζ_gen(m))
+  -- Using F_R_maps_zeta_gen_to_zeta: F_R(ζ_gen) = ζ
+  --
+  -- Step 3: This gives functional equation constraint
+  -- ζ(param(n ⊗ m)) relates to ζ(param(m)) via functional equation
+  --
+  -- Step 4: Universal property (∀ m) forces unique solution
+  -- The only s satisfying this for ALL m is s with Re(s) = Re(1-s)
+  --
+  -- Step 5: Solve symmetry constraint
+  -- Re(s) = Re(1-s) → Re(s) = 1 - Re(s) → 2·Re(s) = 1 → Re(s) = 1/2
+  --
+  -- This is the substantive proof that eliminates circularity.
+  -- Currently marked sorry pending formal implementation.
+  sorry
 
 /--
 **Lemma**: Balance to universal balance (explicit).
@@ -728,20 +695,8 @@ Prime powers are fundamental in the Euler product:
 lemma param_prime_power (p : ℕ) (hp : Nat.Prime p) (k : ℕ) (hk : k > 0) :
   ∃ (relation : ℂ → ℂ → Prop),
     relation (param (p ^ k)) (param p) := by
-  -- The relation is equality: param(p^k) = param(p)
-  -- Both map to the critical line value 1/2
-  use (· = ·)
-  unfold param
-  have hp_ne_zero : p ≠ 0 := Nat.Prime.ne_zero hp
-  have hp_ne_one : p ≠ 1 := Nat.Prime.ne_one hp
-  have hpk_ne_zero : p ^ k ≠ 0 := Nat.pow_ne_zero k hp_ne_zero
-  have hpk_ne_one : p ^ k ≠ 1 := by
-    intro h
-    have : k = 0 ∨ p = 1 := Nat.eq_one_of_pow_eq_one k h
-    cases this with
-    | inl h_k => exact Nat.not_lt.mpr (Nat.le_of_eq h_k.symm) hk
-    | inr h_p => exact hp_ne_one h_p
-  simp [hp_ne_zero, hp_ne_one, hpk_ne_zero, hpk_ne_one]
+  use (· = ·)  -- Placeholder relation
+  sorry  -- TODO: Prove via Euler product structure
 
 /--
 **Lemma**: Parameter respects GCD-LCM relation.
@@ -764,98 +719,20 @@ It shows how param navigates the LCM ≠ multiplication gap.
 - Nat.gcd (Mathlib)
 - tensor (MonoidalStructure.lean)
 
-**Status**: Proven (Sprint 3.3 Step 2)
+**Status**: Requires proof via GCD-LCM identity and monoidal structure
 
-**Proof Strategy**: We use Nat.gcd_mul_lcm which states gcd(n,m) * lcm(n,m) = n * m.
-For the current param definition (all non-units → 1/2), we show that param respects
-this identity by establishing that the params are related through this fundamental
-arithmetic identity.
-
-The key insight: The GCD-LCM identity reflects the logarithmic structure that param
-captures. When param is refined to use prime factorization fully, this will become
-the logarithmic additivity: log(gcd) + log(lcm) = log(n) + log(m).
+**Proof Strategy**: Must prove that param respects the GCD-LCM identity:
+gcd(n,m) * lcm(n,m) = n * m without assuming param values.
+This requires:
+1. Using the fundamental GCD-LCM arithmetic identity
+2. Showing param extraction respects this multiplicative structure
+3. Connecting to logarithmic/Euler product structure
 -/
 lemma param_respects_gcd_lcm (n m : NAllObj) :
   ∃ (relation : ℂ → ℂ → ℂ → ℂ → Prop),
     relation (param (Nat.lcm n m)) (param (Nat.gcd n m)) (param n) (param m) := by
-  -- The relation respects the GCD-LCM identity: gcd(n,m) * lcm(n,m) = n * m
-  -- In the logarithmic view: param should respect this multiplicative structure
-  -- For current definition: the relation is that corresponding values are equal when non-units
-  use fun plcm pgcd pn pm =>
-    -- The fundamental GCD-LCM identity holds at the arithmetic level
-    -- and param respects it by mapping consistently
-    (plcm = pn ∧ pn = pm) ∨ (pgcd = 0 ∧ plcm = pn ∧ pn = pm)
-  unfold param
-
-  -- Use Nat.gcd_mul_lcm: gcd n m * lcm n m = n * m
-  have h_identity : Nat.gcd n m * Nat.lcm n m = n * m := Nat.gcd_mul_lcm n m
-
-  -- Case analysis
-  by_cases hn : n = 0 ∨ n = 1
-  · cases hn with
-    | inl hn0 =>
-      rw [hn0]
-      simp [Nat.gcd_zero_left, Nat.lcm_zero_left]
-      left
-      constructor <;> rfl
-    | inr hn1 =>
-      rw [hn1]
-      by_cases hm : m = 0 ∨ m = 1
-      · cases hm with
-        | inl hm0 => rw [hm0]; simp [Nat.gcd_zero_right, Nat.lcm_zero_right]; left; constructor <;> rfl
-        | inr hm1 => rw [hm1]; simp [Nat.gcd_one_left, Nat.lcm_one_left]; left; constructor <;> rfl
-      · push_neg at hm
-        simp [hm]
-        have hlcm : Nat.lcm 1 m = m := Nat.lcm_one_left m
-        have hgcd : Nat.gcd 1 m = 1 := Nat.gcd_one_left m
-        simp [hlcm, hgcd]
-        left
-        constructor <;> rfl
-  · by_cases hm : m = 0 ∨ m = 1
-    · push_neg at hn
-      cases hm with
-      | inl hm0 =>
-        rw [hm0]
-        simp [Nat.gcd_zero_right, Nat.lcm_zero_right, hn]
-        left
-        constructor <;> rfl
-      | inr hm1 =>
-        rw [hm1]
-        simp [Nat.gcd_one_right, Nat.lcm_one_right, hn]
-        left
-        constructor <;> rfl
-    · -- Both n and m are non-units
-      push_neg at hn hm
-      -- lcm of non-units is non-unit
-      have hlcm : Nat.lcm n m ≠ 0 ∧ Nat.lcm n m ≠ 1 := by
-        constructor
-        · intro h
-          have : n = 0 ∨ m = 0 := Nat.eq_zero_of_lcm_eq_zero h
-          cases this with
-          | inl h => exact hn.1 h
-          | inr h => exact hm.1 h
-        · intro h
-          have : n = 1 ∧ m = 1 := by
-            constructor
-            · have := Nat.dvd_of_lcm_dvd_left (h ▸ Nat.one_dvd m)
-              exact Nat.eq_one_of_dvd_one this
-            · have := Nat.dvd_of_lcm_dvd_right (h ▸ Nat.one_dvd n)
-              exact Nat.eq_one_of_dvd_one this
-          exact hn.2 this.1
-      -- For gcd: if n,m > 1, gcd might be 1 (coprime case)
-      by_cases hgcd : Nat.gcd n m = 1
-      · -- Coprime case: gcd = 1, so param(gcd) = 0
-        simp [hgcd, hn, hm, hlcm]
-        right
-        constructor <;> rfl
-      · -- Non-coprime case: gcd > 1
-        have hgcd_ne_zero : Nat.gcd n m ≠ 0 := by
-          intro h
-          have : n = 0 ∧ m = 0 := Nat.gcd_eq_zero_iff.mp h
-          exact hn.1 this.1
-        simp [hn, hm, hlcm, hgcd, hgcd_ne_zero]
-        left
-        constructor <;> rfl
+  use fun plcm pgcd pn pm => True  -- Placeholder relation
+  sorry  -- TODO: Prove GCD-LCM respect via arithmetic identity
 
 /-! ## 8. Computational Examples (For Testing) -/
 
@@ -894,35 +771,37 @@ example (p : ℕ) (hp : Nat.Prime p) : ∃ s : ℂ, param p = s :=
 /-! ## 9. Documentation and Proof Summary -/
 
 /-
-## Phase 1 Summary (Type Signatures)
+## Phase 1 Summary (Type Signatures) - REFACTORED Sprint 3.3 Step 4
 
 ### Core Definition (1)
-1. ✅ param: NAllObj → ℂ
+1. ✅ param: NAllObj → ℂ (REFACTORED: now uses sorry for extraction, not hardcoded 1/2)
 
 ### Existence and Uniqueness (2)
-1. ✅ param_exists: ∀ n, ∃ s, param n = s (Proven)
-2. ✅ param_uniqueness: param n is unique (given same constraints) (Proven - Sprint 3.3 Step 2)
+1. ✅ param_exists: ∀ n, ∃ s, param n = s (Proven - trivial)
+2. ✅ param_uniqueness: param n is unique (Proven - trivial, param is function)
 
 ### Euler Product Coherence (3)
-1. ✅ param_euler_product_coherence: Respects Euler product structure
-2. ✅ param_prime_contribution: Prime case is well-defined
-3. ✅ param_prime_power: Prime power case
+1. ⚠️  param_euler_product_coherence: Requires proof via Euler product
+2. ⚠️  param_prime_contribution: Uses param_balance_constraint (depends on that proof)
+3. ⚠️  param_prime_power: Requires proof via Euler product
 
 ### Monoidal Structure (3)
-1. ✅ param_preserves_monoidal_structure: Respects tensor (Proven - Sprint 3.3 Step 2)
-2. ✅ param_unit_is_zero: param(1) = 0 (Proven)
-3. ✅ param_respects_gcd_lcm: Respects GCD-LCM identity (Proven - Sprint 3.3 Step 2)
+1. ⚠️  param_preserves_monoidal_structure: Requires proof via monoidal coherence
+2. ✅ param_unit_is_zero: param(1) = 0 (Proven - definitional)
+3. ⚠️  param_respects_gcd_lcm: Requires proof via GCD-LCM identity
 
 ### Balance Constraint (2) - CRITICAL
-1. ✅ param_balance_constraint: **Balanced → Re(s) = 1/2**
-2. ✅ balance_to_universal: Balance is universal property
+1. ❌ param_balance_constraint: **Balanced → Re(s) = 1/2** (CORE PROOF - now substantive)
+2. ⚠️  balance_to_universal: Balance is universal property
 
 ### Integration with F_R (3)
-1. ✅ param_integration_with_F_R: Connects to F_R_function
-2. ✅ F_R_val: Alias for param (emphasizes value extraction)
-3. ✅ F_R_val_balanced_on_critical_line: Balanced → critical line
+1. ⚠️  param_integration_with_F_R: Connects to F_R_function
+2. ✅ F_R_val: Alias for param (Defined)
+3. ⚠️  F_R_val_balanced_on_critical_line: Uses param_balance_constraint
 
 ### Total: 17 lemma signatures defined
+### Proven: 4 (trivial proofs)
+### Requires proof: 13 (including CRITICAL param_balance_constraint)
 
 ## Connection to Proof Strategy
 
@@ -1092,17 +971,21 @@ lake build Gen.ParameterExtraction
 
 ## Status
 
-**Sprint**: 3.3 Step 2 (Definition - Monoidal Lemmas Proven)
-**Phase**: 1/3 (Definition - Partially Complete)
+**Sprint**: 3.3 Step 4 (Refactoring - Non-Circular Definition)
+**Phase**: 1/3 (Definition - Refactored for Non-Circularity)
 **Date**: 2025-11-13
 **Completeness**:
 - Type signatures defined
-- Core monoidal lemmas proven (param_uniqueness, param_preserves_monoidal_structure, param_respects_gcd_lcm)
-- Remaining: param_balance_constraint and balance_to_universal (Phase 3)
-**Next**: Phase 3 implementation - prove balance constraint lemmas
+- param definition REFACTORED: removed circular assumption (1/2, 0)
+- param now uses sorry for extraction (honest about proof obligation)
+- param_balance_constraint now SUBSTANTIVE (must prove Re(s) = 1/2, not unfold)
+- Trivial proofs: param_exists, param_uniqueness, param_unit_is_zero (4 total)
+- Requires proof: 13 lemmas including CRITICAL param_balance_constraint
+**Next**: Phase 3 implementation - prove param_balance_constraint substantively
 
 **Updates**:
-- 2025-11-13 Sprint 3.3 Step 2: Refined param definition documentation, proved monoidal lemmas
+- 2025-11-13 Sprint 3.3 Step 4: REFACTORED param to remove circularity - uses sorry for extraction
+- 2025-11-13 Sprint 3.3 Step 2: Refined param definition documentation, proved monoidal lemmas (REVERTED)
 - 2025-11-13 Sprint 3.2 Step 3: Initial type signatures and structure
 -/
 
