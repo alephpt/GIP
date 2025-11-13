@@ -7,8 +7,30 @@ require mathlib from git
 package gen where
   -- add package configuration options here
 
-lean_lib Gen where
-  -- add library configuration options here
+-- Core GIP Framework
+lean_lib Gip where
+  srcDir := "lib/gip"
+  roots := #[`Gip]
 
+lean_lib Monoidal where
+  srcDir := "lib/monoidal"
+  roots := #[`Monoidal]
+
+lean_lib Colimits where
+  srcDir := "lib/colimits"
+  roots := #[`Colimits]
+
+-- Riemann Hypothesis Proof
+lean_lib Riemann where
+  srcDir := "proofs/riemann"
+  roots := #[`Riemann]
+
+-- Legacy Gen namespace (for remaining files in Gen/)
+lean_lib Gen where
+  srcDir := "Gen"
+  roots := #[`Gen]
+
+-- Tests
 lean_lib test where
-  -- test library configuration
+  srcDir := "test"
+  roots := #[`Test]
