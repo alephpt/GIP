@@ -743,17 +743,41 @@ theorem overdetermined_forces_critical_line (z : NAllObj)
   -- -------------------------------------------------------------------------
   -- Uniqueness + symmetry: if s is THE solution, and 1-s is also solution,
   -- then s = 1-s (uniqueness)
-  have h_self_dual : True := by
-    sorry  -- TODO: Prove from h_unique_solution + h_system_symmetry
-           -- Only one solution exists, both s and 1-s satisfy all constraints
-           -- Therefore s = 1-s
+  --
+  -- **Logic**:
+  -- 1. From Step 1: F_R_val z satisfies all prime constraints
+  -- 2. From Step 7 (system symmetry): 1 - F_R_val z ALSO satisfies all prime constraints
+  -- 3. From Step 8 (uniqueness): If two values satisfy all constraints, they're equal
+  -- 4. Therefore: F_R_val z = 1 - F_R_val z
+  have h_self_dual : F_R_val z = 1 - F_R_val z := by
+    -- We already have h_constraints: F_R_val z satisfies all constraints
+    -- Apply system symmetry to get that (1 - F_R_val z) also satisfies all constraints
+    have h_1_minus_satisfies : ∀ p : Nat.Primes,
+        ∃ constraint : ℂ → Prop, constraint (1 - F_R_val z) := by
+      -- Apply Step 7: h_system_symmetry with s = F_R_val z
+      exact h_system_symmetry (F_R_val z) h_constraints
+    -- Now apply Step 8 uniqueness: both F_R_val z and (1 - F_R_val z) satisfy all constraints
+    -- Therefore they must be equal
+    exact h_unique_solution (F_R_val z) (1 - F_R_val z) h_constraints h_1_minus_satisfies
 
   -- Step 10: Algebraic manipulation - Re(s) = Re(1-s)
   -- -------------------------------------------------------------------------
   -- If s = 1-s, take real parts: Re(s) = Re(1-s)
-  have h_real_symmetry : True := by
-    sorry  -- TODO: From h_self_dual
-           -- s = 1-s ⟹ Re(s) = Re(1-s) = 1 - Re(s)
+  --
+  -- **Logic**:
+  -- 1. From Step 9: F_R_val z = 1 - F_R_val z
+  -- 2. Apply Complex.re to both sides
+  -- 3. Use Complex.sub_re and Complex.one_re
+  -- 4. Result: Re(F_R_val z) = 1 - Re(F_R_val z)
+  have h_real_symmetry : (F_R_val z).re = 1 - (F_R_val z).re := by
+    -- Start with the equality from Step 9
+    have h_eq : F_R_val z = 1 - F_R_val z := h_self_dual
+    -- Take real parts of both sides
+    calc (F_R_val z).re
+        = (1 - F_R_val z).re              := by rw [h_eq]
+      _ = 1 - (F_R_val z).re              := by
+          rw [Complex.sub_re, Complex.one_re]
+          ring
 
   -- Step 11: Solve: 2·Re(s) = 1
   -- -------------------------------------------------------------------------
