@@ -4,6 +4,7 @@ Conditional proof of RH using the GIP framework
 -/
 
 import Riemann.FunctionalEquation
+import Riemann.ParameterExtraction
 import Riemann.Primes
 import Riemann.PrimeGeneration
 import Riemann.ZetaMorphism
