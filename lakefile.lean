@@ -9,3 +9,6 @@ package gen where
 
 lean_lib Gen where
   -- add library configuration options here
+
+lean_lib test where
+  -- test library configuration
