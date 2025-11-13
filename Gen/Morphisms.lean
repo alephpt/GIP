@@ -4,6 +4,7 @@ Based on categorical/definitions/gen_category_axioms_v2.md Section 2.2
 -/
 
 import Gen.Basic
+import Mathlib.Data.Nat.Prime
 
 namespace Gen
 
@@ -25,6 +26,11 @@ inductive GenMorphism : GenObj → GenObj → Type where
   -- Divisibility morphisms: n → m when n | m (register2_numeric_v2.md Section 3)
   | divisibility (n m : Nat) (h : ∃ k, m = n * k) :
       GenMorphism (GenObj.nat n) (GenObj.nat m)
+
+  -- Prime multiplicative morphism: γₚ : p → p (Euler factor)
+  -- Represents the transformation encoding (1 - p^{-s})^{-1} at prime p
+  | gamma (p : Nat) (hp : Nat.Prime p) :
+      GenMorphism (GenObj.nat p) (GenObj.nat p)
 
   -- Composition of morphisms
   | comp {X Y Z : GenObj} :
@@ -54,5 +60,8 @@ instance (n m : Nat) : Decidable (divides n m) := by
 
 -- φ notation for divisibility morphisms
 notation "φ[" n "," m "]" => GenMorphism.divisibility n m
+
+-- γₚ notation for prime multiplicative morphisms
+notation "γₚ[" p "," hp "]" => GenMorphism.gamma p hp
 
 end Gen

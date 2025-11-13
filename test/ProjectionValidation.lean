@@ -192,31 +192,31 @@ section MorphismMappingTests
 
 /-! ### 3.1 Gen Morphism Structure -/
 
--- Test: GenMorphism type is axiomatized (from Projection module)
-noncomputable example : GenObj → GenObj → Type := Projection.GenMorphism
+-- Test: GenMorphism type is defined in Gen.Morphisms
+noncomputable example : GenObj → GenObj → Type := Gen.GenMorphism
 
--- Test: gen_id exists for all objects
-noncomputable example (A : GenObj) : Projection.GenMorphism A A := Projection.gen_id A
+-- Test: gen_id exists for all objects (aliased from idMorph)
+noncomputable example (A : GenObj) : Gen.GenMorphism A A := Projection.gen_id A
 
--- Test: gen_comp exists
+-- Test: gen_comp exists (aliased from GenMorphism.comp)
 noncomputable example {A B C : GenObj}
-  (f : Projection.GenMorphism A B) (g : Projection.GenMorphism B C) :
-  Projection.GenMorphism A C := Projection.gen_comp f g
+  (f : Gen.GenMorphism A B) (g : Gen.GenMorphism B C) :
+  Gen.GenMorphism A C := Projection.gen_comp f g
 
--- Test: gen_gamma exists for primes
+-- Test: gen_gamma exists for primes (aliased from GenMorphism.gamma)
 noncomputable example (p : ℕ) (hp : Nat.Prime p) :
-  Projection.GenMorphism (GenObj.nat p) (GenObj.nat p) :=
+  Gen.GenMorphism (GenObj.nat p) (GenObj.nat p) :=
   Projection.gen_gamma p hp
 
--- Test: gen_iota exists for colimit inclusions
+-- Test: gen_iota exists for colimit inclusions (axiomatized in Projection)
 noncomputable example (n : ℕ) :
-  Projection.GenMorphism (GenObj.nat n) (GenObj.nat 0) :=
+  Gen.GenMorphism (GenObj.nat n) (GenObj.nat 0) :=
   Projection.gen_iota n
 
 /-! ### 3.2 F_R Morphism Mapping -/
 
--- Test: F_R_mor is axiomatized (verify it exists)
-noncomputable example {A B : GenObj} (f : Projection.GenMorphism A B) :
+-- Test: F_R_mor is now implemented via pattern matching
+noncomputable example {A B : GenObj} (f : Gen.GenMorphism A B) :
   FunctionTransformation (F_R_obj A) (F_R_obj B) := F_R_mor f
 
 /-! ### 3.3 Auxiliary Morphisms in Comp -/
@@ -255,7 +255,7 @@ theorem test_preserves_id (A : GenObj) :
 
 -- Test: F_R_preserves_comp theorem exists
 theorem test_preserves_comp {A B C : GenObj}
-    (f : Projection.GenMorphism A B) (g : Projection.GenMorphism B C) :
+    (f : Gen.GenMorphism A B) (g : Gen.GenMorphism B C) :
     F_R_mor (Projection.gen_comp f g) =
       FunctionTransformation.comp (F_R_mor f) (F_R_mor g) :=
   F_R_preserves_comp f g
@@ -284,7 +284,7 @@ theorem test_preserves_unit :
 /-! ### 4.5 Naturality -/
 
 -- Test: F_R_natural axiom exists
-example {A B : GenObj} (f : Projection.GenMorphism A B) (g h : (F_R_obj A).domain → ℂ)
+example {A B : GenObj} (f : Gen.GenMorphism A B) (g h : (F_R_obj A).domain → ℂ)
   (heq : (F_R_mor f).transform g = (F_R_mor f).transform h) : g = h :=
   F_R_natural f g h heq
 
@@ -309,7 +309,7 @@ example (D : GenDirectedSystem) : ℕ → GenObj := D.objects
 
 -- Test: GenDirectedSystem has inclusions
 example (D : GenDirectedSystem) (n : ℕ) :
-  Projection.GenMorphism (GenObj.nat n) (GenObj.nat 0) := D.inclusions n
+  Gen.GenMorphism (GenObj.nat n) (GenObj.nat 0) := D.inclusions n
 
 /-! ### 5.2 F_R Applied to Directed System -/
 
@@ -508,14 +508,14 @@ example : Type := ProjectionFunctor
 -- Test: ProjectionFunctor has required fields
 example (F : ProjectionFunctor) : GenObj → AnalyticFunctionSpace := F.obj
 
-example (F : ProjectionFunctor) {A B : GenObj} (f : Projection.GenMorphism A B) :
+example (F : ProjectionFunctor) {A B : GenObj} (f : Gen.GenMorphism A B) :
     FunctionTransformation (F.obj A) (F.obj B) := F.map f
 
 example (F : ProjectionFunctor) :
   ∀ (A : GenObj), F.map (Projection.gen_id A) = FunctionTransformation.id (F.obj A) := F.map_id
 
 example (F : ProjectionFunctor) :
-  ∀ {A B C : GenObj} (f : Projection.GenMorphism A B) (g : Projection.GenMorphism B C),
+  ∀ {A B C : GenObj} (f : Gen.GenMorphism A B) (g : Gen.GenMorphism B C),
     F.map (Projection.gen_comp f g) = FunctionTransformation.comp (F.map f) (F.map g) := F.map_comp
 
 /-! ### 7.2 MonoidalFunctorStructure -/
