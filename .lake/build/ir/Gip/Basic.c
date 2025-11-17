@@ -31,55 +31,153 @@ static lean_object* l_Gen___aux__Gip__Basic______macroRules__Gen__term_u2205__1_
 LEAN_EXPORT lean_object* l_Gen___aux__Gip__Basic______unexpand__Gen__GenObj__unit__1___boxed(lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Syntax_getArgs(lean_object*);
 lean_object* l_Lean_replaceRef(lean_object*, lean_object*);
+LEAN_EXPORT lean_object* l_Gen_RegisterLevel_noConfusion(lean_object*);
+LEAN_EXPORT lean_object* l_Gen_RegisterLevel_ofNat___boxed(lean_object*);
 uint8_t l_Lean_Syntax_isOfKind(lean_object*, lean_object*);
+LEAN_EXPORT uint8_t l_Gen_register(uint8_t);
 static lean_object* l_Gen___aux__Gip__Basic______macroRules__Gen__term_U0001d7d9__1___closed__1;
 lean_object* l_Lean_Name_mkStr3(lean_object*, lean_object*, lean_object*);
 static lean_object* l_Gen___aux__Gip__Basic______macroRules__Gen__term_U0001d7d9__1___closed__6;
 static lean_object* l_Gen_term_u2205___closed__2;
 static lean_object* l_Gen___aux__Gip__Basic______macroRules__Gen__term_U0001d7d9__1___closed__2;
+uint8_t lean_nat_dec_eq(lean_object*, lean_object*);
 static lean_object* l_Gen_term_u2205___closed__3;
 lean_object* l_Lean_SourceInfo_fromRef(lean_object*, uint8_t);
 static lean_object* l_Gen___aux__Gip__Basic______unexpand__Gen__GenObj__empty__1___closed__5;
+LEAN_EXPORT lean_object* l_Gen_RegisterLevel_toCtorIdx(uint8_t);
 static lean_object* l_Gen_term_U0001d7d9___closed__5;
+LEAN_EXPORT uint8_t l_Gen_RegisterLevel_ofNat(lean_object*);
 static lean_object* l_Gen___aux__Gip__Basic______unexpand__Gen__GenObj__empty__1___closed__4;
 static lean_object* l_Gen___aux__Gip__Basic______macroRules__Gen__term_U0001d7d9__1___closed__9;
 static lean_object* l_Gen___aux__Gip__Basic______unexpand__Gen__GenObj__empty__1___closed__8;
+LEAN_EXPORT lean_object* l_Gen_GenObj_toCtorIdx___boxed(lean_object*);
 static lean_object* l_Gen_term_u2205___closed__6;
 lean_object* l_Lean_addMacroScope(lean_object*, lean_object*, lean_object*);
 lean_object* l_Lean_Name_str___override(lean_object*, lean_object*);
 lean_object* l_Lean_Syntax_node2(lean_object*, lean_object*, lean_object*, lean_object*);
 static lean_object* l_Gen___aux__Gip__Basic______macroRules__Gen__term_u2205__1___closed__9;
 lean_object* l_Lean_Syntax_getArg(lean_object*, lean_object*);
+LEAN_EXPORT lean_object* l_Gen_GenObj_noConfusion___rarg___lambda__1___boxed(lean_object*);
 static lean_object* l_Gen___aux__Gip__Basic______unexpand__Gen__GenObj__empty__1___closed__10;
 static lean_object* l_Gen___aux__Gip__Basic______macroRules__Gen__term_U0001d7d9__1___closed__4;
+LEAN_EXPORT lean_object* l_Gen_GenObj_noConfusion(lean_object*);
 static lean_object* l_Gen___aux__Gip__Basic______macroRules__Gen__term_u2205__1___closed__4;
 lean_object* l_Array_append___rarg(lean_object*, lean_object*);
+LEAN_EXPORT lean_object* l_Gen_RegisterLevel_noConfusion___rarg(uint8_t, uint8_t, lean_object*);
 static lean_object* l_Gen___aux__Gip__Basic______macroRules__Gen__term_u2205__1___closed__2;
+LEAN_EXPORT lean_object* l_Gen_register___boxed(lean_object*);
 static lean_object* l_Gen_term_u2205___closed__1;
 static lean_object* l_Gen_term_U0001d7d9___closed__1;
+LEAN_EXPORT lean_object* l_Gen_RegisterLevel_noConfusion___rarg___boxed(lean_object*, lean_object*, lean_object*);
+LEAN_EXPORT lean_object* l_Gen_GenObj_noConfusion___rarg___lambda__1(lean_object*);
+LEAN_EXPORT uint8_t l_Gen_instDecidableEqRegisterLevel(uint8_t, uint8_t);
 static lean_object* l_Gen_term_u2205___closed__5;
 LEAN_EXPORT lean_object* l_Gen___aux__Gip__Basic______unexpand__Gen__GenObj__empty__1(lean_object*, lean_object*, lean_object*);
 static lean_object* l_Gen_term_U0001d7d9___closed__2;
 uint8_t lean_nat_dec_eq(lean_object*, lean_object*);
 static lean_object* l_Gen___aux__Gip__Basic______macroRules__Gen__term_u2205__1___closed__6;
 lean_object* l_Lean_Name_mkStr2(lean_object*, lean_object*);
+LEAN_EXPORT lean_object* l_Gen_RegisterLevel_toCtorIdx___boxed(lean_object*);
 static lean_object* l_Gen___aux__Gip__Basic______macroRules__Gen__term_U0001d7d9__1___closed__7;
+LEAN_EXPORT lean_object* l_Gen_GenObj_noConfusion___rarg___boxed(lean_object*, lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Gen_term_U0001d7d9;
-LEAN_EXPORT uint8_t l_Gen_instDecidableEqGenObj(lean_object*, lean_object*);
+LEAN_EXPORT uint8_t l_Gen_instDecidableEqGenObj(uint8_t, uint8_t);
 lean_object* l_Lean_Syntax_node1(lean_object*, lean_object*, lean_object*);
+LEAN_EXPORT lean_object* l_Gen_GenObj_noConfusion___rarg(uint8_t, uint8_t, lean_object*);
 static lean_object* l_Gen_term_u2205___closed__4;
 static lean_object* l_Gen___aux__Gip__Basic______unexpand__Gen__GenObj__empty__1___closed__9;
 static lean_object* l_Gen___aux__Gip__Basic______macroRules__Gen__term_U0001d7d9__1___closed__8;
+LEAN_EXPORT lean_object* l_Gen_instDecidableEqRegisterLevel___boxed(lean_object*, lean_object*);
 LEAN_EXPORT lean_object* l_Gen_instDecidableEqGenObj___boxed(lean_object*, lean_object*);
+static lean_object* l_Gen_GenObj_noConfusion___rarg___closed__1;
 static lean_object* l_Gen___aux__Gip__Basic______unexpand__Gen__GenObj__empty__1___closed__3;
 LEAN_EXPORT lean_object* l_Gen___aux__Gip__Basic______unexpand__Gen__GenObj__unit__1(lean_object*, lean_object*, lean_object*);
+LEAN_EXPORT lean_object* l_Gen_GenObj_toCtorIdx(uint8_t);
 static lean_object* l_Gen___aux__Gip__Basic______unexpand__Gen__GenObj__empty__1___closed__2;
 static lean_object* l_Gen___aux__Gip__Basic______macroRules__Gen__term_u2205__1___closed__8;
 lean_object* l_Lean_Name_mkStr4(lean_object*, lean_object*, lean_object*, lean_object*);
 static lean_object* l_Gen___aux__Gip__Basic______macroRules__Gen__term_U0001d7d9__1___closed__3;
-LEAN_EXPORT lean_object* l_Gen_num(lean_object*);
 lean_object* l_String_toSubstring_x27(lean_object*);
 static lean_object* l_Gen___aux__Gip__Basic______unexpand__Gen__GenObj__empty__1___closed__6;
+LEAN_EXPORT lean_object* l_Gen_GenObj_toCtorIdx(uint8_t x_1) {
+_start:
+{
+if (x_1 == 0)
+{
+lean_object* x_2; 
+x_2 = lean_unsigned_to_nat(0u);
+return x_2;
+}
+else
+{
+lean_object* x_3; 
+x_3 = lean_unsigned_to_nat(1u);
+return x_3;
+}
+}
+}
+LEAN_EXPORT lean_object* l_Gen_GenObj_toCtorIdx___boxed(lean_object* x_1) {
+_start:
+{
+uint8_t x_2; lean_object* x_3; 
+x_2 = lean_unbox(x_1);
+lean_dec(x_1);
+x_3 = l_Gen_GenObj_toCtorIdx(x_2);
+return x_3;
+}
+}
+LEAN_EXPORT lean_object* l_Gen_GenObj_noConfusion___rarg___lambda__1(lean_object* x_1) {
+_start:
+{
+lean_inc(x_1);
+return x_1;
+}
+}
+static lean_object* _init_l_Gen_GenObj_noConfusion___rarg___closed__1() {
+_start:
+{
+lean_object* x_1; 
+x_1 = lean_alloc_closure((void*)(l_Gen_GenObj_noConfusion___rarg___lambda__1___boxed), 1, 0);
+return x_1;
+}
+}
+LEAN_EXPORT lean_object* l_Gen_GenObj_noConfusion___rarg(uint8_t x_1, uint8_t x_2, lean_object* x_3) {
+_start:
+{
+lean_object* x_4; 
+x_4 = l_Gen_GenObj_noConfusion___rarg___closed__1;
+return x_4;
+}
+}
+LEAN_EXPORT lean_object* l_Gen_GenObj_noConfusion(lean_object* x_1) {
+_start:
+{
+lean_object* x_2; 
+x_2 = lean_alloc_closure((void*)(l_Gen_GenObj_noConfusion___rarg___boxed), 3, 0);
+return x_2;
+}
+}
+LEAN_EXPORT lean_object* l_Gen_GenObj_noConfusion___rarg___lambda__1___boxed(lean_object* x_1) {
+_start:
+{
+lean_object* x_2; 
+x_2 = l_Gen_GenObj_noConfusion___rarg___lambda__1(x_1);
+lean_dec(x_1);
+return x_2;
+}
+}
+LEAN_EXPORT lean_object* l_Gen_GenObj_noConfusion___rarg___boxed(lean_object* x_1, lean_object* x_2, lean_object* x_3) {
+_start:
+{
+uint8_t x_4; uint8_t x_5; lean_object* x_6; 
+x_4 = lean_unbox(x_1);
+lean_dec(x_1);
+x_5 = lean_unbox(x_2);
+lean_dec(x_2);
+x_6 = l_Gen_GenObj_noConfusion___rarg(x_4, x_5, x_3);
+return x_6;
+}
+}
 static lean_object* _init_l_Gen_term_u2205___closed__1() {
 _start:
 {
@@ -787,22 +885,12 @@ lean_dec(x_2);
 return x_4;
 }
 }
-LEAN_EXPORT lean_object* l_Gen_num(lean_object* x_1) {
+LEAN_EXPORT uint8_t l_Gen_instDecidableEqGenObj(uint8_t x_1, uint8_t x_2) {
 _start:
 {
-lean_object* x_2; 
-x_2 = lean_alloc_ctor(2, 1, 0);
-lean_ctor_set(x_2, 0, x_1);
-return x_2;
-}
-}
-LEAN_EXPORT uint8_t l_Gen_instDecidableEqGenObj(lean_object* x_1, lean_object* x_2) {
-_start:
+if (x_1 == 0)
 {
-switch (lean_obj_tag(x_1)) {
-case 0:
-{
-if (lean_obj_tag(x_2) == 0)
+if (x_2 == 0)
 {
 uint8_t x_3; 
 x_3 = 1;
@@ -815,37 +903,19 @@ x_4 = 0;
 return x_4;
 }
 }
-case 1:
+else
 {
-if (lean_obj_tag(x_2) == 1)
+if (x_2 == 0)
 {
 uint8_t x_5; 
-x_5 = 1;
+x_5 = 0;
 return x_5;
 }
 else
 {
 uint8_t x_6; 
-x_6 = 0;
+x_6 = 1;
 return x_6;
-}
-}
-default: 
-{
-if (lean_obj_tag(x_2) == 2)
-{
-lean_object* x_7; lean_object* x_8; uint8_t x_9; 
-x_7 = lean_ctor_get(x_1, 0);
-x_8 = lean_ctor_get(x_2, 0);
-x_9 = lean_nat_dec_eq(x_7, x_8);
-return x_9;
-}
-else
-{
-uint8_t x_10; 
-x_10 = 0;
-return x_10;
-}
 }
 }
 }
@@ -853,10 +923,150 @@ return x_10;
 LEAN_EXPORT lean_object* l_Gen_instDecidableEqGenObj___boxed(lean_object* x_1, lean_object* x_2) {
 _start:
 {
-uint8_t x_3; lean_object* x_4; 
-x_3 = l_Gen_instDecidableEqGenObj(x_1, x_2);
-lean_dec(x_2);
+uint8_t x_3; uint8_t x_4; uint8_t x_5; lean_object* x_6; 
+x_3 = lean_unbox(x_1);
 lean_dec(x_1);
+x_4 = lean_unbox(x_2);
+lean_dec(x_2);
+x_5 = l_Gen_instDecidableEqGenObj(x_3, x_4);
+x_6 = lean_box(x_5);
+return x_6;
+}
+}
+LEAN_EXPORT lean_object* l_Gen_RegisterLevel_toCtorIdx(uint8_t x_1) {
+_start:
+{
+if (x_1 == 0)
+{
+lean_object* x_2; 
+x_2 = lean_unsigned_to_nat(0u);
+return x_2;
+}
+else
+{
+lean_object* x_3; 
+x_3 = lean_unsigned_to_nat(1u);
+return x_3;
+}
+}
+}
+LEAN_EXPORT lean_object* l_Gen_RegisterLevel_toCtorIdx___boxed(lean_object* x_1) {
+_start:
+{
+uint8_t x_2; lean_object* x_3; 
+x_2 = lean_unbox(x_1);
+lean_dec(x_1);
+x_3 = l_Gen_RegisterLevel_toCtorIdx(x_2);
+return x_3;
+}
+}
+LEAN_EXPORT lean_object* l_Gen_RegisterLevel_noConfusion___rarg(uint8_t x_1, uint8_t x_2, lean_object* x_3) {
+_start:
+{
+lean_object* x_4; 
+x_4 = l_Gen_GenObj_noConfusion___rarg___closed__1;
+return x_4;
+}
+}
+LEAN_EXPORT lean_object* l_Gen_RegisterLevel_noConfusion(lean_object* x_1) {
+_start:
+{
+lean_object* x_2; 
+x_2 = lean_alloc_closure((void*)(l_Gen_RegisterLevel_noConfusion___rarg___boxed), 3, 0);
+return x_2;
+}
+}
+LEAN_EXPORT lean_object* l_Gen_RegisterLevel_noConfusion___rarg___boxed(lean_object* x_1, lean_object* x_2, lean_object* x_3) {
+_start:
+{
+uint8_t x_4; uint8_t x_5; lean_object* x_6; 
+x_4 = lean_unbox(x_1);
+lean_dec(x_1);
+x_5 = lean_unbox(x_2);
+lean_dec(x_2);
+x_6 = l_Gen_RegisterLevel_noConfusion___rarg(x_4, x_5, x_3);
+return x_6;
+}
+}
+LEAN_EXPORT uint8_t l_Gen_RegisterLevel_ofNat(lean_object* x_1) {
+_start:
+{
+lean_object* x_2; uint8_t x_3; 
+x_2 = lean_unsigned_to_nat(0u);
+x_3 = lean_nat_dec_eq(x_1, x_2);
+if (x_3 == 0)
+{
+uint8_t x_4; 
+x_4 = 1;
+return x_4;
+}
+else
+{
+uint8_t x_5; 
+x_5 = 0;
+return x_5;
+}
+}
+}
+LEAN_EXPORT lean_object* l_Gen_RegisterLevel_ofNat___boxed(lean_object* x_1) {
+_start:
+{
+uint8_t x_2; lean_object* x_3; 
+x_2 = l_Gen_RegisterLevel_ofNat(x_1);
+lean_dec(x_1);
+x_3 = lean_box(x_2);
+return x_3;
+}
+}
+LEAN_EXPORT uint8_t l_Gen_instDecidableEqRegisterLevel(uint8_t x_1, uint8_t x_2) {
+_start:
+{
+lean_object* x_3; lean_object* x_4; uint8_t x_5; 
+x_3 = l_Gen_RegisterLevel_toCtorIdx(x_1);
+x_4 = l_Gen_RegisterLevel_toCtorIdx(x_2);
+x_5 = lean_nat_dec_eq(x_3, x_4);
+lean_dec(x_4);
+lean_dec(x_3);
+return x_5;
+}
+}
+LEAN_EXPORT lean_object* l_Gen_instDecidableEqRegisterLevel___boxed(lean_object* x_1, lean_object* x_2) {
+_start:
+{
+uint8_t x_3; uint8_t x_4; uint8_t x_5; lean_object* x_6; 
+x_3 = lean_unbox(x_1);
+lean_dec(x_1);
+x_4 = lean_unbox(x_2);
+lean_dec(x_2);
+x_5 = l_Gen_instDecidableEqRegisterLevel(x_3, x_4);
+x_6 = lean_box(x_5);
+return x_6;
+}
+}
+LEAN_EXPORT uint8_t l_Gen_register(uint8_t x_1) {
+_start:
+{
+if (x_1 == 0)
+{
+uint8_t x_2; 
+x_2 = 0;
+return x_2;
+}
+else
+{
+uint8_t x_3; 
+x_3 = 1;
+return x_3;
+}
+}
+}
+LEAN_EXPORT lean_object* l_Gen_register___boxed(lean_object* x_1) {
+_start:
+{
+uint8_t x_2; uint8_t x_3; lean_object* x_4; 
+x_2 = lean_unbox(x_1);
+lean_dec(x_1);
+x_3 = l_Gen_register(x_2);
 x_4 = lean_box(x_3);
 return x_4;
 }
@@ -870,6 +1080,8 @@ _G_initialized = true;
 res = initialize_Init(builtin, lean_io_mk_world());
 if (lean_io_result_is_error(res)) return res;
 lean_dec_ref(res);
+l_Gen_GenObj_noConfusion___rarg___closed__1 = _init_l_Gen_GenObj_noConfusion___rarg___closed__1();
+lean_mark_persistent(l_Gen_GenObj_noConfusion___rarg___closed__1);
 l_Gen_term_u2205___closed__1 = _init_l_Gen_term_u2205___closed__1();
 lean_mark_persistent(l_Gen_term_u2205___closed__1);
 l_Gen_term_u2205___closed__2 = _init_l_Gen_term_u2205___closed__2();

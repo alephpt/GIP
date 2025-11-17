@@ -1,67 +1,67 @@
 /-
-Morphism definitions for the Gen category
-Based on categorical/definitions/gen_category_axioms_v2.md Section 2.2
+PURE GIP Morphism definitions - Phase 0 Refactoring
+Only core categorical morphisms - no RH-specific structure
+
+This is the CORRECT GIP foundation as specified.
 -/
 
 import Gip.Basic
-import Mathlib.Data.Nat.Prime
 
 namespace Gen
 
--- Morphisms in Gen category
--- We define when morphisms exist between objects
--- From gen_category_axioms_v2.md Section 2.2
+/- ## Pure GIP Morphisms
+
+GIP Foundation has exactly FOUR morphism types:
+1. id_empty: ∅ → ∅ (identity on potential)
+2. id_unit: 𝟙 → 𝟙 (identity on unity)
+3. genesis: ∅ → 𝟙 (THE foundational morphism - ontological necessity)
+4. comp: Composition (category structure)
+
+NO OTHER MORPHISMS exist in pure GIP.
+
+Morphisms like divisibility, instantiation, gamma_prime are RH-SPECIFIC
+and belong in proofs/riemann/ where they emerge via F_R projection.
+-/
+
 inductive GenMorphism : GenObj → GenObj → Type where
   -- Identity morphisms (Category axiom requirement)
   | id_empty : GenMorphism ∅ ∅
   | id_unit : GenMorphism 𝟙 𝟙
-  | id_nat (n : Nat) : GenMorphism (GenObj.nat n) (GenObj.nat n)
 
-  -- Genesis morphism: ∅ → 𝟙 (register1_unit_v2.md Section 1.2)
+  -- Genesis morphism: ∅ → 𝟙 (THE foundational morphism)
+  -- This is ontologically necessary: unity emerges from potential
+  -- Proven unique in ModalTopology.CategoricalUniqueness
   | genesis : GenMorphism ∅ 𝟙
 
-  -- Instantiation morphisms: 𝟙 → n (register1_unit_v2.md Section 3.1)
-  | instantiation (n : Nat) : GenMorphism 𝟙 (GenObj.nat n)
-
-  -- Divisibility morphisms: n → m when n | m (register2_numeric_v2.md Section 3)
-  | divisibility (n m : Nat) (h : ∃ k, m = n * k) :
-      GenMorphism (GenObj.nat n) (GenObj.nat m)
-
-  -- Prime multiplicative morphism: γₚ : p → p (Euler factor)
-  -- Represents the transformation encoding (1 - p^{-s})^{-1} at prime p
-  | gamma (p : Nat) (hp : Nat.Prime p) :
-      GenMorphism (GenObj.nat p) (GenObj.nat p)
-
-  -- Composition of morphisms
+  -- Composition of morphisms (Category structure)
   | comp {X Y Z : GenObj} :
       GenMorphism X Y → GenMorphism Y Z → GenMorphism X Z
 
--- Notation for common morphisms
+-- Notation for genesis (THE morphism)
 notation "γ" => GenMorphism.genesis
-notation "ι" => GenMorphism.instantiation
 
 -- Helper function to get identity morphism for any object
 def idMorph (X : GenObj) : GenMorphism X X :=
   match X with
   | .empty => GenMorphism.id_empty
   | .unit => GenMorphism.id_unit
-  | .nat n => GenMorphism.id_nat n
 
 -- Composition notation
 infixr:80 " ∘ " => GenMorphism.comp
 
--- Helper: Check if a natural number divides another
-def divides (n m : Nat) : Prop := ∃ k, m = n * k
+/- ## Morphism Properties
 
--- Decision procedure for divisibility
-instance (n m : Nat) : Decidable (divides n m) := by
-  unfold divides
-  sorry -- TODO: implement divisibility decision procedure
+These are the ONLY morphisms that exist in pure GIP.
+Everything else emerges via projection functors:
 
--- φ notation for divisibility morphisms
-notation "φ[" n "," m "]" => GenMorphism.divisibility n m
+- Arithmetic morphisms (divisibility, prime factors) → via F_R: Gen → CommRing
+- Set morphisms (membership, inclusion) → via F_S: Gen → Set
+- Logical morphisms (implication, conjunction) → via F_T: Gen → Topos
 
--- γₚ notation for prime multiplicative morphisms
-notation "γₚ[" p "," hp "]" => GenMorphism.gamma p hp
+This separation is ESSENTIAL for non-circular foundation.
+-/
+
+-- No other morphisms exist in pure GIP
+-- If you need more morphisms, they should emerge via projection functors
 
 end Gen
