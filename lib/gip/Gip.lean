@@ -13,7 +13,8 @@ import Gip.Projection
 -- Non-circular categorical approach:
 import Gip.ModalTopology.CategoricalUniqueness  -- Uses standard categorical initial object axiom
 
--- Universal Projection Functors (Phase 2):
+-- Universal Projection Functors (Phase 2 & 3):
 import Gip.Projections.Topos                     -- F_T: Gen → Topos (logical structure)
 import Gip.Projections.Set                       -- F_S: Gen → FinSet (membership structure)
 import Gip.Projections.Ring                      -- F_R: Gen → CommRing (arithmetic structure)
+import Gip.Projections.Comp                      -- F_comp: Gen → Comp (complex analytic structure, RH bridge)
