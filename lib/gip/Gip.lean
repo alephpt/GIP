@@ -1,10 +1,18 @@
 /-
 GIP (Generative Identity Principle) Core Framework
 Provides the foundational three-register ontological structure
-
-This is the root module file that re-exports all GIP components.
 -/
 
--- Note: In Lake, the root module (Gip.lean in lib/gip/) serves as the package entry point
--- All other modules should be imported by their users directly
--- This file exists to satisfy Lake's requirements but may be empty or minimal
+import Gip.Basic
+import Gip.Register0
+import Gip.Register1
+import Gip.Register2
+import Gip.Morphisms
+import Gip.Projection
+
+-- Non-circular categorical approach:
+import Gip.ModalTopology.CategoricalUniqueness  -- Uses standard categorical initial object axiom
+
+-- Universal Projection Functors (Phase 2):
+import Gip.Projections.Topos                     -- F_T: Gen → Topos (logical structure)
+import Gip.Projections.Set                       -- F_S: Gen → FinSet (membership structure)

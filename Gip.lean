@@ -19,3 +19,4 @@ import Gip.ModalTopology.CategoricalUniqueness  -- Uses standard categorical ini
 
 -- Universal Projection Functors (Phase 2):
 import Gip.Projections.Topos                     -- F_T: Gen → Topos (logical structure)
+import Gip.Projections.Set                       -- F_S: Gen → FinSet (membership structure)
