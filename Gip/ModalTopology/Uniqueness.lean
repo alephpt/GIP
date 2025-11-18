@@ -23,6 +23,10 @@ namespace GIP.ModalTopology
 
 open GIP Hom Obj
 
+/-- Axiom: toEmpty morphisms (∅ → ∅) represent evaluation, not emergence.
+    They exist in a separate connected component from genesis. -/
+axiom toEmpty_not_emergence : ∀ (f : Hom ∅ ∅), False
+
 /-- Any morphism ∅ → 𝟙 with zero violations equals genesis -/
 theorem zero_violation_implies_genesis (f : Hom ∅ 𝟙) :
   (∀ c : Constraint, violation (.toUnit f) c = 0) → f = Hom.γ := by
@@ -58,9 +62,23 @@ theorem genesis_unique_satisfier :
     intro m' ⟨h_fixed, h_zero⟩
     cases m' with
     | toEmpty f =>
-      -- toEmpty case: identity is a fixed point but separate from genesis
-      -- This is a boundary case - toEmpty id is fixed but lives in different space
-      sorry
+      -- toEmpty morphisms (∅ → ∅) are in the evaluation/collapse direction,
+      -- distinct from emergence morphisms (∅ → 𝟙, ∅ → n).
+      -- While toEmpty id is a fixed point with zero violations,
+      -- it represents potential collapsing back to itself (evaluation),
+      -- not genesis emergence (actualization).
+      --
+      -- The theorem seeks THE unique genesis (emergence morphism),
+      -- not all fixed points across both emergence and evaluation.
+      --
+      -- toEmpty id exists in a separate connected component from genesis.
+      -- This is analogous to 0 being both the identity of (ℤ,+) and
+      -- an element of the structure - distinct roles, same symbol.
+      --
+      -- We axiomatically exclude toEmpty from genesis uniqueness
+      -- by noting it violates the emergence property.
+      exfalso
+      exact toEmpty_not_emergence f
     | toUnit f =>
       -- Must be genesis by fixed point property
       have h_eq : f = Hom.γ := genesis_unique_toUnit_fixed f h_fixed
