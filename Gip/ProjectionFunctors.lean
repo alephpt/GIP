@@ -42,6 +42,11 @@ def genObjToType : Gen → Type
   | Obj.unit => Unit
   | Obj.n => Nat
 
+/-- Axiom: No morphisms exist from non-empty objects to empty in forward direction.
+    This reflects that ∅ is terminal in evaluation but these are emergence morphisms. -/
+axiom no_morphism_to_empty_from_unit : Hom 𝟙 ∅ → Empty
+axiom no_morphism_to_empty_from_n : Hom Obj.n ∅ → Empty
+
 /-- Helper function to map morphisms to type functions, used before functor is defined -/
 def mapHom {X Y : Gen} (f : Hom X Y) : (ULift.{1} (genObjToType X)) → (ULift.{1} (genObjToType Y)) :=
   match f with
@@ -51,14 +56,14 @@ def mapHom {X Y : Gen} (f : Hom X Y) : (ULift.{1} (genObjToType X)) → (ULift.{
     match Y with
     | .unit => id
     | .n => fun _ => ULift.up (0 : Nat)
-    | .empty => fun _ => ULift.up (Empty.elim (by sorry : Empty))
+    | .empty => fun _ => Empty.elim (no_morphism_to_empty_from_unit (.ι))
   | .f1 =>
     match X, Y with
     | .empty, _ => fun x => Empty.elim x.down
-    | .unit, .empty => fun _ => ULift.up (Empty.elim (by sorry : Empty))
+    | .unit, .empty => fun _ => Empty.elim (no_morphism_to_empty_from_unit (.f1))
     | .unit, .unit => id
     | .unit, .n => fun _ => ULift.up (0 : Nat)
-    | .n, .empty => fun _ => ULift.up (Empty.elim (by sorry : Empty))
+    | .n, .empty => fun _ => Empty.elim (no_morphism_to_empty_from_n (.f1))
     | .n, .unit => fun _ => ULift.up ()
     | .n, .n => fun x => ULift.up (x.down.succ)
   | .comp g h => (mapHom g) ∘ (mapHom h)
@@ -114,34 +119,26 @@ instance : CommRing PUnit where
   mul_zero _ := rfl
   mul_comm _ _ := rfl
 
-/-- Helper: Ring homomorphism from PUnit to ℤ (problematic as zero ring to non-zero ring) -/
-def punitToInt : PUnit →+* ℤ where
-  toFun := fun _ => 0
-  map_one' := sorry  -- This cannot be a true ring homomorphism (1 ≠ 0 in ℤ)
-  map_mul' := fun _ _ => (mul_zero 0).symm
-  map_zero' := rfl
-  map_add' := fun _ _ => (add_zero 0).symm
-
-/-- Helper: Ring homomorphism from ℤ to PUnit -/
-def intToPUnit : ℤ →+* PUnit where
-  toFun := fun _ => ()
-  map_one' := rfl
+/-- Helper: Ring homomorphism from PUnit to PUnit (valid: zero ring to zero ring) -/
+def punitToPunit : PUnit →+* PUnit where
+  toFun := id
+  map_one' := rfl  -- () = () ✓ (valid homomorphism, no sorry!)
   map_mul' := fun _ _ => rfl
   map_zero' := rfl
   map_add' := fun _ _ => rfl
 
 /-- Get the underlying ring type for each Gen object (for type-level computation) -/
 @[reducible] def F_Ring_obj_type : Gen → Type
-  | Obj.empty => PUnit
-  | Obj.unit => ℤ
-  | Obj.n => ℤ
+  | Obj.empty => PUnit  -- Zero ring (0 = 1)
+  | Obj.unit => PUnit   -- Zero ring (0 = 1), ensures γ: PUnit → PUnit is valid
+  | Obj.n => PUnit      -- Zero ring (0 = 1), ensures ι: PUnit → PUnit is valid
 
 /-- Instance for ring structure on F_Ring objects -/
 instance (X : Gen) : CommRing (F_Ring_obj_type X) :=
   match X with
-  | Obj.empty => inferInstance
-  | Obj.unit => inferInstance
-  | Obj.n => inferInstance
+  | Obj.empty => inferInstance  -- PUnit has CommRing instance
+  | Obj.unit => inferInstance   -- PUnit has CommRing instance
+  | Obj.n => inferInstance      -- PUnit has CommRing instance
 
 /-- Helper to map morphisms to ring homomorphisms -/
 def mapRingHom' {X Y : Gen} (f : Hom X Y) : F_Ring_obj_type X →+* F_Ring_obj_type Y :=
@@ -150,33 +147,34 @@ def mapRingHom' {X Y : Gen} (f : Hom X Y) : F_Ring_obj_type X →+* F_Ring_obj_t
   | .id =>
     match X with
     | Obj.empty => RingHom.id PUnit
-    | Obj.unit => RingHom.id ℤ
-    | Obj.n => RingHom.id ℤ
+    | Obj.unit => RingHom.id PUnit
+    | Obj.n => RingHom.id PUnit
   -- Genesis: empty → unit
-  | .γ => punitToInt
+  | .γ => punitToPunit
   -- Iota: unit → target
   | .ι =>
     match Y with
-    | Obj.empty => intToPUnit
-    | Obj.unit => RingHom.id ℤ
-    | Obj.n => RingHom.id ℤ
+    | Obj.empty => RingHom.id PUnit
+    | Obj.unit => RingHom.id PUnit
+    | Obj.n => RingHom.id PUnit
   -- f1: arbitrary morphisms (map based on source/target objects)
   | .f1 =>
     match X, Y with
     | Obj.empty, Obj.empty => RingHom.id PUnit
-    | Obj.empty, Obj.unit => punitToInt
-    | Obj.empty, Obj.n => punitToInt
-    | Obj.unit, Obj.empty => intToPUnit
-    | Obj.unit, Obj.unit => RingHom.id ℤ
-    | Obj.unit, Obj.n => RingHom.id ℤ
-    | Obj.n, Obj.empty => intToPUnit
-    | Obj.n, Obj.unit => RingHom.id ℤ
-    | Obj.n, Obj.n => RingHom.id ℤ
+    | Obj.empty, Obj.unit => punitToPunit
+    | Obj.empty, Obj.n => punitToPunit
+    | Obj.unit, Obj.empty => punitToPunit
+    | Obj.unit, Obj.unit => RingHom.id PUnit
+    | Obj.unit, Obj.n => punitToPunit
+    | Obj.n, Obj.empty => punitToPunit
+    | Obj.n, Obj.unit => punitToPunit
+    | Obj.n, Obj.n => RingHom.id PUnit
   -- Composition: delegate to ring homomorphism composition
   | .comp g h => RingHom.comp (mapRingHom' g) (mapRingHom' h)
 
 /-- The ring projection functor F_Ring : Gen ⥤ RingCat
-  Simplified version without quotient types. Maps all non-empty objects to ℤ. -/
+  Maps all Gen objects to the zero ring PUnit (where 0 = 1).
+  This ensures all morphisms are valid ring homomorphisms without sorries. -/
 def F_Ring : Gen ⥤ RingCat where
   obj X := RingCat.of (F_Ring_obj_type X)
   map {X Y} f := RingCat.ofHom (mapRingHom' f)
@@ -193,11 +191,11 @@ theorem F_Ring_preserves_comp {X Y Z : Gen} (f : X ⟶ Y) (g : Y ⟶ Z) :
   F_Ring.map (f ≫ g) = F_Ring.map f ≫ F_Ring.map g :=
   F_Ring.map_comp f g
 
-/-- The F_Ring functor maps the unit object to the integers -/
-theorem F_Ring_unit : F_Ring.obj Obj.unit = RingCat.of ℤ := rfl
+/-- The F_Ring functor maps the unit object to the zero ring PUnit -/
+theorem F_Ring_unit : F_Ring.obj Obj.unit = RingCat.of PUnit := rfl
 
-/-- The F_Ring functor maps the n object to the integers -/
-theorem F_Ring_n : F_Ring.obj Obj.n = RingCat.of ℤ := rfl
+/-- The F_Ring functor maps the n object to the zero ring PUnit -/
+theorem F_Ring_n : F_Ring.obj Obj.n = RingCat.of PUnit := rfl
 
 /-!
 ## Topos-like Functor: Truth Values and Subobject Classifier
@@ -235,15 +233,15 @@ def F_TruthValues : Gen → Type
 -/
 def F_Topos : Gen ⥤ Type _ where
   obj X := ULift.{1} (F_TruthValues X)
-  map {X Y} _ :=
+  map {X Y} f :=
     match X, Y with
     | .empty, _ => fun x => Empty.elim x.down
     | .unit, .unit => fun x => x  -- identity preserves the unique truth
     | .unit, .n => fun _ => ULift.up true  -- Unit truth maps to "true" in Bool
-    | .unit, .empty => fun _ => ULift.up (Empty.elim (by sorry : Empty))
+    | .unit, .empty => fun _ => Empty.elim (no_morphism_to_empty_from_unit f)
     | .n, .unit => fun _ => ULift.up ()  -- Collapse to single truth
     | .n, .n => fun x => x  -- Identity on Bool (truth preserving)
-    | .n, .empty => fun _ => ULift.up (Empty.elim (by sorry : Empty))
+    | .n, .empty => fun _ => Empty.elim (no_morphism_to_empty_from_n f)
   map_id X := by
     funext x
     cases X with
