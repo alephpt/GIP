@@ -1,0 +1,15 @@
+name = "gip"
+version = "0.1.0"
+defaultTargets = ["gip"]
+
+[[lean_lib]]
+name = "Gip"
+
+[[lean_exe]]
+name = "gip"
+root = "Main"
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "v4.25.0"
