@@ -159,8 +159,17 @@ def Universe : Type :=
 - [ ] Compare to Standard Model data
 
 ### Documentation (1 week)
-- [ ] Update all physics predictions with testable formulation
-- [ ] Create computational guide for cohesion calculation
+- [x] ~~Update all physics predictions with testable formulation~~ ✅ **COMPLETED** (2025-11-19)
+  - Created comprehensive `docs/COMPUTATIONAL_GUIDE.md` (360+ lines)
+  - Detailed how to compute cohesion for each physics prediction (P1-P4)
+  - Specified exact distance metrics, cycle implementations, experiments
+  - Added rigorous falsification criteria (F1-F5)
+  - Included software implementation roadmap with code examples
+- [x] ~~Create computational guide for cohesion calculation~~ ✅ **COMPLETED** (2025-11-19)
+  - Complete framework: identity structures, distance metrics, cycles
+  - Stage 1: Toy models (harmonic oscillator, Carnot, Ising)
+  - Stage 2: Standard Model particles (e⁻, μ⁻, p, n, W, Z, ...)
+  - Stage 3: Novel predictions (superheavy elements, dark matter, exotic states)
 - [ ] Write publication draft (mathematics/philosophy journal)
 
 ### Theoretical (future)
