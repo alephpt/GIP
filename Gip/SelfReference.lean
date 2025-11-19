@@ -1,7 +1,9 @@
 import Gip.Core
 import Gip.Origin
 import Gip.MonadStructure
-import Gip.ParadoxIsomorphism
+import Gip.Paradox.Core
+import Gip.Paradox.Classical
+import Gip.Paradox.Formal
 
 /-!
 # Self-Reference and ○/○ = 1

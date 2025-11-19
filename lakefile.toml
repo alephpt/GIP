@@ -5,6 +5,9 @@ defaultTargets = ["gip"]
 [[lean_lib]]
 name = "Gip"
 
+[[lean_lib]]
+name = "Test"
+
 [[lean_exe]]
 name = "gip"
 root = "Main"

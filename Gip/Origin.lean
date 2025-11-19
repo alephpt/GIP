@@ -111,6 +111,10 @@ axiom saturate :
 axiom dissolve :
   manifest the_origin Aspect.infinite -> manifest the_origin Aspect.empty
 
+/-- Actualization is surjective: every identity can be reached from some empty -/
+axiom actualize_surjective :
+  Function.Surjective actualize
+
 /-- The circle: composite path from empty to infinite -/
 noncomputable def circle_path :
   manifest the_origin Aspect.empty -> manifest the_origin Aspect.infinite :=
@@ -138,7 +142,24 @@ theorem circle_not_injective :
   ¬(Function.Injective circle_path) := by
   intro h_inj
   obtain ⟨i1, i2, h_neq, h_sat⟩ := circle_loses_information
-  sorry  -- Proof: saturation collapse contradicts injectivity
+  -- We have i1 ≠ i2 but saturate i1 = saturate i2
+  -- Since actualize is surjective, find preimages
+  obtain ⟨e1, he1⟩ := actualize_surjective i1
+  obtain ⟨e2, he2⟩ := actualize_surjective i2
+  -- Now circle_path e1 = saturate (actualize e1) = saturate i1
+  -- and circle_path e2 = saturate (actualize e2) = saturate i2
+  -- Since saturate i1 = saturate i2, we have circle_path e1 = circle_path e2
+  have h_circle_eq : circle_path e1 = circle_path e2 := by
+    unfold circle_path
+    rw [he1, he2, h_sat]
+  -- By injectivity of circle_path, e1 = e2
+  have h_e_eq : e1 = e2 := h_inj h_circle_eq
+  -- Therefore actualize e1 = actualize e2
+  have : actualize e1 = actualize e2 := by rw [h_e_eq]
+  -- But actualize e1 = i1 and actualize e2 = i2, so i1 = i2
+  rw [he1, he2] at this
+  -- This contradicts i1 ≠ i2
+  exact h_neq this
 
 /-!
 ## Triadic Manifestation
