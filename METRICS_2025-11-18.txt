@@ -2,22 +2,22 @@
 Date: 2025-11-18
 
 Lines of Code:
-  4362 total
+  4748 total
 
 Theorems:
-146
+161
 
 Axioms:
-55
+57
 
 Sorry statements:
 0
 
 Build status:
-Build completed successfully (990 jobs).
+Build completed successfully (998 jobs).
 
 Modules:
-21
+22
 
 Documentation pages:
 24

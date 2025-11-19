@@ -8,7 +8,9 @@ import Gip.G2Derivation
 import Gip.ComplexityStratification
 import Gip.InfinitePotential
 import Gip.CognitiveLimits
--- import Gip.Origin  -- Has build errors, commented out
+import Gip.Origin
+import Gip.MonadStructure
+import Gip.SelfReference
 
 /-!
 # GIP: Native Implementation
@@ -30,4 +32,6 @@ A native Lean 4 library implementing the GIP system with:
 - `GIP.InfinitePotential`: ∅ as infinite pre-structural potential with limitation mechanism
 - `GIP.CognitiveLimits`: Unknowability theorems for ∅ and ∞, knowability of n
 - `GIP.Origin`: Pre-structural origin with triadic manifestation (∅, n, ∞) and circle structure
+- `GIP.MonadStructure`: Origin as monad, pure/bind operations, connection to factorization
+- `GIP.SelfReference`: ○/○ = 1 formalization, paradoxes as impossible self-reference
 -/

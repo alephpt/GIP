@@ -6,26 +6,30 @@ This module formalizes the categorical isomorphism between fundamental paradoxes
 
 We encode each paradox as a simple category and prove functorial equivalence.
 
-## Connection to Zero Object Theory (NEW)
+## Connection to Self-Reference Theory (○/○)
 
 The paradox isomorphisms (Russell ≅ 0/0 ≅ Gödel ≅ Liar ≅ Halting) all share
-a common structural pattern: **states that cannot be consistently defined**.
+a common structural pattern: **impossible self-reference attempts at the wrong level**.
 
-In GIP's zero object theory, this connects to ∅ as absolute potential:
-- ∅ is both initial AND terminal (zero object)
-- Round-trip ∅ → n → ∅ ≠ identity (information loss about which n)
-- This captures the same "undefinability" as the paradoxes
+**Key Discovery** (formalized in `Gip.SelfReference`):
+- ○/○ = 1 (𝟙): Self-division of pre-structural origin yields proto-identity
+- Only ○ can self-reference coherently (because it's pre-structural)
+- All paradoxes are attempts to perform ○/○ at level n (with structure present)
 
-**Key Insight**: The paradoxes are isomorphic because they all exhibit the same
-categorical structure as ∅/∅ = 𝟙 (the quotient that generates proto-identity).
+**Why Paradoxes Fail**:
+- Russell: Attempts set self-reference (R ∈ R) with structure already present
+- 0/0: Attempts numerical self-division with arithmetic structure
+- Gödel: Attempts statement self-reference with logical structure
+- Liar: Attempts truth self-reference with semantic structure
+- Halting: Attempts computational self-reference with program structure
 
-The undefined states in each paradox correspond to:
-- Russell: "set that contains itself iff it doesn't"
-- 0/0: "value that equals any number n via 0·n = 0"
-- Gödel: "statement that is true iff unprovable"
-- All share: **States grounded in potential (∅) that resist actualization**
+**Core Insight**: The paradoxes are isomorphic because they share identical structure:
+all attempt impossible ○/○ (self-reference) at the wrong level (with structure).
 
-The isomorphisms prove these are not just analogies but the same mathematical structure.
+Only pre-structural origin (○) can self-reference coherently, yielding 𝟙.
+Attempting self-reference with structure present yields paradox (incoherence).
+
+See `Gip.SelfReference` for formal proofs that each paradox is an impossible ○/○ attempt.
 -/
 
 import Mathlib.CategoryTheory.Category.Basic
