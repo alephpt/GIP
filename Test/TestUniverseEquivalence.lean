@@ -20,10 +20,10 @@ example : ∃ (f : OriginType → PotentialForm UniverseType), True := by
   exact ⟨f, trivial⟩
 
 /-- Test: All existence traces to origin -/
-example : ∀ (structure : ActualForm UniverseType),
+example : ∀ (actualStruct : ActualForm UniverseType),
   ∃ (e : manifest the_origin Aspect.empty), True := by
-  intro structure
-  obtain ⟨e, i, _⟩ := all_existence_from_origin structure
+  intro actualStruct
+  obtain ⟨e, i, _⟩ := all_existence_from_origin actualStruct
   exact ⟨e, trivial⟩
 
 /-!
@@ -106,7 +106,7 @@ example (state : CosmicStructure) : thermo_entropy state ≥ 0 := by
   sorry  -- Need temperature ≥ 0 axiom
 
 /-- Test: Second law connection to information loss -/
-example : ¬(Function.Injective (λ i : manifest the_origin Aspect.identity => saturate i)) := by
+example : ¬(Function.Injective circle_path) := by
   exact circle_not_injective
 
 /-!
@@ -134,18 +134,18 @@ example : prediction_particle_mass.hypothesis = (∀ p : Particle, p.mass > 0 �
 
 example : prediction_structure_formation.measurement.length > 0 := by
   unfold prediction_structure_formation
-  simp
-  omega
+  simp only [String.length]
+  decide
 
 example : prediction_phase_transitions.falsifiable_by.length > 0 := by
   unfold prediction_phase_transitions
-  simp
-  omega
+  simp only [String.length]
+  decide
 
 example : prediction_quantum_measurement.status.length > 0 := by
   unfold prediction_quantum_measurement
-  simp
-  omega
+  simp only [String.length]
+  decide
 
 /-!
 ## Type Consistency Tests

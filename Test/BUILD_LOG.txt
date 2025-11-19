@@ -1,0 +1,289 @@
+⚠ [5/863] Replayed Gip.InfinitePotential
+warning: Gip/InfinitePotential.lean:115:5: Local variable 'n' resembles constructor 'GIP.Obj.n' - write '.n' (with a dot) or 'GIP.Obj.n' to use the constructor.
+
+Note: This linter can be disabled with `set_option linter.constructorNameAsVariable false`
+warning: Gip/InfinitePotential.lean:121:5: Local variable 'n' resembles constructor 'GIP.Obj.n' - write '.n' (with a dot) or 'GIP.Obj.n' to use the constructor.
+
+Note: This linter can be disabled with `set_option linter.constructorNameAsVariable false`
+warning: Gip/InfinitePotential.lean:125:8: Local variable 'n' resembles constructor 'GIP.Obj.n' - write '.n' (with a dot) or 'GIP.Obj.n' to use the constructor.
+
+Note: This linter can be disabled with `set_option linter.constructorNameAsVariable false`
+⚠ [6/863] Replayed Gip.Origin
+warning: Gip/Origin.lean:73:26: unused variable `x`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Origin.lean:73:63: unused variable `y`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Origin.lean:88:15: unused variable `e`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Origin.lean:92:15: unused variable `i`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Origin.lean:190:10: unused variable `i`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Origin.lean:191:17: unused variable `i'`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Origin.lean:210:17: unused variable `e`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Origin.lean:270:10: unused variable `e`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [8/863] Replayed Gip.ModalTopology.Uniqueness
+warning: Gip/ModalTopology/Uniqueness.lean:28:33: unused variable `f`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [496/863] Replayed Gip.SelfReference
+warning: Gip/SelfReference.lean:104:6: Local variable 'γ' resembles constructor 'GIP.Hom.γ' - write '.γ' (with a dot) or 'GIP.Hom.γ' to use the constructor.
+
+Note: This linter can be disabled with `set_option linter.constructorNameAsVariable false`
+warning: Gip/SelfReference.lean:147:8: unused variable `div`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/SelfReference.lean:174:8: unused variable `russell_state`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/SelfReference.lean:192:8: unused variable `zerodiv_state`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/SelfReference.lean:212:8: unused variable `godel_state`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/SelfReference.lean:231:8: unused variable `liar_state`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/SelfReference.lean:251:8: unused variable `halting_state`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/SelfReference.lean:332:19: unused variable `emergence`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/SelfReference.lean:333:16: unused variable `via_unit`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [778/863] Replayed Gip.Emergence.TypeTheoretic
+warning: Gip/Emergence/TypeTheoretic.lean:229:6: unused variable `grad`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Emergence/TypeTheoretic.lean:240:5: unused variable `objective`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Emergence/TypeTheoretic.lean:268:7: unused variable `cycle`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Emergence/TypeTheoretic.lean:281:29: unused variable `x`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Emergence/TypeTheoretic.lean:294:5: unused variable `x`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Emergence/TypeTheoretic.lean:329:23: unused variable `T`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Emergence/TypeTheoretic.lean:333:5: unused variable `optimization`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Emergence/TypeTheoretic.lean:334:7: unused variable `T`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Emergence/TypeTheoretic.lean:339:7: unused variable `s`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Emergence/TypeTheoretic.lean:340:7: unused variable `f`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [780/863] Replayed Gip.Cycle.BidirectionalEmergence
+warning: Gip/Cycle/BidirectionalEmergence.lean:198:5: unused variable `e`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Cycle/BidirectionalEmergence.lean:199:6: unused variable `i`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Cycle/BidirectionalEmergence.lean:200:5: unused variable `inf`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Cycle/BidirectionalEmergence.lean:215:5: unused variable `dual`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Cycle/BidirectionalEmergence.lean:239:5: unused variable `i`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Cycle/BidirectionalEmergence.lean:242:9: unused variable `dual`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Cycle/BidirectionalEmergence.lean:259:5: unused variable `i`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Cycle/BidirectionalEmergence.lean:274:5: unused variable `i`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Cycle/BidirectionalEmergence.lean:341:5: unused variable `linear`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Cycle/BidirectionalEmergence.lean:347:10: unused variable `i`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Cycle/BidirectionalEmergence.lean:349:11: unused variable `needs_infinite`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Cycle/BidirectionalEmergence.lean:371:5: unused variable `bidirectional`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Cycle/BidirectionalEmergence.lean:442:5: unused variable `i`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Cycle/BidirectionalEmergence.lean:444:8: unused variable `impossible`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Cycle/BidirectionalEmergence.lean:473:5: unused variable `i`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Cycle/BidirectionalEmergence.lean:490:5: unused variable `i`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [851/863] Replayed Gip.BayesianCore
+warning: Gip/BayesianCore.lean:239:8: declaration uses 'sorry'
+⚠ [1955/1962] Replayed Gip.Predictions.Physics
+warning: Gip/Predictions/Physics.lean:69:8: declaration uses 'sorry'
+warning: Gip/Predictions/Physics.lean:90:8: declaration uses 'sorry'
+warning: Gip/Predictions/Physics.lean:132:8: declaration uses 'sorry'
+warning: Gip/Predictions/Physics.lean:149:8: declaration uses 'sorry'
+warning: Gip/Predictions/Physics.lean:190:8: declaration uses 'sorry'
+warning: Gip/Predictions/Physics.lean:207:8: declaration uses 'sorry'
+warning: Gip/Predictions/Physics.lean:248:8: declaration uses 'sorry'
+warning: Gip/Predictions/Physics.lean:263:8: declaration uses 'sorry'
+⚠ [1956/1962] Replayed Gip.Universe.Equivalence
+warning: Gip/Universe/Equivalence.lean:66:15: unused variable `p`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Universe/Equivalence.lean:82:8: declaration uses 'sorry'
+warning: Gip/Universe/Equivalence.lean:94:8: declaration uses 'sorry'
+warning: Gip/Universe/Equivalence.lean:127:8: declaration uses 'sorry'
+warning: Gip/Universe/Equivalence.lean:145:8: declaration uses 'sorry'
+warning: Gip/Universe/Equivalence.lean:193:8: declaration uses 'sorry'
+warning: Gip/Universe/Equivalence.lean:214:8: declaration uses 'sorry'
+warning: Gip/Universe/Equivalence.lean:254:8: declaration uses 'sorry'
+warning: Gip/Universe/Equivalence.lean:278:8: declaration uses 'sorry'
+warning: Gip/Universe/Equivalence.lean:295:8: declaration uses 'sorry'
+warning: Gip/Universe/Equivalence.lean:316:0: declaration uses 'sorry'
+warning: Gip/Universe/Equivalence.lean:330:8: declaration uses 'sorry'
+warning: Gip/Universe/Equivalence.lean:347:8: declaration uses 'sorry'
+warning: Gip/Universe/Equivalence.lean:374:8: declaration uses 'sorry'
+warning: Gip/Universe/Equivalence.lean:413:8: declaration uses 'sorry'
+warning: Gip/Universe/Equivalence.lean:475:6: unused variable `amplitude_from_empty`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Universe/Equivalence.lean:491:8: declaration uses 'sorry'
+warning: Gip/Universe/Equivalence.lean:507:8: declaration uses 'sorry'
+⚠ [1957/1962] Replayed Gip.Cohesion.Selection
+warning: Gip/Cohesion/Selection.lean:139:8: declaration uses 'sorry'
+warning: Gip/Cohesion/Selection.lean:262:18: declaration uses 'sorry'
+warning: Gip/Cohesion/Selection.lean:270:8: declaration uses 'sorry'
+warning: Gip/Cohesion/Selection.lean:333:8: declaration uses 'sorry'
+warning: Gip/Cohesion/Selection.lean:374:8: declaration uses 'sorry'
+warning: Gip/Cohesion/Selection.lean:381:8: declaration uses 'sorry'
+warning: Gip/Cohesion/Selection.lean:412:5: unused variable `element`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Cohesion/Selection.lean:413:7: unused variable `atomic_number`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Cohesion/Selection.lean:423:5: unused variable `math_structure`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Cohesion/Selection.lean:477:8: declaration uses 'sorry'
+⚠ [1959/1962] Replayed Gip.Predictions.Cognitive
+warning: Gip/Predictions/Cognitive.lean:55:8: declaration uses 'sorry'
+warning: Gip/Predictions/Cognitive.lean:97:29: unused variable `dp`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Predictions/Cognitive.lean:105:8: declaration uses 'sorry'
+warning: Gip/Predictions/Cognitive.lean:151:8: declaration uses 'sorry'
+warning: Gip/Predictions/Cognitive.lean:190:8: declaration uses 'sorry'
+warning: Gip/Predictions/Cognitive.lean:201:8: declaration uses 'sorry'
+⚠ [1960/1962] Replayed Gip.Predictions.Mathematical
+warning: Gip/Predictions/Mathematical.lean:65:8: declaration uses 'sorry'
+warning: Gip/Predictions/Mathematical.lean:99:8: declaration uses 'sorry'
+warning: Gip/Predictions/Mathematical.lean:116:43: unused variable `ind`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Predictions/Mathematical.lean:153:47: unused variable `gs`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/Predictions/Mathematical.lean:163:8: declaration uses 'sorry'
+⚠ [1962/1962] Replayed Test.TestUnifiedSystem
+warning: Test/TestUnifiedSystem.lean:142:13: unused variable `p`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:192:13: unused variable `f`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:222:5: unused variable `e`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:223:6: unused variable `i`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:224:5: unused variable `inf`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:245:5: unused variable `i`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:252:5: unused variable `dual`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:269:5: unused variable `linear`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:278:5: unused variable `bidirectional`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:284:13: unused variable `e`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:285:5: unused variable `dual`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:300:5: unused variable `i`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:305:13: unused variable `dual`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:419:13: unused variable `a`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:420:5: unused variable `p`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:541:0: declaration uses 'sorry'
+warning: Test/TestUnifiedSystem.lean:570:5: unused variable `i`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:571:7: unused variable `i'`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:576:23: unused variable `h`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:583:21: unused variable `h`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:584:7: unused variable `e`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:648:5: unused variable `e`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:728:5: unused variable `e`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Test/TestUnifiedSystem.lean:733:5: unused variable `i`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+Build completed successfully (1962 jobs).
