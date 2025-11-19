@@ -6,6 +6,18 @@
 
 ---
 
+## Notation
+
+We use **○** (circle) to denote the zero object, emphasizing:
+- ○ as source (empty of constraints) → infinite potential
+- ○ as target (infinite capacity) → universal sink
+- NOT the ZFC empty set (∅ = {})
+
+In Lean code: `Obj.empty` with `notation "∅"` for compatibility.
+See [Notation Guide](../NOTATION.md) for complete conventions.
+
+---
+
 ## EXECUTIVE SUMMARY
 
 Successfully formalized Theorem 1 (Paradox Isomorphism) proving categorical equivalence between fundamental paradoxes: Russell's Paradox, Division by Zero, Halting Problem, Gödel's Incompleteness, and the Liar Paradox. These aren't merely analogous - they're **categorically isomorphic**, representing the same self-referential structure.
@@ -182,9 +194,9 @@ Is L true?
 
 ## CONNECTION TO ZERO OBJECT THEORY
 
-All paradoxes emerge from the ∅/∅ structure:
+All paradoxes emerge from the ○/○ structure:
 
-**∅/∅ = Potential for Any Value**
+**○/○ = Potential for Any Value**
 - Russell: R could contain or not contain itself
 - ZeroDiv: 0/0 could equal any number
 - Halting: Program state undetermined
@@ -193,7 +205,7 @@ All paradoxes emerge from the ∅/∅ structure:
 
 **Round-Trip Information Loss**:
 ```
-∅ → Paradox → ∅
+○ → Paradox → ○
 ```
 The cycle loses information about which resolution was attempted, capturing the fundamental undefinability.
 
@@ -255,7 +267,7 @@ The isomorphisms prove that:
 - **Logical limits are universal** (not domain-specific)
 - **Self-reference creates undefinability** (across all systems)
 - **Diagonalization is the fundamental pattern** (Cantor's insight)
-- **∅/∅ structure underlies all paradoxes** (zero object connection)
+- **○/○ structure underlies all paradoxes** (zero object connection)
 
 ---
 
@@ -308,7 +320,7 @@ The paradox isomorphism theory establishes that:
 1. **All major paradoxes are categorically equivalent**
 2. **Diagonalization is the universal pattern**
 3. **Self-reference creates fundamental limits**
-4. **∅/∅ structure underlies undefinability**
+4. **○/○ structure underlies undefinability**
 5. **These limits span logic, computation, and mathematics**
 
 This work provides a **unified categorical framework** for understanding paradoxes across different domains, showing they're not separate phenomena but manifestations of the same fundamental structure.

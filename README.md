@@ -2,27 +2,31 @@
 
 A comprehensive Lean 4 formalization of the GIP (Generalized Initial-object Projection) system with **complete mechanical verification** of all main theorems, **Mathlib integration**, and **categorical structure formalization**.
 
+## Notation
+
+We use **○** (circle) in documentation to denote the zero object, emphasizing its dual nature as both source of infinite potential and universal sink. In Lean code, this maps to `Obj.empty` with notation "∅". See [docs/NOTATION.md](docs/NOTATION.md) for complete conventions.
+
 ## Overview
 
 GIP defines a minimal categorical structure with:
 
 ### Object Classes (3)
-- **∅** (empty) - The initial object
+- **○** (empty) - The zero object (initial AND terminal)
 - **𝟙** (unit) - The unit object
 - **n** - A target object
 
 ### Morphism Types (4)
-- **γ**: ∅ → 𝟙 - Canonical morphism (Genesis)
+- **γ**: ○ → 𝟙 - Canonical morphism (Genesis)
 - **ι**: 𝟙 → target - Projection morphism from unit to any object
 - **id**: X → X - Identity morphisms
 - **f1**: X → Y - Generic morphism between any objects
 
 ### Universal Factorization Law
 
-The core theorem states that all morphisms from ∅ to n factor uniquely through the canonical path:
+The core theorem states that all morphisms from ○ to n factor uniquely through the canonical path:
 
 ```
-∅ ──γ──> 𝟙 ──ι──> n
+○ ──γ──> 𝟙 ──ι──> n
 ```
 
 Formally:
@@ -69,7 +73,7 @@ theorem genesis_by_mathlib :
 
 ### Zero Object Theory ✓
 
-**∅ as Zero Object**: Both initial AND terminal [✓ Complete]
+**○ as Zero Object**: Both initial AND terminal [✓ Complete]
 ```lean
 instance : HasZeroObject Gen := ⟨∅, empty_initial, empty_terminal⟩
 ```

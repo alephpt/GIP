@@ -6,6 +6,18 @@
 
 ---
 
+## Notation
+
+We use **○** (circle) to denote the zero object, emphasizing:
+- ○ as source (empty of constraints) → infinite potential
+- ○ as target (infinite capacity) → universal sink
+- NOT the ZFC empty set (∅ = {})
+
+In Lean code: `Obj.empty` with `notation "∅"` for compatibility.
+See [Notation Guide](../NOTATION.md) for complete conventions.
+
+---
+
 ## EXECUTIVE SUMMARY
 
 Successfully formalized Genesis uniqueness via Banach-style fixed-point theorem, proving that Genesis emerges as the unique fixed point of coherence constraints through K=0 contraction dynamics (instant convergence, stronger than standard Banach's K<1).
@@ -16,14 +28,14 @@ Successfully formalized Genesis uniqueness via Banach-style fixed-point theorem,
 
 ### Core Mechanism
 
-Genesis (γ : ∅ → 𝟙) emerges as the unique morphism satisfying:
+Genesis (γ : ○ → 𝟙) emerges as the unique morphism satisfying:
 1. **Fixed point property**: Φ(γ) = γ
 2. **Zero violations**: ∀c, violation(γ, c) = 0
 3. **Universal attractor**: All morphisms converge to γ
 
 ### Modal Topology Structure
 
-The theory establishes a topological structure on morphisms from ∅:
+The theory establishes a topological structure on morphisms from ○:
 - **Space**: MorphismFromEmpty = {toEmpty, toUnit, toN}
 - **Distance**: Semantic distance to Genesis
 - **Operator**: Coherence projection Φ
@@ -160,8 +172,8 @@ def coherenceOperator (m : MorphismFromEmpty) : MorphismFromEmpty :=
 
 The operator implements:
 1. **Preservation**: toEmpty remains separate (boundary case)
-2. **Projection**: All ∅ → 𝟙 morphisms project to γ
-3. **Redirection**: All ∅ → n morphisms redirect through γ
+2. **Projection**: All ○ → 𝟙 morphisms project to γ
+3. **Redirection**: All ○ → n morphisms redirect through γ
 
 ---
 
@@ -183,7 +195,7 @@ The operator implements:
 ### Genesis as Attractor
 
 Genesis acts as a **universal attractor** in morphism space:
-- All paths through ∅ lead to Genesis
+- All paths through ○ lead to Genesis
 - Coherence constraints create basin of attraction
 - Fixed point stability ensures uniqueness
 
@@ -196,8 +208,8 @@ The "modal" aspect captures:
 
 ### Connection to Zero Object Theory
 
-Genesis emergence from ∅:
-- ∅ as absolute potential (contains all structure)
+Genesis emergence from ○:
+- ○ as absolute potential (contains all structure)
 - γ as first actualization (proto-identity)
 - Φ as selection mechanism (coherence projection)
 
@@ -236,7 +248,7 @@ $ find Gip/ModalTopology -name "*.lean" | xargs wc -l | tail -1
 
 ### What This Proves
 
-1. **Genesis Uniqueness**: Only one morphism ∅ → 𝟙 satisfies coherence
+1. **Genesis Uniqueness**: Only one morphism ○ → 𝟙 satisfies coherence
 2. **Fixed Point Theory**: Constructive proof via contraction
 3. **K=0 Contraction**: Stronger than standard Banach (K<1)
 4. **Universal Convergence**: All morphisms lead to Genesis
@@ -254,7 +266,7 @@ The implementation shows:
 Modal topology provides:
 - **Foundation for Genesis uniqueness** (Theorem 6)
 - **Banach-style characterization** (Theorem 11)
-- **Link to zero object theory** (emergence from ∅)
+- **Link to zero object theory** (emergence from ○)
 - **Computational interpretation** (operator dynamics)
 
 ---
@@ -265,7 +277,7 @@ Modal topology provides:
 
 1. **No full metric space axioms** (not needed for our case)
 2. **toEmpty boundary case** (1 sorry, acceptable)
-3. **Finite object space** (∅, 𝟙, n only)
+3. **Finite object space** (○, 𝟙, n only)
 4. **No continuity analysis** (discrete space)
 
 ### Potential Extensions

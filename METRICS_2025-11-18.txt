@@ -1,0 +1,25 @@
+=== GIP DEFINITIVE METRICS ===
+Date: 2025-11-18
+
+Lines of Code:
+  3532 total
+
+Theorems:
+103
+
+Axioms:
+31
+
+Sorry statements:
+0
+
+Build status:
+Build completed successfully (988 jobs).
+
+Modules:
+18
+
+Documentation pages:
+24
+
+Saved to: METRICS_2025-11-18.txt

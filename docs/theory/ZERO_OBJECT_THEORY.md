@@ -6,33 +6,45 @@
 
 ---
 
+## Notation
+
+We use **○** (circle) to denote the zero object, emphasizing:
+- ○ as source (empty of constraints) → infinite potential
+- ○ as target (infinite capacity) → universal sink
+- NOT the ZFC empty set (∅ = {})
+
+In Lean code: `Obj.empty` with `notation "∅"` for compatibility.
+See [Notation Guide](../NOTATION.md) for complete conventions.
+
+---
+
 ## EXECUTIVE SUMMARY
 
-The zero object theory represents a **fundamental architectural breakthrough** in GIP theory, establishing ∅ as both initial AND terminal object through a novel dual morphism system. This provides a complete categorical foundation with rigorous connections to machine learning gradient flow and information loss in emergence/reduction cycles.
+The zero object theory represents a **fundamental architectural breakthrough** in GIP theory, establishing ○ as both initial AND terminal object through a novel dual morphism system. This provides a complete categorical foundation with rigorous connections to machine learning gradient flow and information loss in emergence/reduction cycles.
 
-**Key Result**: ∅ is provably a zero object (both initial and terminal), capturing the dual nature of absolute potential that both sources all structure and receives all reductions.
+**Key Result**: ○ is provably a zero object (both initial and terminal), capturing the dual nature of absolute potential that both sources all structure and receives all reductions.
 
 ---
 
 ## THE FUNDAMENTAL QUESTION
 
-**Classical View**: ∅ is "empty" - void of content, representing nothingness or absence.
+**Classical View**: The empty set ∅ is "empty" - void of content, representing nothingness or absence.
 
-**GIP View**: ∅ is **absolute potential** - containing all structure in latent form, undifferentiated capacity.
+**GIP View**: ○ is **absolute potential** - containing all structure in latent form, undifferentiated capacity.
 
 ### Evidence for the GIP View
 
-1. **Initiality** (Proven): ∀ X, ∃! f : ∅ → X
-   - All structure emerges FROM ∅
-   - Genesis γ : ∅ → 𝟙 actualizes proto-identity
-   - Canonical factorization through ∅
+1. **Initiality** (Proven): ∀ X, ∃! f : ○ → X
+   - All structure emerges FROM ○
+   - Genesis γ : ○ → 𝟙 actualizes proto-identity
+   - Canonical factorization through ○
 
-2. **Terminality** (Proven): ∀ X, ∃! f : X → ∅
-   - All structure reduces TO ∅
-   - Evaluation ε : 𝟙 → ∅ returns to potential
+2. **Terminality** (Proven): ∀ X, ∃! f : X → ○
+   - All structure reduces TO ○
+   - Evaluation ε : 𝟙 → ○ returns to potential
    - Universal reduction pathway
 
-3. **Zero Object Status** (Proven): ∅ is both initial AND terminal
+3. **Zero Object Status** (Proven): ○ is both initial AND terminal
 
 ---
 
@@ -62,7 +74,7 @@ inductive EvaluationMorphism : Obj → Obj → Type where
 
 ### Key Theorems
 
-**Theorem (empty_initial)**: ∅ is initial object
+**Theorem (empty_initial)**: ○ is initial object
 ```lean
 theorem empty_initial : IsInitial ∅ := by
   intro X
@@ -73,7 +85,7 @@ theorem empty_initial : IsInitial ∅ := by
   exact initial_unique
 ```
 
-**Theorem (empty_terminal)**: ∅ is terminal object
+**Theorem (empty_terminal)**: ○ is terminal object
 ```lean
 theorem empty_terminal : IsTerminal ∅ := by
   intro X
@@ -84,7 +96,7 @@ theorem empty_terminal : IsTerminal ∅ := by
   exact empty_terminal_unique
 ```
 
-**Theorem (empty_is_zero_object)**: ∅ is zero object
+**Theorem (empty_is_zero_object)**: ○ is zero object
 ```lean
 instance : HasZeroObject Gen := ⟨∅, empty_initial, empty_terminal⟩
 ```
@@ -93,28 +105,28 @@ instance : HasZeroObject Gen := ⟨∅, empty_initial, empty_terminal⟩
 
 ## PHILOSOPHICAL INTERPRETATION
 
-### The ∅/∅ = 𝟙 Structure
+### The ○/○ = 𝟙 Structure
 
-If ∅ is a zero object:
+If ○ is a zero object:
 ```
-∅/∅ = Hom(∅,∅) / Hom(∅,∅)
-    = {id_∅} / {id_∅}
+○/○ = Hom(○,○) / Hom(○,○)
+    = {id_○} / {id_○}
     ≅ 𝟙
 ```
 
-**Key Insight**: Proto-identity (𝟙) emerges as ∅ divided by itself. Genesis (γ) witnesses this emergence.
+**Key Insight**: Proto-identity (𝟙) emerges as ○ divided by itself. Genesis (γ) witnesses this emergence.
 
 ### Asymmetry: The Arrow of Actualization
 
-**Forward (Emergence)**: ∅ →γ→ 𝟙 →ι→ n
+**Forward (Emergence)**: ○ →γ→ 𝟙 →ι→ n
 - Actualizes potential into specific structure
 - Creates information (which n?)
 - Irreversible process
 
-**Backward (Evaluation)**: n →τ→ 𝟙 →ε→ ∅
+**Backward (Evaluation)**: n →τ→ 𝟙 →ε→ ○
 - Reduces to potential
 - Destroys information (forgets which n)
-- Recognizes grounding in ∅
+- Recognizes grounding in ○
 
 **Round-Trip Asymmetry**:
 ```lean
@@ -123,7 +135,7 @@ axiom round_trip_not_identity :
   (reduction X) ∘ (emergence X) ≠ id_∅
 ```
 
-Information is lost in the cycle ∅ → n → ∅, capturing the irreversibility of emergence.
+Information is lost in the cycle ○ → n → ○, capturing the irreversibility of emergence.
 
 ---
 
@@ -131,7 +143,7 @@ Information is lost in the cycle ∅ → n → ∅, capturing the irreversibilit
 
 ### Cardinality Measure
 
-For finite GIP with objects {∅, 𝟙, n}:
+For finite GIP with objects {○, 𝟙, n}:
 ```
 ℒ = log₂(|equivalentTargets|) = log₂(3) ≈ 1.58 bits
 ```
@@ -143,7 +155,7 @@ Uniform distribution over possible targets:
 H = -Σ p(X) log₂(p(X)) = log₂(3) ≈ 1.58 bits
 ```
 
-**Physical Interpretation**: Complete amnesia about which object was actualized. The round-trip ∅ → X → ∅ loses all information about the specific X.
+**Physical Interpretation**: Complete amnesia about which object was actualized. The round-trip ○ → X → ○ loses all information about the specific X.
 
 ---
 
@@ -153,17 +165,17 @@ H = -Σ p(X) log₂(p(X)) = log₂(3) ≈ 1.58 bits
 
 | Zero Object Theory | ML Equivalent | Implementation |
 |-------------------|---------------|----------------|
-| γ : ∅ → 𝟙 | Initialize weights | `θ = random_init()` |
+| γ : ○ → 𝟙 | Initialize weights | `θ = random_init()` |
 | ι : 𝟙 → n | Train to specific | `θ_trained = train(θ)` |
 | τ : n → 𝟙 | Normalize gradient | `g_norm = g / ||g||` |
-| ε : 𝟙 → ∅ | Apply update | `θ -= α * g_norm` |
+| ε : 𝟙 → ○ | Apply update | `θ -= α * g_norm` |
 
-### Vanishing Gradients as ∅/∅ State
+### Vanishing Gradients as ○/○ State
 
 When gradients vanish:
 - ∂L/∂θ ≈ 0 (approaching potential)
 - Update direction undefined (like 0/0)
-- System stuck at ∅/∅ singularity
+- System stuck at ○/○ singularity
 
 ### ResNets as Emergence/Evaluation Balance
 
@@ -173,26 +185,26 @@ y = F(x, W) + x
 
 - **F(x, W)**: Emergence pathway (learn features)
 - **+ x**: Evaluation pathway (preserve origin)
-- **Balance**: Prevents complete reduction to ∅
+- **Balance**: Prevents complete reduction to ○
 
 ---
 
 ## CONNECTION TO PARADOXES
 
-All paradoxes share the ∅/∅ structure:
+All paradoxes share the ○/○ structure:
 
 **Russell Set**: "Contains itself iff it doesn't"
-- Grounded in ∅ (potential for self-reference)
+- Grounded in ○ (potential for self-reference)
 - Resists actualization to specific truth value
-- Round-trip: attempt definition → recognize undefinability → return to ∅
+- Round-trip: attempt definition → recognize undefinability → return to ○
 
 **0/0 Indeterminacy**: "Equals any number"
-- Grounded in ∅ (all numbers latent)
+- Grounded in ○ (all numbers latent)
 - Cannot actualize to specific value
 - Every number n satisfies 0·n = 0
 
 **Gödel Sentence**: "True iff unprovable"
-- Grounded in ∅ (potential for self-reference)
+- Grounded in ○ (potential for self-reference)
 - Resists consistent truth assignment
 - Cycles between provability and truth
 
@@ -206,13 +218,13 @@ The isomorphisms prove these aren't analogies - they're the **same categorical s
 
 **Gip/ZeroObject.lean** (229 LOC):
 - Defines EvaluationMorphism type
-- Proves terminality of ∅
+- Proves terminality of ○
 - Establishes zero object status
 - Axiomatizes round-trip asymmetry
 
 **Updated Theorems**:
 - `bidirectional_factorization`: Forward + backward unique paths
-- `epsilon_unique_reduction`: ε is unique morphism 𝟙 → ∅
+- `epsilon_unique_reduction`: ε is unique morphism 𝟙 → ○
 - `gamma_unique_fixed_point`: γ/ε form dual pair
 - K=0 contraction as "maximal reduction"
 
@@ -248,7 +260,7 @@ Build jobs:         986 (all successful)
 
 ### Finite Object Space
 
-**Design Choice**: Objects = {∅, 𝟙, n} (finite)
+**Design Choice**: Objects = {○, 𝟙, n} (finite)
 - **Benefit**: Simplicity, tractability of proofs
 - **Cost**: Cannot express infinite structures (ℕ)
 - **Future**: Extend to infinite case
@@ -273,7 +285,7 @@ Build jobs:         986 (all successful)
 ### Practical Applications
 
 1. **Compile-Time Analysis**: Use emergence/evaluation for optimization
-2. **Program Synthesis**: Generate code from ∅ state
+2. **Program Synthesis**: Generate code from ○ state
 3. **AI Safety**: Understand gradient vanishing/explosion
 4. **Neural Architecture**: Design networks balancing emergence/evaluation
 
@@ -283,11 +295,11 @@ Build jobs:         986 (all successful)
 
 The zero object theory provides:
 
-1. **Complete Categorical Foundation**: ∅ as zero object rigorously proven
+1. **Complete Categorical Foundation**: ○ as zero object rigorously proven
 2. **Dual Morphism System**: Emergence vs evaluation formally distinguished
 3. **Information Loss Formalization**: Round-trip asymmetry quantified
 4. **ML Connection**: Gradient flow as categorical morphisms
-5. **Paradox Unification**: All paradoxes share ∅/∅ structure
+5. **Paradox Unification**: All paradoxes share ○/○ structure
 
 **Assessment**: This work represents a **fundamental completion** of GIP theory, providing the missing conceptual keystone that unifies emergence, evaluation, and information loss under a single categorical framework.
 

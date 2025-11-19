@@ -6,6 +6,18 @@
 
 ---
 
+## Notation
+
+We use **○** (circle) to denote the zero object, emphasizing:
+- ○ as source (empty of constraints) → infinite potential
+- ○ as target (infinite capacity) → universal sink
+- NOT the ZFC empty set (∅ = {})
+
+In Lean code: `Obj.empty` with `notation "∅"` for compatibility.
+See [Notation Guide](../NOTATION.md) for complete conventions.
+
+---
+
 ## EXECUTIVE SUMMARY
 
 Successfully implemented F_Topos functor demonstrating Genesis as the fundamental "truth selector" in a topos-like categorical structure. This provides the logical foundation for Genesis uniqueness, complementing the modal topology and categorical semantics.
@@ -26,7 +38,7 @@ def F_TruthValues : Gen → Type
 ```
 
 **Philosophical Interpretation**:
-- **Empty (∅)**: No truth exists in absolute potential
+- **Empty (○)**: No truth exists in absolute potential
 - **Unit (𝟙)**: "The" truth before differentiation
 - **n**: Classical binary logic emerges
 
@@ -39,7 +51,7 @@ def F_Topos : Gen ⥤ Type _
 **Object Mapping**: Maps to `ULift (F_TruthValues X)`
 
 **Morphism Mapping**:
-- `∅ → *`: Eliminates on empty (no elements)
+- `○ → *`: Eliminates on empty (no elements)
 - `𝟙 → 𝟙`: Identity on unique truth
 - `𝟙 → n`: Maps to **true** in Bool
 - `n → 𝟙`: Collapses to unique truth
@@ -61,9 +73,9 @@ In standard topos theory:
 In our framework:
 - **Ω ≈ Obj.n**: With truth values Bool
 - **true ≈ ι: 𝟙 → n**: Maps to boolean true
-- **γ: ∅ → 𝟙**: Genesis selects proto-truth
+- **γ: ○ → 𝟙**: Genesis selects proto-truth
 
-**Key Composition**: `ι ∘ γ : ∅ → n` represents "truth from nothing"
+**Key Composition**: `ι ∘ γ : ○ → n` represents "truth from nothing"
 
 ```lean
 def Omega : Gen := Obj.n
@@ -138,16 +150,16 @@ K = 0 contraction           -- Instant convergence
 
 ### 2. Categorical Semantics (Initial Morphism)
 ```
-∀X, ∃! f : ∅ → X            -- Initiality
+∀X, ∃! f : ○ → X            -- Initiality
 id_n = (ι ∘ γ) ∘ ε          -- Universal factorization
-∅ → 𝟙 → n                   -- Canonical pathway
+○ → 𝟙 → n                   -- Canonical pathway
 ```
 
 ### 3. Logical Structure (Truth Selector)
 ```
-γ: ∅ → 𝟙                    -- Selects proto-truth
+γ: ○ → 𝟙                    -- Selects proto-truth
 ι: 𝟙 → n                    -- Projects to true
-ι ∘ γ: ∅ → Bool             -- Truth from nothing
+ι ∘ γ: ○ → Bool             -- Truth from nothing
 ```
 
 **Unified View**:
@@ -166,7 +178,7 @@ Banach contraction   Initiality property        Subobject classifier
 ## CONCEPTUAL FLOW
 
 ```
-Empty (∅)  ──────γ─────→  Unit (𝟙)  ──────ι─────→  n (differentiated)
+Empty (○)  ──────γ─────→  Unit (𝟙)  ──────ι─────→  n (differentiated)
     ↓                          ↓                          ↓
   Empty                     Unit ()                     Bool
 No truth              "The" truth value           true ∨ false
@@ -215,7 +227,7 @@ LOC: ~193
 
 ### Truth from Nothing
 
-The composition `ι ∘ γ : ∅ → n` represents:
+The composition `ι ∘ γ : ○ → n` represents:
 - **Mathematically**: Canonical morphism from initial to differentiated
 - **Logically**: Path from no truth to binary truth
 - **Philosophically**: Fundamental emergence of truth from potential
@@ -230,7 +242,7 @@ But fundamentally:
 - **The truth selector** (logical view)
 
 This establishes Genesis as the point where:
-1. Potential actualizes (∅ → 𝟙)
+1. Potential actualizes (○ → 𝟙)
 2. Proto-truth emerges (selects Unit truth)
 3. Classical logic forms (projects to Bool via ι)
 

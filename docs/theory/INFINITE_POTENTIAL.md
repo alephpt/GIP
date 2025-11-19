@@ -1,12 +1,24 @@
 # Infinite Potential Theory
 
-## Core Thesis: ∅ as Pre-Structural Potential
+## Notation
 
-The empty object ∅ is not merely an "empty set" but rather **infinite pre-structural potential** that becomes bounded through factorization. This fundamental reconceptualization transforms our understanding of mathematical foundations.
+We use **○** (circle) to denote the zero object, emphasizing:
+- ○ as source (empty of constraints) → infinite potential
+- ○ as target (infinite capacity) → universal sink
+- NOT the ZFC empty set (∅ = {})
+
+In Lean code: `Obj.empty` with `notation "∅"` for compatibility.
+See [Notation Guide](../NOTATION.md) for complete conventions.
+
+---
+
+## Core Thesis: ○ as Pre-Structural Potential
+
+The empty object ○ is not merely an "empty set" but rather **infinite pre-structural potential** that becomes bounded through factorization. This fundamental reconceptualization transforms our understanding of mathematical foundations.
 
 ## Theoretical Framework
 
-### The Nature of ∅
+### The Nature of ○
 
 - **Traditional view**: Empty set containing nothing
 - **GIP view**: Infinite pre-structural potential (unconstrained)
@@ -17,8 +29,8 @@ The empty object contains no internal structure, therefore no constraints. Witho
 
 The universal factorization acts as a **limitation mechanism** that bounds infinite potential to finite actualized structures:
 
-1. **∅**: Infinite pre-structural potential (unconstrained)
-2. **γ: ∅ → 𝟙**: First constraint (self-relation/identity)
+1. **○**: Infinite pre-structural potential (unconstrained)
+2. **γ: ○ → 𝟙**: First constraint (self-relation/identity)
 3. **ι: 𝟙 → n**: Second constraint (specific instantiation/determinacy)
 
 This two-stage process transforms infinite potential into finite actuality while preserving coherence.
@@ -50,13 +62,13 @@ Without constraints, all structural possibilities remain available. The set of p
   (∃ (identity_constraint : Structure → Prop), identity_constraint s)
 ```
 
-Genesis (γ: ∅ → 𝟙) introduces the first constraint: self-identity. The unit object 𝟙 requires structures admitting x = x, which bounds the infinite potential to identity-compatible structures.
+Genesis (γ: ○ → 𝟙) introduces the first constraint: self-identity. The unit object 𝟙 requires structures admitting x = x, which bounds the infinite potential to identity-compatible structures.
 
 ### Lemma L4: Instantiation Introduces Determinacy
 
 ```
 ∀ (n : Obj) (s : Structure),
-  (∃ (path : Hom ∅ n), True) → Finite_Structure s
+  (∃ (path : Hom ○ n), True) → Finite_Structure s
 ```
 
 Instantiation (ι: 𝟙 → n) introduces the second constraint: determinacy. The factorization γ → ι selects a unique path, bounding structures to those compatible with the specific target n.
@@ -104,23 +116,23 @@ All exhibit **incoherence at the boundary** where infinite potential meets finit
 
 The dual morphism architecture gains new meaning through infinite potential:
 
-### EmergenceMorphism (∅ → 𝟙 → n)
+### EmergenceMorphism (○ → 𝟙 → n)
 - **Stage 1**: Infinite → Bounded (via identity)
 - **Stage 2**: Bounded → Finite (via determinacy)
 - **Result**: Actualized finite structure
 
-### EvaluationMorphism (n → 𝟙 → ∅)
+### EvaluationMorphism (n → 𝟙 → ○)
 - **Stage 1**: Finite → Bounded (loss of specificity)
 - **Stage 2**: Bounded → Infinite (return to potential)
 - **Result**: Dissolution into infinite potential
 
 ### Information Flow
-The round-trip (∅ → n → ∅) represents:
+The round-trip (○ → n → ○) represents:
 1. **Actualization**: Infinite potential collapses to finite structure
 2. **Evaluation**: Finite structure dissolves back to infinite potential
 3. **Information loss**: Which specific finite structure dissolves into the infinite
 
-This is why ∅ is both **initial** (source of infinite potential) and **terminal** (sink for evaluated structures) - it is the zero object in the deepest sense.
+This is why ○ is both **initial** (source of infinite potential) and **terminal** (sink for evaluated structures) - it is the zero object in the deepest sense.
 
 ## Coherence Operator as Selection Mechanism
 
@@ -142,7 +154,7 @@ Genesis is not just a morphism - it is **the mechanism by which infinite potenti
 
 ### Key Insights
 
-1. **∅ is not "nothing"** - it is "infinite unconstrained potential"
+1. **○ is not "nothing"** - it is "infinite unconstrained potential"
 2. **Factorization is not "construction"** - it is "limitation/bounding"
 3. **Coherence is not "correctness"** - it is "finite actualizability"
 4. **Paradoxes are not "errors"** - they are "resistance to finitude"
