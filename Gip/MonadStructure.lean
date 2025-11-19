@@ -69,11 +69,13 @@ namespace GIPMonad
 
 /-- Pure/Return: Inject into monad via genesis
     For unit: uses γ : ∅ → 𝟙
-    For n: uses factorization ι ∘ γ : ∅ → n -/
+    For n: uses factorization ι ∘ γ : ∅ → n
+    For infinite: uses ε ∘ γ : ∅ → ∞ -/
 def pure : (A : Obj) → GIPMonad A
   | .empty => ⟨Hom.id⟩
   | .unit => ⟨Hom.γ⟩
   | .n => ⟨Hom.ι ∘ Hom.γ⟩
+  | .infinite => ⟨Hom.ε ∘ Hom.γ⟩
 
 /-- Bind/FlatMap: Compose morphisms via factorization
     Note: The function f must produce morphisms from ∅ -/

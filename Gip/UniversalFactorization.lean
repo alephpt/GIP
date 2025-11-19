@@ -92,6 +92,9 @@ theorem initiality_iff_factorization :
     | n =>
       -- Both factor through ι ∘ γ
       rw [h f, h g]
+    | infinite =>
+      -- Both must factor through ∅ → 𝟙 → ∞
+      exact initial_unique f g
 
 /-- Complete characterization: Every morphism ∅ → n factors uniquely -/
 theorem complete_factorization :
@@ -116,40 +119,40 @@ theorem complete_factorization :
 /-!
 ## NEW: Reverse Factorization via Evaluation Morphisms
 
-Theorem 2 now includes the dual direction: every object reduces uniquely to ∅
+The dual direction: every object evaluates uniquely to ∞ (completion aspect).
+This completes the zero object cycle: ○ → ∅ (emergence) → n → ∞ (evaluation) → ○
 -/
 
-open EvaluationMorphism in
-/-- Universal reduction: every object has unique factorization to ∅ -/
-theorem universal_reduction (X : Obj) : Nonempty (EvaluationMorphism X ∅) :=
-  empty_terminal X
+/-- Universal evaluation: every object has unique factorization to ∞ -/
+theorem universal_evaluation (X : Obj) : Nonempty (Hom X ∞) :=
+  infinite_terminal X
 
-/-- The reduction morphism is unique -/
-theorem universal_reduction_unique (X : Obj) (f g : EvaluationMorphism X ∅) : f = g :=
-  empty_terminal_unique X f g
+/-- The evaluation morphism is unique -/
+theorem universal_evaluation_unique (X : Obj) (f g : Hom X ∞) : f = g :=
+  infinite_terminal_unique f g
 
-/-- Reduction for n factors through τ and ε -/
-theorem reduction_factorization (f : EvaluationMorphism Obj.n ∅) :
-  f = reduce_n := by
-  exact empty_terminal_unique Obj.n f reduce_n
+/-- Evaluation for n factors through τ and ε (the Dest path) -/
+theorem evaluation_factorization (f : Hom Obj.n ∞) :
+  f = Dest := by
+  exact infinite_terminal_unique f Dest
 
 /-- Complete bidirectional factorization:
-    Forward: ∅ → n via (γ, ι)
-    Backward: n → ∅ via (τ, ε) -/
+    Forward (Gen): ∅ → n via (γ, ι) - emergence path
+    Backward (Dest): n → ∞ via (τ, ε) - evaluation path -/
 theorem bidirectional_factorization :
-  (∀ f : Hom ∅ Obj.n, f = ι ∘ γ) ∧
-  (∀ f : EvaluationMorphism Obj.n ∅, f = reduce_n) := by
+  (∀ f : Hom ∅ Obj.n, f = Gen) ∧
+  (∀ f : Hom Obj.n ∞, f = Dest) := by
   constructor
-  · intro f; exact initial_unique f (ι ∘ γ)
-  · intro f; exact reduction_factorization f
+  · intro f; exact initial_unique f Gen
+  · intro f; exact evaluation_factorization f
 
-/-- Key insight: ∅ is a zero object (initial AND terminal) -/
-theorem empty_is_zero_object :
-  (∀ X : Obj, Nonempty (Hom ∅ X)) ∧  -- Initial
-  (∀ X : Obj, Nonempty (EvaluationMorphism X ∅)) := by  -- Terminal
+/-- Key insight: ∅ is initial and ∞ is terminal - dual aspects of zero object ○ -/
+theorem zero_object_dual_structure :
+  (∀ X : Obj, Nonempty (Hom ∅ X)) ∧  -- ∅ is initial (emergence aspect)
+  (∀ X : Obj, Nonempty (Hom X ∞)) := by  -- ∞ is terminal (completion aspect)
   constructor
-  · intro X; exact empty_initial_emergence X
-  · intro X; exact empty_terminal X
+  · intro X; exact GIP.empty_initial X
+  · intro X; exact GIP.infinite_terminal X
 
 end GIP.UniversalFactorization
 

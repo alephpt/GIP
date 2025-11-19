@@ -81,6 +81,7 @@ def embed_obj : Obj -> Aspect
   | .empty => Aspect.empty
   | .unit => Aspect.identity  -- 𝟙 is proto-identity
   | .n => Aspect.identity     -- n is fully determinate identity
+  | .infinite => Aspect.infinite  -- ∞ is infinite completion
 
 /-- The empty object manifests the empty aspect -/
 axiom empty_is_empty_aspect :
@@ -90,9 +91,9 @@ axiom empty_is_empty_aspect :
 axiom identity_is_identity_aspect :
   Exists (fun (i : manifest the_origin Aspect.identity) => True)
 
-/-- The infinite aspect transcends the finite object system -/
-axiom infinite_transcends_objects :
-  ¬(Exists (fun (obj : Obj) => embed_obj obj = Aspect.infinite))
+/-- The infinite object manifests the infinite aspect -/
+axiom infinite_is_infinite_aspect :
+  embed_obj Obj.infinite = Aspect.infinite
 
 /-!
 ## Circle Structure: ○ → ∅ → n → ∞ → ○

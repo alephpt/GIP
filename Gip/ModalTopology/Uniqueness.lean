@@ -156,14 +156,13 @@ theorem genesis_unique_fixed_excluding_boundary :
 /-!
 ## NEW: Evaluation Perspective on Genesis Uniqueness
 
-The dual view: ε reduces 𝟙 back to ∅, completing the cycle
+The dual view: ε reduces 𝟙 to ∞, completing the destiny path
 -/
 
-open EvaluationMorphism in
-/-- Evaluation morphism ε is the unique reduction 𝟙 → ∅ -/
+/-- Evaluation morphism ε is the unique morphism 𝟙 → ∞ -/
 theorem epsilon_unique_reduction :
-  ∀ f g : EvaluationMorphism 𝟙 ∅, f = g :=
-  fun f g => empty_terminal_unique 𝟙 f g
+  ∀ f g : Hom 𝟙 ∞, f = g :=
+  fun f g => infinite_terminal_unique f g
 
 /-- γ is the unique emergence morphism with fixed point property -/
 theorem gamma_unique_fixed_point :
@@ -171,10 +170,10 @@ theorem gamma_unique_fixed_point :
   (∀ g : Hom ∅ 𝟙, Φ (.toUnit g) = .toUnit g → g = Hom.γ) :=
   ⟨genesis_fixed_point, genesis_unique_toUnit_fixed⟩
 
-/-- ε exists as the unique evaluation morphism 𝟙 → ∅ -/
+/-- ε exists as the unique evaluation morphism 𝟙 → ∞ -/
 theorem epsilon_exists_unique :
-  Nonempty (EvaluationMorphism 𝟙 ∅) :=
-  empty_terminal 𝟙
+  Nonempty (Hom 𝟙 ∞) :=
+  infinite_terminal 𝟙
 
 /-- Key insight: 𝟙 emerges from ∅ via γ and reduces back via ε -/
 axiom unit_from_empty_cycle :

@@ -340,6 +340,9 @@ theorem unit_is_first_constant :
   · -- c = n: Derives from 𝟙 via ι
     right
     use Hom.ι
+  · -- c = ∞: Derives from 𝟙 via ε
+    right
+    use Hom.ε
 
 /-- All constants trace back to ○/○ = 𝟙
 

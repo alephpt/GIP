@@ -2,13 +2,13 @@
 Date: 2025-11-18
 
 Lines of Code:
-  4748 total
+  4779 total
 
 Theorems:
-161
+165
 
 Axioms:
-57
+54
 
 Sorry statements:
 0
