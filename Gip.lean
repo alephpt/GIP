@@ -7,6 +7,8 @@ import Gip.ParadoxIsomorphism
 import Gip.G2Derivation
 import Gip.ComplexityStratification
 import Gip.InfinitePotential
+import Gip.CognitiveLimits
+-- import Gip.Origin  -- Has build errors, commented out
 
 /-!
 # GIP: Native Implementation
@@ -26,4 +28,6 @@ A native Lean 4 library implementing the GIP system with:
 - `GIP.G2Derivation`: Conceptual framework for G₂ connection via triality
 - `GIP.ComplexityStratification`: Phase transitions at register boundaries
 - `GIP.InfinitePotential`: ∅ as infinite pre-structural potential with limitation mechanism
+- `GIP.CognitiveLimits`: Unknowability theorems for ∅ and ∞, knowability of n
+- `GIP.Origin`: Pre-structural origin with triadic manifestation (∅, n, ∞) and circle structure
 -/
