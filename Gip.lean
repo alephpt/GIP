@@ -12,6 +12,7 @@ import Gip.Origin
 import Gip.MonadStructure
 import Gip.SelfReference
 import Gip.BayesianCore
+import Gip.Universe.Equivalence
 
 /-!
 # GIP: Native Implementation
@@ -36,4 +37,5 @@ A native Lean 4 library implementing the GIP system with:
 - `GIP.MonadStructure`: Origin as monad, pure/bind operations, connection to factorization
 - `GIP.SelfReference`: ○/○ = 1 formalization, paradoxes as impossible self-reference
 - `GIP.BayesianCore`: Clean minimal Bayesian-GIP isomorphism theory with proven theorems
+- `GIP.Universe.Equivalence`: ○ = universe in potential form, physical laws from cycle structure
 -/
