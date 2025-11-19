@@ -12,7 +12,7 @@ import Gip.Origin
 import Gip.MonadStructure
 import Gip.SelfReference
 import Gip.BayesianCore
-import Gip.Universe.Equivalence
+import Gip.Universe.Generation
 import Gip.UnifiedCycle
 
 /-!
@@ -54,7 +54,7 @@ generates itself through origin's self-division ○/○ → {∅,∞} → n → 
 
 - `GIP.UnifiedCycle`: **COMPLETE INTEGRATION** - generative cosmology framework
 - `GIP.SelfReference`: ○/○ = 𝟙 formalization, paradoxes as impossible self-reference
-- `GIP.Universe.Equivalence`: ○ = universe in potential, physical laws from cycle
+- `GIP.Universe.Generation`: Universe as {n} (survivors), generated via ○/○ process
 - `GIP.ParadoxIsomorphism`: Categorical isomorphism between fundamental paradoxes
 - `GIP.BayesianCore`: Bayesian-GIP isomorphism for analysis (not emergence)
 

@@ -1,0 +1,63 @@
+Gip/G2Derivation.lean:15:- Theorems are stated with `sorry` to indicate needed future work
+Gip/G2Derivation.lean:118:**Current Status**: Stated without proof (sorry)
+Gip/Predictions/Physics.lean:75:  sorry
+Gip/Predictions/Physics.lean:92:  sorry
+Gip/Predictions/Physics.lean:138:  sorry
+Gip/Predictions/Physics.lean:152:  sorry
+Gip/Predictions/Physics.lean:196:  sorry
+Gip/Predictions/Physics.lean:212:  sorry
+Gip/Predictions/Physics.lean:252:  sorry
+Gip/Predictions/Physics.lean:266:  sorry
+Gip/Predictions/Cognitive.lean:58:  sorry
+Gip/Predictions/Cognitive.lean:107:  sorry
+Gip/Predictions/Cognitive.lean:154:  sorry
+Gip/Predictions/Cognitive.lean:194:  sorry
+Gip/Predictions/Cognitive.lean:205:  sorry
+Gip/Predictions/Mathematical.lean:73:  sorry
+Gip/Predictions/Mathematical.lean:106:  sorry
+Gip/Predictions/Mathematical.lean:170:  sorry
+Gip/BayesianCore.lean:58:- No sorrys (use axioms where needed)
+Gip/BayesianCore.lean:247:  sorry  -- Requires detailed inductive reasoning about floating point arithmetic
+Gip/Universe/Equivalence.lean:89:  sorry
+Gip/Universe/Equivalence.lean:98:  sorry
+Gip/Universe/Equivalence.lean:134:  sorry
+Gip/Universe/Equivalence.lean:150:  sorry
+Gip/Universe/Equivalence.lean:203:  sorry
+Gip/Universe/Equivalence.lean:218:  sorry
+Gip/Universe/Equivalence.lean:262:  sorry
+Gip/Universe/Equivalence.lean:284:  sorry
+Gip/Universe/Equivalence.lean:301:  sorry
+Gip/Universe/Equivalence.lean:317:  default := ⟨λ n => if n = 0 then 1 else 0, by sorry⟩
+Gip/Universe/Equivalence.lean:337:  sorry
+Gip/Universe/Equivalence.lean:353:  sorry
+Gip/Universe/Equivalence.lean:377:  sorry
+Gip/Universe/Equivalence.lean:419:  sorry
+Gip/Universe/Equivalence.lean:498:  sorry
+Gip/Universe/Equivalence.lean:515:  sorry
+Gip/UnifiedCycle.lean:189:  sorry -- Requires reformulation of actualize_is_projection axiom
+Gip/UnifiedCycle.lean:230:    sorry -- Requires additional axiom that surviving implies high cohesion
+Gip/UnifiedCycle.lean:293:    sorry -- Requires constructing the equivalence from origin_is_universe_potential
+Gip/UnifiedCycle.lean:374:  sorry -- From particle_properties_from_cohesion
+Gip/UnifiedCycle.lean:453:    sorry -- From universe_is_manifesting_origin
+Gip/UnifiedCycle.lean:517:    sorry -- From origin_linear_model_is_projection
+Gip/UnifiedCycle.lean:523:  · sorry -- From universe_is_manifesting_origin
+Gip/Frameworks/Classification.lean:144:  sorry  -- Requires showing that "generates without space" contradicts "requires space"
+Gip/Frameworks/Classification.lean:161:  sorry  -- Requires showing structural impossibility
+Gip/Frameworks/Classification.lean:192:  sorry  -- Empty has no constructors, so we cannot apply f
+Gip/Frameworks/Classification.lean:219:  sorry  -- Empty has no elements, cannot apply f
+Gip/Frameworks/Classification.lean:241:    use ⟨Unit, BayesianSpace, typeTheoryIsEmergence, bayesianIsAnalysis, sorry⟩
+Gip/Frameworks/Classification.lean:244:    sorry  -- Empty has no constructors
+Gip/Frameworks/Classification.lean:271:  dissolution := sorry  -- Not needed for this example
+Gip/Frameworks/Classification.lean:292:  dissolution := sorry  -- Model compression (future work)
+Gip/Cohesion/Selection.lean:143:  sorry  -- Axiomatized below
+Gip/Cohesion/Selection.lean:265:  sorry  -- Implementation involves clustering algorithm
+Gip/Cohesion/Selection.lean:275:  sorry
+Gip/Cohesion/Selection.lean:341:    sorry  -- Depends on initial set properties
+Gip/Cohesion/Selection.lean:346:    sorry  -- Follows from survives_cycle and high_cohesion_survives
+Gip/Cohesion/Selection.lean:378:  sorry  -- Follows from correlation axiom
+Gip/Cohesion/Selection.lean:385:  sorry  -- Follows from correlation axiom
+Gip/Cohesion/Selection.lean:483:    sorry  -- Converse: survivors must have high cohesion
+Gip/ProjectionFunctors.lean:125:  map_one' := rfl  -- () = () ✓ (valid homomorphism, no sorry!)
+Gip/ProjectionFunctors.lean:384:- ✅ All functor laws proven without sorrys
+Gip/ProjectionFunctors.lean:387:**Total sorrys**: 0 - ProjectionFunctors.lean is now fully verified!
+Gip/ProjectionFunctors.lean:388:**Success**: F_Topos.map_comp was the final sorry, now eliminated!

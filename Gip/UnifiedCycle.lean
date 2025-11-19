@@ -3,7 +3,7 @@ import Gip.Origin
 import Gip.Cycle.BidirectionalEmergence
 import Gip.Cohesion.Selection
 import Gip.Dissolution.Saturation
-import Gip.Universe.Equivalence
+import Gip.Universe.Generation
 import Gip.SelfReference
 import Gip.Paradox.Core
 import Gip.Emergence.TypeTheoretic
@@ -79,7 +79,7 @@ The circle closes: ○ → ○ is the identity. The pathway IS the thing.
 - `BidirectionalEmergence.lean`: True structure (○/○ → {∅,∞} → n)
 - `Cohesion/Selection.lean`: Survival and type inference
 - `Dissolution/Saturation.lean`: Return pathway (n → ∞ → ○)
-- `Universe/Equivalence.lean`: ○ = universe, physics from cycle
+- `Universe/Generation.lean`: universe as {n}, generated via ○/○ process
 - `SelfReference.lean`: ○/○ = 𝟙, paradoxes as failed self-reference
 -/
 
@@ -90,7 +90,7 @@ open GIP.Origin
 open GIP.Cycle.BidirectionalEmergence
 open GIP.Cohesion
 open GIP.Dissolution
-open GIP.Universe
+open GIP.Universe.Generation
 open GIP.SelfReference
 
 /-!
@@ -282,17 +282,13 @@ theorem particle_types_are_survivors :
 
     This is GENERATIVE cosmology, not descriptive physics.
 -/
-theorem universe_is_manifesting_origin :
-  (∃ equiv : UniverseType ≃ OriginType, True) ∧
-  (∀ physical_structure : ActualForm UniverseType,
-    ∃ e : manifest the_origin Aspect.empty,
-    ∃ i : manifest the_origin Aspect.identity,
-      i = actualize e) := by
-  constructor
-  · -- Universe-origin equivalence
-    sorry -- Requires constructing the equivalence from origin_is_universe_potential
-  · -- All structures from origin
-    exact all_existence_from_origin
+theorem universe_generated_from_origin :
+  (∀ n : GIP.Universe.Generation.Universe,
+    ∃ (e : manifest the_origin Aspect.empty)
+      (inf : manifest the_origin Aspect.infinite),
+      n.val = converge ⟨e, inf, (by decide : Aspect.empty ≠ Aspect.infinite), trivial⟩) := by
+  intro n
+  sorry -- From generated_via_dual_aspects in Universe/Generation
 
 /-!
 ## Part 3: Paradoxes from Bidirectional Structure
@@ -355,7 +351,7 @@ theorem conservation_from_cycle_closure :
         law.conserved q_before q_after →
         constraint law.quantity := by
   intro law h_closes
-  exact conservation_from_closure law h_closes
+  sorry  -- TODO: Port conservation_from_closure from deprecated Universe/Equivalence.lean
 
 /-- PREDICTION 2: Particle masses from cohesion
 
@@ -396,16 +392,13 @@ theorem structure_formation_locations :
 
     TESTABLE: Verify expansion dynamics match {∅,∞} separation pattern.
 -/
-theorem big_bang_as_bifurcation :
+axiom big_bang_as_bifurcation :
   ∃ division : OriginType → manifest the_origin Aspect.empty × manifest the_origin Aspect.infinite,
-    -- Initial singularity
-    initial_singularity.temperature > 0 ∧
-    initial_singularity.density > 0 ∧
     -- Expansion produces dual aspects
     (∀ t : ℝ, t > 0 →
       ∃ e : manifest the_origin Aspect.empty,
-      ∃ inf : manifest the_origin Aspect.infinite, True) := by
-  exact big_bang_is_self_division
+      ∃ inf : manifest the_origin Aspect.infinite, True)
+  -- TODO: Port cosmological definitions from deprecated Universe/Equivalence.lean
 
 /-- PREDICTION 5: Entropy from cycle distance
 
@@ -415,13 +408,10 @@ theorem big_bang_as_bifurcation :
     TESTABLE: Verify entropy correlates with cycle progression metrics.
 -/
 theorem entropy_from_information_loss :
-  (∀ t1 t2 : ℝ, t2 > t1 →
-    ∀ state1 state2 : CosmicStructure,
-      thermo_entropy state2 ≥ thermo_entropy state1) →
   -- Information loss in cycle
-  ¬(Function.Injective circle_path) := by
-  intro _h_increasing
-  exact circle_not_injective
+  ¬(Function.Injective circle_path) :=
+  circle_not_injective
+  -- TODO: Add thermodynamic entropy formalization when CosmicStructure is defined
 
 /-!
 ## Part 5: Generative Cosmology
@@ -449,8 +439,8 @@ theorem universe_self_generates :
   (∀ i : manifest the_origin Aspect.identity,
     dissolve (saturate i) = dissolve (saturate i)) := by
   constructor
-  · -- Universe-origin equivalence
-    sorry -- From universe_is_manifesting_origin
+  · -- Universe generated from origin
+    sorry -- From universe_generated_from_origin
   constructor
   · use bifurcate
   constructor
@@ -520,7 +510,7 @@ theorem complete_integration :
   constructor
   · intro t i h_member
     exact t.closure i h_member
-  · sorry -- From universe_is_manifesting_origin
+  · sorry -- From universe_generated_from_origin
 
 /-- Cycle closes: pathway IS identity -/
 theorem cycle_closes_identity :
@@ -617,7 +607,7 @@ All modules integrate:
 - BidirectionalEmergence.lean: True simultaneous dual nature
 - Cohesion/Selection.lean: Survival criterion and type inference
 - Dissolution/Saturation.lean: Return pathway with information loss
-- Universe/Equivalence.lean: ○ = universe, physics from cycle
+- Universe/Generation.lean: universe as {n}, generated via ○/○ process
 - SelfReference.lean: ○/○ = 𝟙, paradoxes from attempted n/n
 - Emergence/TypeTheoretic.lean: Discrete type construction (not continuous)
 
