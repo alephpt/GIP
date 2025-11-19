@@ -11,6 +11,7 @@ import Gip.CognitiveLimits
 import Gip.Origin
 import Gip.MonadStructure
 import Gip.SelfReference
+import Gip.BayesianIsomorphism
 
 /-!
 # GIP: Native Implementation
@@ -34,4 +35,5 @@ A native Lean 4 library implementing the GIP system with:
 - `GIP.Origin`: Pre-structural origin with triadic manifestation (∅, n, ∞) and circle structure
 - `GIP.MonadStructure`: Origin as monad, pure/bind operations, connection to factorization
 - `GIP.SelfReference`: ○/○ = 1 formalization, paradoxes as impossible self-reference
+- `GIP.BayesianIsomorphism`: Bayesian optimization as zero object cycle, learning as coherent self-reference
 -/
