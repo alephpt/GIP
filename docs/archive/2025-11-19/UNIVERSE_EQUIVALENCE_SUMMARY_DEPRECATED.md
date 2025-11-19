@@ -1,8 +1,31 @@
-# Universe-Origin Equivalence: Complete Formalization
+# ⚠️ DEPRECATED - CONTAINS MAJOR ERROR (Gap 2)
 
-## Core Thesis
+**Date Deprecated**: 2025-11-19
+**Reason**: Contains fundamental category error claiming "○ = Universe"
+**Replacement**: See `docs/FORMAL_FRAMEWORK.md` §5.2 for correct formulation
 
-**○ = Universe in Potential Form**
+## What Was Wrong
+
+This document claims **○ = Universe** (ontological equivalence), which is a **category error**.
+
+**Correct Understanding** (Gap 2 - SOLVED):
+- **Process**: ○/○ (self-division operation)
+- **Mechanism**: {∅,∞} (dual aspect bifurcation/convergence)
+- **Product**: Universe = {n | survives_cycle n} (revealed survivors)
+
+The universe is NOT the origin. The universe is the PRODUCT of the origin's generative process.
+
+Like: "Evolution ≠ organisms" (process ≠ product)
+
+See: `Gip/Universe/Generation.lean:180-182` for correct implementation
+
+---
+
+# ~~Universe-Origin Equivalence: Complete Formalization~~ (WRONG)
+
+## ~~Core Thesis~~ **CATEGORY ERROR**
+
+**~~○ = Universe in Potential Form~~** ❌ **INCORRECT**
 
 The origin (○) IS NOT separate from or contained within the universe. The origin IS the universe before actualization—pure potential awaiting manifestation.
 
