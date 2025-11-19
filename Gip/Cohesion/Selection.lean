@@ -54,6 +54,57 @@ open GIP.Origin
 open GIP.MonadStructure
 
 /-!
+## Cycle Composition Tracking
+
+Track the sequence of morphisms as structures traverse cycles.
+This is useful for:
+- Debugging cohesion calculations
+- Understanding information flow
+- Visualizing cycle transformations
+- Identifying where cycle divergence occurs
+-/
+
+/-- Morphism step in a cycle -/
+inductive CycleMorphism
+  | saturate_step     -- i → ∞
+  | dissolve_step     -- ∞ → ∅
+  | actualize_step    -- ∅ → i
+  deriving Repr, DecidableEq
+
+/-- A cycle trace: sequence of morphisms applied -/
+structure CycleTrace where
+  /-- Initial identity structure -/
+  initial : manifest the_origin Aspect.identity
+  /-- Sequence of morphisms applied -/
+  morphisms : List CycleMorphism
+  /-- Final identity structure after applying morphisms -/
+  final : manifest the_origin Aspect.identity
+
+/-- Empty trace (identity) -/
+def CycleTrace.empty (i : manifest the_origin Aspect.identity) : CycleTrace :=
+  { initial := i, morphisms := [], final := i }
+
+/-- Append a morphism step to a trace -/
+def CycleTrace.append (trace : CycleTrace)
+  (morphism : CycleMorphism)
+  (new_final : manifest the_origin Aspect.identity) : CycleTrace :=
+  { initial := trace.initial,
+    morphisms := trace.morphisms ++ [morphism],
+    final := new_final }
+
+/-- Length of cycle (number of morphism steps) -/
+def CycleTrace.length (trace : CycleTrace) : Nat :=
+  trace.morphisms.length
+
+/-- Check if trace represents a complete cycle (returns to origin) -/
+def CycleTrace.is_complete_cycle (trace : CycleTrace) : Bool :=
+  trace.length % 3 = 0  -- Multiple of 3 steps (saturate, dissolve, actualize)
+
+/-- Extract sub-trace (morphisms from index i to j) -/
+def CycleTrace.sub (trace : CycleTrace) (start : Nat) (length : Nat) : List CycleMorphism :=
+  (trace.morphisms.drop start).take length
+
+/-!
 ## Cohesion Measure
 
 Cohesion quantifies how well an n survives the complete cycle.
@@ -84,6 +135,24 @@ noncomputable def generation_cycle (i : manifest the_origin Aspect.identity) : m
   -- ∅ → γ → 𝟙 → ι_n → n'
   actualize emp
 
+/-- Convert aspect manifestation to identity (for tracing) -/
+axiom aspect_to_identity {α : Aspect} : manifest the_origin α → manifest the_origin Aspect.identity
+
+/-- Generation cycle with trace tracking
+
+    Returns both the final structure and the trace of morphisms applied. -/
+noncomputable def generation_cycle_traced (i : manifest the_origin Aspect.identity) : CycleTrace :=
+  let trace0 := CycleTrace.empty i
+  -- Step 1: saturate (i → ∞)
+  let inf := saturate i
+  let trace1 := trace0.append CycleMorphism.saturate_step (aspect_to_identity inf)
+  -- Step 2: dissolve (∞ → ∅)
+  let emp := dissolve inf
+  let trace2 := trace1.append CycleMorphism.dissolve_step (aspect_to_identity emp)
+  -- Step 3: actualize (∅ → i')
+  let i' := actualize emp
+  trace2.append CycleMorphism.actualize_step i'
+
 /-- Revelation cycle: n completes full round trip revealing structure
 
     Path: ○ → ∞ → ε → 𝟙 → τ → n → ιₙ → 𝟙 → γ → ∅ → ○
@@ -110,6 +179,35 @@ noncomputable def revelation_cycle (i : manifest the_origin Aspect.identity) : m
   let inf' := saturate i'
   let emp' := dissolve inf'
   actualize emp'
+
+/-- Revelation cycle with trace tracking
+
+    Returns both the final structure and the trace (6 morphism steps). -/
+noncomputable def revelation_cycle_traced (i : manifest the_origin Aspect.identity) : CycleTrace :=
+  -- First iteration
+  let trace0 := CycleTrace.empty i
+  let inf := saturate i
+  let trace1 := trace0.append CycleMorphism.saturate_step (aspect_to_identity inf)
+  let emp := dissolve inf
+  let trace2 := trace1.append CycleMorphism.dissolve_step (aspect_to_identity emp)
+  let i' := actualize emp
+  let trace3 := trace2.append CycleMorphism.actualize_step i'
+  -- Second iteration
+  let inf' := saturate i'
+  let trace4 := trace3.append CycleMorphism.saturate_step (aspect_to_identity inf')
+  let emp' := dissolve inf'
+  let trace5 := trace4.append CycleMorphism.dissolve_step (aspect_to_identity emp')
+  let i'' := actualize emp'
+  trace5.append CycleMorphism.actualize_step i''
+
+/-- Compare two cycle traces to identify where divergence occurs
+
+    Returns the index of the first diverging morphism, or none if identical. -/
+def CycleTrace.divergence_point (trace1 trace2 : CycleTrace) : Option Nat :=
+  let len := min trace1.length trace2.length
+  (List.range len).find? fun i =>
+    (trace1.morphisms.getD i CycleMorphism.saturate_step) ≠
+    (trace2.morphisms.getD i CycleMorphism.saturate_step)
 
 /-- Identity distance metric (axiomatized for now)
 
@@ -668,5 +766,42 @@ theorem cohesion_testable :
     ∀ i, |cohesion i - k * physical_stability i| <
          k * physical_stability i / 10 :=
   cohesion_stability_correlation
+
+/-!
+## Cycle Trace Theorems
+
+Properties of morphism composition tracking.
+-/
+
+/-- Generation cycle trace has exactly 3 morphism steps -/
+theorem generation_trace_length (i : manifest the_origin Aspect.identity) :
+  (generation_cycle_traced i).length = 3 := by
+  sorry  -- TODO: Prove by unfolding and counting morphism steps
+
+/-- Revelation cycle trace has exactly 6 morphism steps (double generation) -/
+theorem revelation_trace_length (i : manifest the_origin Aspect.identity) :
+  (revelation_cycle_traced i).length = 6 := by
+  sorry  -- TODO: Prove by unfolding and counting morphism steps
+
+/-- Generation cycle morphism sequence is [saturate, dissolve, actualize] -/
+theorem generation_morphism_sequence (i : manifest the_origin Aspect.identity) :
+  (generation_cycle_traced i).morphisms =
+    [CycleMorphism.saturate_step, CycleMorphism.dissolve_step, CycleMorphism.actualize_step] := by
+  sorry  -- TODO: Prove by unfolding and examining append sequence
+
+/-- Revelation cycle is two generation cycles composed -/
+theorem revelation_is_double_generation (i : manifest the_origin Aspect.identity) :
+  (revelation_cycle_traced i).morphisms =
+    (generation_cycle_traced i).morphisms ++
+    (generation_cycle_traced (generation_cycle i)).morphisms := by
+  sorry  -- Follows from definition structure
+
+/-- High cohesion implies traces converge to same final structure -/
+theorem high_cohesion_implies_trace_convergence (i : manifest the_origin Aspect.identity) :
+  cohesion i > survival_threshold →
+  identity_distance (generation_cycle_traced i).final (revelation_cycle_traced i).final
+    < 1.0 := by
+  intro h_cohesion
+  sorry  -- Follows from cohesion definition and exponential formula
 
 end GIP.Cohesion
