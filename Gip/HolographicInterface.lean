@@ -30,9 +30,9 @@ structure CompleteCycle where
   act_proof : act_result = Act initial_n
   gen_n_from_empty : manifest the_origin Aspect.identity
   gen_proof : gen_n_from_empty = Gen act_result.1
-  rev_n_from_inf : manifest the_origin Aspect.identity
-  rev_proof : rev_n_from_inf = Rev act_result.2
-  convergence_proof : gen_n_from_empty = rev_n_from_inf
+  res_n_from_inf : manifest the_origin Aspect.identity
+  res_proof : res_n_from_inf = Res act_result.2
+  convergence_proof : gen_n_from_empty = res_n_from_inf
   final_n : manifest the_origin Aspect.identity
   final_proof : final_n = gen_n_from_empty
   cohesion_proof : survives_cycle final_n
@@ -41,23 +41,23 @@ structure CompleteCycle where
 noncomputable def GenAct (e : manifest the_origin Aspect.empty) : (manifest the_origin Aspect.empty × manifest the_origin Aspect.infinite) :=
   Act (Gen e)
 
-/-- The Rev-Act cycle: Start with `infinite`, reveal `n`, then act to synthesize back to `(empty, infinite)`. -/
-noncomputable def RevAct (inf : manifest the_origin Aspect.infinite) : (manifest the_origin Aspect.empty × manifest the_origin Aspect.infinite) :=
-  Act (Rev inf)
+/-- The Res-Act cycle: Start with `infinite`, resolve `n`, then act to synthesize back to `(empty, infinite)`. -/
+noncomputable def ResAct (inf : manifest the_origin Aspect.infinite) : (manifest the_origin Aspect.empty × manifest the_origin Aspect.infinite) :=
+  Act (Res inf)
 
 /-!
 ## The Ouroboros Axiom
 
 This final set of axioms closes the entire system into a self-creating,
 self-consuming loop. It states that the output of the Gen-Act cycle
-seeds the Rev-Act cycle, and vice-versa, returning to the original state.
+seeds the Res-Act cycle, and vice-versa, returning to the original state.
 -/
 
 /-- The Gen-first Ouroboros cycle closes. -/
-axiom Ouroboros_Gen : ∀ e, (RevAct (GenAct e).2).1 = e
+axiom Ouroboros_Gen : ∀ e, (ResAct (GenAct e).2).1 = e
 
-/-- The Rev-first Ouroboros cycle closes. -/
-axiom Ouroboros_Rev : ∀ inf, (GenAct (RevAct inf).1).2 = inf
+/-- The Res-first Ouroboros cycle closes. -/
+axiom Ouroboros_Res : ∀ inf, (GenAct (ResAct inf).1).2 = inf
 
 /-!
 ## Fractal Reverberation Axioms
@@ -68,34 +68,34 @@ reflection of the other, allowing the intermediate state of one cycle to be
 regenerated from the output of the other. "As above, so below."
 -/
 
-/-- The infinite output of the Gen-Act cycle reverberates through Rev. -/
-axiom Gen_reverberates_in_Rev :
-  ∀ e, Rev ((Act (Gen e)).2) = Gen e
+/-- The infinite output of the Gen-Act cycle reverberates through Res. -/
+axiom Gen_reverberates_in_Res :
+  ∀ e, Res ((Act (Gen e)).2) = Gen e
 
-/-- The empty output of the Rev-Act cycle reverberates through Gen. -/
-axiom Rev_reverberates_in_Gen :
-  ∀ inf, Gen ((Act (Rev inf)).1) = Rev inf
+/-- The empty output of the Res-Act cycle reverberates through Gen. -/
+axiom Res_reverberates_in_Gen :
+  ∀ inf, Gen ((Act (Res inf)).1) = Res inf
 
 /--
 This theorem provides a concrete proof of the "Fractal Reverberation" concept,
 demonstrating that the foundational axioms are connected and can be used to
 prove high-level properties of the system.
 -/
-theorem Gen_path_reverberates_in_Rev_path (e : manifest the_origin Aspect.empty) :
-  Rev ((Act (Gen e)).2) = Gen e :=
+theorem Gen_path_reverberates_in_Res_path (e : manifest the_origin Aspect.empty) :
+  Res ((Act (Gen e)).2) = Gen e :=
 by
   -- The proof is a direct application of the axiom.
-  exact Gen_reverberates_in_Rev e
+  exact Gen_reverberates_in_Res e
 
 /--
 This theorem proves the other half of the holographic principle, showing the
 full, symmetric nature of the unified cycle.
 -/
-theorem Rev_path_reverberates_in_Gen_path (inf : manifest the_origin Aspect.infinite) :
-  Gen ((Act (Rev inf)).1) = Rev inf :=
+theorem Res_path_reverberates_in_Gen_path (inf : manifest the_origin Aspect.infinite) :
+  Gen ((Act (Res inf)).1) = Res inf :=
 by
   -- The proof is a direct application of the axiom.
-  exact Rev_reverberates_in_Gen inf
+  exact Res_reverberates_in_Gen inf
 
 end GIP.HolographicInterface
 

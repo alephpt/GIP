@@ -53,10 +53,10 @@ noncomputable def Gen (e : manifest the_origin Aspect.empty) : manifest the_orig
   iota.gen (gamma.gen e)
 
 /--
-**Rev (`inf` → `n`)**: The Revelation pathway from Infinity to Identity.
+**Res (`inf` → `n`)**: The Resolution pathway from Infinity to Identity.
 Defined as: `tau.res ∘ epsilon.res`
 -/
-noncomputable def Rev (inf : manifest the_origin Aspect.infinite) : manifest the_origin Aspect.identity :=
+noncomputable def Res (inf : manifest the_origin Aspect.infinite) : manifest the_origin Aspect.identity :=
   tau.res (epsilon.res inf)
 
 /--
@@ -89,7 +89,7 @@ noncomputable def saturate (n : manifest the_origin Aspect.identity) : manifest 
     It represents the path from a bare `inf` to `empty` by first creating an `n`.
 -/
 noncomputable def dissolve (inf : manifest the_origin Aspect.infinite) : manifest the_origin Aspect.empty :=
-  (Act (Rev inf)).1
+  (Act (Res inf)).1
 
 /-- The old `circle_path` can be seen as a composition using `Act` and `Gen`. -/
 noncomputable def circle_path (n : manifest the_origin Aspect.identity) : manifest the_origin Aspect.identity :=

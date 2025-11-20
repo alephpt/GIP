@@ -1,18 +1,13 @@
-import Gip.CoreTypes
-import Gip.Origin
-
 /-!
-# Theorems about Bidirectional Emergence
+# Cycle.BidirectionalEmergence
 
-This file's contents have been temporarily replaced with placeholders
-to allow the project to build after a major refactoring.
+This file has been gutted as it was based on a deprecated formalization
+and was causing project-wide build failures. It needs to be re-written
+from scratch using the new core logic.
 -/
 
 namespace GIP.Cycle.BidirectionalEmergence
 
-open GIP.CoreTypes
-open GIP.Origin
-
--- Definitions and theorems to be restored here.
+-- Content to be re-implemented here.
 
 end GIP.Cycle.BidirectionalEmergence

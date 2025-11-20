@@ -1,17 +1,13 @@
-import Gip.Origin
-
 /-!
-# Dissolution Theory: The Inverse Pathway
+# Dissolution.Saturation
 
-This file's contents have been temporarily replaced with placeholders
-to allow the project to build after a major refactoring.
+This file has been gutted as it was based on a deprecated formalization
+and was causing project-wide build failures. It needs to be re-written
+from scratch using the new core logic.
 -/
 
-namespace GIP.Dissolution
+namespace GIP.Dissolution.Saturation
 
-open GIP.CoreTypes
-open GIP.Origin
+-- Content to be re-implemented here.
 
--- Definitions and theorems to be restored here.
-
-end GIP.Dissolution
+end GIP.Dissolution.Saturation

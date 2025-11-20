@@ -1,18 +1,13 @@
--- import Gip.Core
--- import Gip.Origin
--- import Gip.MonadStructure
+/-!
+# BayesianCore
 
--- /-!
--- # Bayesian Core
+This file has been gutted as it was based on a deprecated formalization
+and was causing project-wide build failures. It needs to be re-written
+from scratch using the new core logic.
+-/
 
--- This module connects GIP to Bayesian inference.
--- It shows how the GIP cycle can be interpreted as a process
--- of Bayesian belief updating.
--- -/
+namespace GIP.BayesianCore
 
--- namespace GIP.BayesianCore
+-- Content to be re-implemented here.
 
--- -- The content of this file has been temporarily commented out
--- -- to assist with a major project-wide refactoring.
-
--- end GIP.BayesianCore
+end GIP.BayesianCore

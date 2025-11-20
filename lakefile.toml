@@ -1,16 +1,12 @@
 name = "gip"
 version = "0.1.0"
-defaultTargets = ["gip"]
+defaultTargets = ["Gip"]
 
 [[lean_lib]]
 name = "Gip"
 
 [[lean_lib]]
 name = "Test"
-
-[[lean_exe]]
-name = "gip"
-root = "Main"
 
 [[require]]
 name = "mathlib"

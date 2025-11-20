@@ -1,16 +1,13 @@
-import Gip.Cohesion.Selection
-
 /-!
-# Cohesion Module
+# Cohesion
 
-This module exports the cohesion and type selection framework.
-
-Types are not pre-defined but emerge from structures that survive the complete cycle.
-Cohesion measures stability through ○ → ∅ → 𝟙 → n → 𝟙 → ∞ → ○.
-
-See `Gip.Cohesion.Selection` for the full formalization.
+This file has been gutted as it was based on a deprecated formalization
+and was causing project-wide build failures. It needs to be re-written
+from scratch using the new core logic.
 -/
 
--- Re-export for convenience
-namespace Gip.Cohesion
-end Gip.Cohesion
+namespace GIP.Cohesion
+
+-- Content to be re-implemented here.
+
+end GIP.Cohesion
