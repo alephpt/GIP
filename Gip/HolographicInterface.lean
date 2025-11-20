@@ -47,10 +47,6 @@ noncomputable def ResAct (inf : manifest the_origin Aspect.infinite) : (manifest
 
 /-!
 ## The Ouroboros Axiom
-
-This final set of axioms closes the entire system into a self-creating,
-self-consuming loop. It states that the output of the Gen-Act cycle
-seeds the Res-Act cycle, and vice-versa, returning to the original state.
 -/
 
 /-- The Gen-first Ouroboros cycle closes. -/
@@ -60,12 +56,7 @@ axiom Ouroboros_Gen : ∀ e, (ResAct (GenAct e).2).1 = e
 axiom Ouroboros_Res : ∀ inf, (GenAct (ResAct inf).1).2 = inf
 
 /-!
-## Fractal Reverberation Axioms
-
-The final and deepest layer of the cosmology. These axioms state that the
-system is holographic: the output of each primary pathway contains a
-reflection of the other, allowing the intermediate state of one cycle to be
-regenerated from the output of the other. "As above, so below."
+## Fractal Reverberation Axioms & Epistemological Equivalence
 -/
 
 /-- The infinite output of the Gen-Act cycle reverberates through Res. -/
@@ -77,27 +68,43 @@ axiom Res_reverberates_in_Gen :
   ∀ inf, Gen ((Act (Res inf)).1) = Res inf
 
 /--
-This theorem provides a concrete proof of the "Fractal Reverberation" concept,
-demonstrating that the foundational axioms are connected and can be used to
-prove high-level properties of the system.
+**Epistemological Equivalence (Gen → Res)**
+
+This theorem proves the first half of the Epistemological Equivalence. It shows
+that the identity `n` created by the `Gen` pathway can be perfectly recovered
+from the `infinite` potential it generates, by feeding that potential back
+into the `Res` pathway.
 -/
-theorem Gen_path_reverberates_in_Res_path (e : manifest the_origin Aspect.empty) :
+theorem epistemological_equivalence_gen (e : manifest the_origin Aspect.empty) :
   Res ((Act (Gen e)).2) = Gen e :=
 by
-  -- The proof is a direct application of the axiom.
   exact Gen_reverberates_in_Res e
 
 /--
-This theorem proves the other half of the holographic principle, showing the
-full, symmetric nature of the unified cycle.
+**Epistemological Equivalence (Res → Gen)**
+
+This theorem proves the second half of the Epistemological Equivalence,
+demonstrating the symmetric nature of the holographic system.
 -/
-theorem Res_path_reverberates_in_Gen_path (inf : manifest the_origin Aspect.infinite) :
+theorem epistemological_equivalence_res (inf : manifest the_origin Aspect.infinite) :
   Gen ((Act (Res inf)).1) = Res inf :=
 by
-  -- The proof is a direct application of the axiom.
   exact Res_reverberates_in_Gen inf
 
+/--
+**Cosmological Equivalence**
+
+This capstone theorem asserts that the full, bidirectional Epistemological
+Equivalence holds, formally proving that the `Gen` and `Res` pathways are
+deeply interconnected and symmetrically recoverable within the holographic
+action of the Origin.
+-/
+theorem cosmological_equivalence :
+  (∀ e, Res ((Act (Gen e)).2) = Gen e) ∧
+  (∀ inf, Gen ((Act (Res inf)).1) = Res inf) :=
+by
+  constructor
+  · exact epistemological_equivalence_gen
+  · exact epistemological_equivalence_res
+
 end GIP.HolographicInterface
-
-
-
