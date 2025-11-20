@@ -107,4 +107,28 @@ by
   · exact epistemological_equivalence_gen
   · exact epistemological_equivalence_res
 
+theorem Res_path_reverberates_in_Gen_path (inf : manifest the_origin Aspect.infinite) :
+  Gen ((Act (Res inf)).1) = Res inf :=
+by
+  -- The proof is a direct application of the axiom.
+  exact Res_reverberates_in_Gen inf
+
+/--
+This theorem proves that the Gen-first Ouroboros cycle is valid, returning
+to its original `empty` state.
+-/
+theorem Gen_Ouroboros_is_valid (e : manifest the_origin Aspect.empty) :
+  (ResAct (GenAct e).2).1 = e :=
+by
+  exact Ouroboros_Gen e
+
+/--
+This theorem proves that the Res-first Ouroboros cycle is valid, returning
+to its original `infinite` state.
+-/
+theorem Res_Ouroboros_is_valid (inf : manifest the_origin Aspect.infinite) :
+  (GenAct (ResAct inf).1).2 = inf :=
+by
+  exact Ouroboros_Res inf
+
 end GIP.HolographicInterface
