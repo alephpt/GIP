@@ -67,28 +67,39 @@ axiom Gen_reverberates_in_Res :
 axiom Res_reverberates_in_Gen :
   ∀ inf, Gen ((Act (Res inf)).1) = Res inf
 
-/--
-**Epistemological Equivalence (Gen → Res)**
+/-!
+## Validity Axioms
 
-This theorem proves the first half of the Epistemological Equivalence. It shows
-that the identity `n` created by the `Gen` pathway can be perfectly recovered
-from the `infinite` potential it generates, by feeding that potential back
-into the `Res` pathway.
+These final axioms assert that the primary cosmological pathways, `Gen` and `Res`,
+are "valid" in that they are guaranteed to produce identities that are cohesive
+enough to survive the cycle.
+-/
+
+/-- The Generation pathway always produces a surviving identity. -/
+axiom Gen_produces_survivor : ∀ e, survives_cycle (Gen e)
+
+/-- The Resolution pathway always produces a surviving identity. -/
+axiom Res_produces_survivor : ∀ inf, survives_cycle (Res inf)
+
+/--
+This theorem provides a concrete proof of the "Fractal Reverberation" concept,
+demonstrating that the foundational axioms are connected and can be used to
+prove high-level properties of the system.
 -/
 theorem epistemological_equivalence_gen (e : manifest the_origin Aspect.empty) :
   Res ((Act (Gen e)).2) = Gen e :=
 by
+  -- The proof is a direct application of the axiom.
   exact Gen_reverberates_in_Res e
 
 /--
-**Epistemological Equivalence (Res → Gen)**
-
-This theorem proves the second half of the Epistemological Equivalence,
-demonstrating the symmetric nature of the holographic system.
+This theorem proves the other half of the holographic principle, showing the
+full, symmetric nature of the unified cycle.
 -/
 theorem epistemological_equivalence_res (inf : manifest the_origin Aspect.infinite) :
   Gen ((Act (Res inf)).1) = Res inf :=
 by
+  -- The proof is a direct application of the axiom.
   exact Res_reverberates_in_Gen inf
 
 /--
@@ -106,12 +117,6 @@ by
   constructor
   · exact epistemological_equivalence_gen
   · exact epistemological_equivalence_res
-
-theorem Res_path_reverberates_in_Gen_path (inf : manifest the_origin Aspect.infinite) :
-  Gen ((Act (Res inf)).1) = Res inf :=
-by
-  -- The proof is a direct application of the axiom.
-  exact Res_reverberates_in_Gen inf
 
 /--
 This theorem proves that the Gen-first Ouroboros cycle is valid, returning
