@@ -1,7 +1,5 @@
-import Gip.Core
 import Gip.Origin
 import Gip.SelfReference
-import Gip.BayesianCore
 import Gip.MonadStructure
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
@@ -41,9 +39,7 @@ All predictions specify:
 
 namespace GIP.TestablePredictions
 
-open GIP Obj Hom
 open GIP.Origin
-open GIP.BayesianCore
 open GIP.SelfReference
 
 /-!

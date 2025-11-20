@@ -1,10 +1,8 @@
 import Gip.Basic
-import Gip.Core
 import Gip.Factorization
 import Gip.ModalTopology
 import Gip.Examples
 import Gip.ParadoxIsomorphism
-import Gip.G2Derivation
 import Gip.ComplexityStratification
 import Gip.InfinitePotential
 import Gip.CognitiveLimits
