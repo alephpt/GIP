@@ -11,7 +11,7 @@ import Gip.MonadStructure
 import Gip.SelfReference
 import Gip.BayesianCore
 import Gip.Universe.Generation
-import Gip.UnifiedCycle
+import Gip.HolographicInterface
 
 /-!
 # GIP: Native Implementation

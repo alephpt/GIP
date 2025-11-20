@@ -4,14 +4,15 @@ import Gip.Intermediate
 import Gip.Cohesion.Selection
 
 /-!
-# The Complete GIP Cycle: Generative Cosmology
+# The Holographic Interface of the Origin
 
-This module integrates all components into a unified system, defining
-what it means for a structure to complete a full, coherent cycle of
-emergence and dissolution.
+This module defines the high-level, holographic properties of the GIP cosmology.
+It formalizes the axioms that govern the complete, self-referential cycles
+of the system, demonstrating how the Origin generates the Universe (`o → {n}`)
+and how the Universe is a reflection of the Origin.
 -/
 
-namespace GIP.UnifiedCycle
+namespace GIP.HolographicInterface
 
 open GIP.CoreTypes
 open GIP.Origin
@@ -72,55 +73,31 @@ axiom Gen_reverberates_in_Rev :
   ∀ e, Rev ((Act (Gen e)).2) = Gen e
 
 /-- The empty output of the Rev-Act cycle reverberates through Gen. -/
-
 axiom Rev_reverberates_in_Gen :
-
   ∀ inf, Gen ((Act (Rev inf)).1) = Rev inf
 
-
-
 /--
-
 This theorem provides a concrete proof of the "Fractal Reverberation" concept,
-
 demonstrating that the foundational axioms are connected and can be used to
-
 prove high-level properties of the system.
-
 -/
-
 theorem Gen_path_reverberates_in_Rev_path (e : manifest the_origin Aspect.empty) :
-
   Rev ((Act (Gen e)).2) = Gen e :=
-
 by
-
   -- The proof is a direct application of the axiom.
-
   exact Gen_reverberates_in_Rev e
 
-
-
 /--
-
 This theorem proves the other half of the holographic principle, showing the
-
 full, symmetric nature of the unified cycle.
-
 -/
-
 theorem Rev_path_reverberates_in_Gen_path (inf : manifest the_origin Aspect.infinite) :
-
   Gen ((Act (Rev inf)).1) = Rev inf :=
-
 by
-
   -- The proof is a direct application of the axiom.
-
   exact Rev_reverberates_in_Gen inf
 
+end GIP.HolographicInterface
 
-
-end GIP.UnifiedCycle
 
 
