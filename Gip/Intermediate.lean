@@ -1,16 +1,29 @@
 /-!
 # The Intermediate Morphisms of GIP
 
-This file provides the morphism structure, now properly grounded in Foundations.lean.
+This file provides the morphism structure for the zero object model.
 
-## Design Note
+## The Zero Object Model
 
-Previously this file contained 10+ "axioms" that were actually definitions:
-- `axiom ProtoIdentity : Type` → Now `Obj.unit` from Foundations
-- `axiom gamma/iota/tau/epsilon` → Now `Hom` constructors from Foundations
-- `axiom iota_is_section` → Now `iota_tau_section` theorem from Foundations
+- **○** is the zero object (initial AND terminal)
+- **∅ ≅ ∞** are isomorphic dual aspects
+- **n** is the hub (bidirectional flow, not zero object)
 
-All morphisms are now DEFINED in Foundations.lean, and their properties are PROVEN.
+## Morphism Structure
+
+From ○ (zero object):
+- `from_origin`: ○ → A for all A (initial)
+- `to_origin`: A → ○ for all A (terminal)
+
+Between aspects:
+- `empty_to_inf`: ∅ → ∞ (isomorphism)
+- `inf_to_empty`: ∞ → ∅ (inverse)
+
+To/from hub n:
+- `gen`: ∅ → n (generation)
+- `res`: ∞ → n (resolution)
+- `act_empty`: n → ∅ (action)
+- `act_inf`: n → ∞ (action)
 -/
 
 import Gip.Foundations
@@ -20,119 +33,87 @@ namespace GIP.Intermediate
 open GIP.Foundations
 
 /-!
-## Proto-Identity
+## Zero Object Morphisms
 
-The proto-identity 𝟙 is now `Obj.unit` from Foundations.
-It serves as the intermediary between aspects.
+○ has unique morphisms to/from all objects.
 -/
 
-/-- Proto-identity is the unit object - DEFINITION, not axiom -/
-abbrev ProtoIdentity := Obj.unit
+/-- Morphism from origin to any object -/
+abbrev fromOrigin (a : Obj) : Hom Obj.origin a := Hom.from_origin a
 
-/-- Proto-identity exists (is inhabited) - THEOREM, not axiom -/
-theorem proto_identity_exists : Nonempty (Hom Obj.empty ProtoIdentity) :=
-  ⟨Hom.gamma⟩
+/-- Morphism from any object to origin -/
+abbrev toOrigin (a : Obj) : Hom a Obj.origin := Hom.to_origin a
+
+/-- Zero object property: unique from -/
+theorem from_origin_unique (a : Obj) (f g : Hom Obj.origin a) : f = g :=
+  morphismFromOrigin_unique a f g
+
+/-- Zero object property: unique to -/
+theorem to_origin_unique (a : Obj) (f g : Hom a Obj.origin) : f = g :=
+  morphismToOrigin_unique a f g
 
 /-!
-## The Four Conduits
+## Aspect Isomorphism
 
-These are now simply the morphisms from Foundations.Hom.
-We provide record wrappers for backwards compatibility.
+∅ ≅ ∞ - they are two faces of the same coin.
 -/
 
-/-- The γ conduit structure (for backwards compatibility) -/
-structure GammaConduit where
-  gen : Hom Obj.empty Obj.unit
-  res : Hom Obj.unit Obj.empty
+/-- ∅ → ∞ -/
+abbrev emptyToInfinite : Hom Obj.aspect_empty Obj.aspect_infinite := emptyToInf
 
-/-- The canonical gamma conduit -/
-def gamma : GammaConduit where
-  gen := .gamma
-  res := sorry  -- Note: There's no morphism 𝟙 → ∅ in the current category
-                -- This reveals a design issue in the old formulation
+/-- ∞ → ∅ -/
+abbrev infiniteToEmpty : Hom Obj.aspect_infinite Obj.aspect_empty := infToEmpty
 
-/-- The ι conduit structure -/
-structure IotaConduit where
-  gen : Hom Obj.unit Obj.identity
-  res : Hom Obj.identity Obj.unit
+/-- Round trip is identity -/
+theorem aspect_iso_roundtrip_empty :
+    Hom.comp emptyToInfinite infiniteToEmpty = Hom.id Obj.aspect_empty :=
+  empty_inf_empty
 
-/-- The canonical iota conduit -/
-def iota : IotaConduit where
-  gen := .iota
-  res := .tau
-
-/-- The τ conduit structure -/
-structure TauConduit where
-  gen : Hom Obj.identity Obj.unit
-  res : Hom Obj.unit Obj.identity
-
-/-- The canonical tau conduit -/
-def tau : TauConduit where
-  gen := .tau
-  res := .iota
-
-/-- The ε conduit structure -/
-structure EpsilonConduit where
-  gen : Hom Obj.unit Obj.infinite
-  res : Hom Obj.infinite Obj.unit
-
-/-- The canonical epsilon conduit -/
-def epsilon : EpsilonConduit where
-  gen := .epsilon
-  res := sorry  -- Note: There's no morphism ∞ → 𝟙 in the current category
-                -- Terminal objects only receive, don't send back
+theorem aspect_iso_roundtrip_inf :
+    Hom.comp infiniteToEmpty emptyToInfinite = Hom.id Obj.aspect_infinite :=
+  inf_empty_inf
 
 /-!
-## Section Properties
+## Hub Morphisms
 
-These are now THEOREMS derived from Foundations.
+n is the hub - it has bidirectional flow with aspects.
 -/
 
-/-- ι;τ = id_𝟙 - THEOREM from Foundations -/
-theorem iota_is_section : Hom.comp Hom.iota Hom.tau = Hom.id Obj.unit :=
-  GIP.Foundations.iota_tau_section
+/-- Generation: ∅ → n -/
+abbrev generation : Hom Obj.aspect_empty Obj.identity := Gen
 
-/-- τ;ι is the iota_tau morphism (may not be identity) -/
-theorem tau_iota_composition : Hom.comp Hom.tau Hom.iota = Hom.iota_tau :=
-  GIP.Foundations.tau_iota_not_necessarily_id
+/-- Resolution: ∞ → n -/
+abbrev resolution : Hom Obj.aspect_infinite Obj.identity := Res
+
+/-- Action to empty: n → ∅ -/
+abbrev actionEmpty : Hom Obj.identity Obj.aspect_empty := act.to_empty
+
+/-- Action to infinite: n → ∞ -/
+abbrev actionInf : Hom Obj.identity Obj.aspect_infinite := act.to_infinite
 
 /-!
-## Design Issue Exposed
+## Coherence
 
-The refactoring reveals that the old "bidirectional conduit" model had issues:
-
-1. **No morphism ∅ ← 𝟙**: Initial objects only emit, they don't receive.
-   The old `gamma.res : 𝟙 → ∅` doesn't exist categorically.
-
-2. **No morphism ∞ → 𝟙**: Terminal objects only receive, they don't emit.
-   The old `epsilon.res : ∞ → 𝟙` doesn't exist categorically.
-
-The proper model is:
-- ∅ is strictly initial (morphisms only go OUT)
-- ∞ is strictly terminal (morphisms only come IN)
-- 𝟙 and n have bidirectional connections via ι and τ
-
-This is standard category theory, not a limitation but the correct structure.
+Gen and Res are "the same" via the isomorphism.
 -/
 
+/-- Gen = Res via ∅ ≅ ∞ -/
+theorem gen_res_coherent : Hom.comp emptyToInfinite resolution = generation :=
+  gen_res_coherence
+
 /-!
-## Summary of Changes
+## Summary
 
-| Old (Axiom) | New Status |
-|-------------|------------|
-| `axiom ProtoIdentity : Type` | `abbrev ProtoIdentity := Obj.unit` |
-| `axiom proto_identity_exists` | `theorem proto_identity_exists` (proven) |
-| `axiom gamma : GammaConduit` | Partially defined (gen only) |
-| `axiom iota : IotaConduit` | `def iota` (fully defined) |
-| `axiom tau : TauConduit` | `def tau` (fully defined) |
-| `axiom epsilon : EpsilonConduit` | Partially defined (gen only) |
-| `axiom iota_is_section` | `theorem iota_is_section` (proven) |
-| `axiom tau_is_section` | Subsumed by composition theorems |
-| `axiom gamma_is_section` | Invalid (no γ.res exists) |
-| `axiom epsilon_is_iso` | Invalid (no ε.res exists) |
-
-Remaining issues: The bidirectional conduit model needs revision.
-The old axioms for `gamma.res` and `epsilon.res` were categorically invalid.
+| Morphism | Type | Role |
+|----------|------|------|
+| `from_origin` | ○ → A | Zero object (initial) |
+| `to_origin` | A → ○ | Zero object (terminal) |
+| `emptyToInfinite` | ∅ → ∞ | Aspect isomorphism |
+| `infiniteToEmpty` | ∞ → ∅ | Inverse isomorphism |
+| `generation` | ∅ → n | Into hub |
+| `resolution` | ∞ → n | Into hub |
+| `actionEmpty` | n → ∅ | From hub |
+| `actionInf` | n → ∞ | From hub |
 -/
 
 end GIP.Intermediate

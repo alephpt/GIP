@@ -1,27 +1,16 @@
 /-!
 # Zero Object Theory
 
-This file formalizes the concept of ○ as both initial AND terminal,
-though standard category theory separates these concepts.
+○ is THE zero object - both initial AND terminal.
 
-## Design Note
+## Properties of a Zero Object
 
-In standard category theory:
-- Initial object ∅: unique morphism TO each object
-- Terminal object ∞: unique morphism FROM each object
-- Zero object: both initial AND terminal (if it exists)
+A zero object Z satisfies:
+1. ∀ A, ∃! f : Z → A (initial)
+2. ∀ A, ∃! g : A → Z (terminal)
+3. All paths through Z collapse (A → Z → B is unique)
 
-GIP's origin ○ is conceptually a zero object, but we model it
-via the separate initial (∅) and terminal (∞) aspects.
-
-## The Zero Object Question
-
-Does ○ = ∅ = ∞?
-
-Philosophically: YES - ○ is the unified origin before bifurcation
-Categorically: We model the bifurcation explicitly with separate objects
-
-This file provides theorems about what a true zero object would imply.
+In GIP, ○ is this zero object.
 -/
 
 import Gip.Foundations
@@ -31,60 +20,64 @@ namespace GIP.ZeroObject
 open GIP.Foundations
 
 /-!
-## Zero Object Properties
-
-A zero object Z has:
-1. Unique morphism Z → A for all A (initial)
-2. Unique morphism A → Z for all A (terminal)
-3. Therefore unique morphism A → B factoring through Z
+## ○ is the Zero Object
 -/
 
-/-- If ∅ = ∞, then there's a unique morphism between any two objects -/
-theorem zero_implies_unique_morphism
-    (zero_eq : Obj.empty = Obj.infinite) :
-    ∀ (a b : Obj), ∃! (f : Hom a b), True := by
-  intro a b
-  -- Would need to transport morphisms through equality
-  sorry  -- This requires ∅ = ∞ which is false by construction
+/-- ○ → A exists for all A -/
+theorem zero_to_all (a : Obj) : ∃ f : Hom Obj.origin a, True :=
+  ⟨Hom.from_origin a, trivial⟩
 
-/-- In our model, ∅ ≠ ∞ (they're distinct aspects) -/
-theorem aspects_distinct : Obj.empty ≠ Obj.infinite := by decide
+/-- A → ○ exists for all A -/
+theorem all_to_zero (a : Obj) : ∃ f : Hom a Obj.origin, True :=
+  ⟨Hom.to_origin a, trivial⟩
 
-/-- The "zero morphism" would be the composite ∅ → ∞
-    All such composites are equal (by initial/terminal uniqueness) -/
-def zeroMorphism (a b : Obj) : Option (Hom a b) :=
-  match a, b with
-  | .empty, _ => some (morphismFromEmpty b)
-  | _, .infinite => some (morphismToInfinite a)
-  | _, _ => none  -- No natural zero morphism without ∅ = ∞
+/-- ○ → A is unique -/
+theorem zero_to_unique (a : Obj) (f g : Hom Obj.origin a) : f = g :=
+  morphismFromOrigin_unique a f g
+
+/-- A → ○ is unique -/
+theorem to_zero_unique (a : Obj) (f g : Hom a Obj.origin) : f = g :=
+  morphismToOrigin_unique a f g
+
+/-- The zero object property: paths through ○ collapse -/
+theorem zero_collapse (a b : Obj)
+    (f₁ f₂ : Hom a Obj.origin) (g₁ g₂ : Hom Obj.origin b) :
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ := by
+  have hf : f₁ = f₂ := to_zero_unique a f₁ f₂
+  have hg : g₁ = g₂ := zero_to_unique b g₁ g₂
+  rw [hf, hg]
 
 /-!
-## Information About the Origin ○
+## The Bifurcation: ○/○ = (∅ ≅ ∞)
 
-The origin ○ is modeled as the conceptual unity of ∅ and ∞.
-In the bifurcation ○/○ → {∅, ∞}, the origin "divides" into dual aspects.
+The self-division of ○ produces isomorphic dual aspects.
 -/
 
-/-- The DualAspect from Origin represents the post-bifurcation state -/
-abbrev PostBifurcation := GIP.Origin.DualAspect
+/-- ∅ and ∞ are isomorphic -/
+theorem aspects_isomorphic :
+    ∃ (f : Hom Obj.aspect_empty Obj.aspect_infinite)
+      (g : Hom Obj.aspect_infinite Obj.aspect_empty),
+      Hom.comp f g = Hom.id Obj.aspect_empty ∧
+      Hom.comp g f = Hom.id Obj.aspect_infinite :=
+  GIP.Foundations.aspects_isomorphic
 
-/-- The canonical post-bifurcation structure -/
-abbrev dualAspects := GIP.Origin.bifurcate
+/-- The bifurcation from ○ -/
+structure Bifurcation where
+  to_empty : Hom Obj.origin Obj.aspect_empty
+  to_infinite : Hom Obj.origin Obj.aspect_infinite
+
+/-- The canonical bifurcation -/
+def bifurcation : Bifurcation where
+  to_empty := Hom.from_origin Obj.aspect_empty
+  to_infinite := Hom.from_origin Obj.aspect_infinite
 
 /-!
 ## Summary
 
-The zero object concept captures ○'s nature as both source and sink.
-Our categorical model separates these into ∅ (initial) and ∞ (terminal),
-with their unity being a philosophical rather than categorical property.
-
-### What's Proven:
-- `aspects_distinct`: ∅ ≠ ∞ in our category
-- `zeroMorphism`: Partial construction of zero morphisms
-
-### What's Philosophical:
-- ○ = ∅ ∪ ∞ conceptually (not categorically)
-- Bifurcation ○/○ → {∅, ∞} is the primordial division
+○ is the zero object:
+- Unique morphisms to/from all objects
+- All paths through ○ collapse
+- ○/○ = (∅ ≅ ∞) : {N}
 -/
 
 end GIP.ZeroObject

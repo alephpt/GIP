@@ -1,12 +1,13 @@
 /-!
 # Basic GIP Definitions
 
-This file provides basic re-exports from the proper Foundations module.
+Re-exports from the zero object model Foundations.
 
-## Design Note
+## The Model
 
-Previously this file was based on a deprecated formalization.
-It now re-exports the properly grounded definitions from Foundations.lean.
+- **○** is the zero object (initial AND terminal)
+- **∅ ≅ ∞** are isomorphic dual aspects
+- **n** is the hub
 -/
 
 import Gip.Foundations
@@ -15,64 +16,38 @@ namespace GIP.Basic
 
 open GIP.Foundations
 
-/-!
-## Core Objects
-
-The three aspects plus proto-identity, re-exported from Foundations.
--/
-
-/-- The GIP objects -/
+-- Objects
 abbrev GIPObj := Obj
-
-/-- Empty aspect (initial) -/
-abbrev Empty := Obj.empty
-
-/-- Unit (proto-identity) -/
-abbrev Unit := Obj.unit
-
-/-- Identity (realized structure) -/
+abbrev Origin := Obj.origin
+abbrev Empty := Obj.aspect_empty
+abbrev Infinite := Obj.aspect_infinite
 abbrev Identity := Obj.identity
 
-/-- Infinite aspect (terminal) -/
-abbrev Infinite := Obj.infinite
-
-/-!
-## Core Morphisms
-
-The primitive morphisms re-exported from Foundations.
--/
-
-/-- GIP morphisms -/
+-- Morphisms
 abbrev GIPHom := Hom
 
-/-- Genesis: ∅ → 𝟙 -/
-abbrev gamma := Hom.gamma
+-- Zero object morphisms
+abbrev fromOrigin := Hom.from_origin
+abbrev toOrigin := Hom.to_origin
 
-/-- Instantiation: 𝟙 → n -/
-abbrev iota := Hom.iota
+-- Aspect isomorphism
+abbrev emptyToInfinite := emptyToInf
+abbrev infiniteToEmpty := infToEmpty
 
-/-- Reduction: n → 𝟙 -/
-abbrev tau := Hom.tau
+-- Hub morphisms
+abbrev gen := Gen
+abbrev res := Res
 
-/-- Completion: 𝟙 → ∞ -/
-abbrev epsilon := Hom.epsilon
+-- Zero object properties
+theorem origin_initial (a : Obj) (f g : Hom Obj.origin a) : f = g :=
+  morphismFromOrigin_unique a f g
 
-/-!
-## Basic Properties
+theorem origin_terminal (a : Obj) (f g : Hom a Obj.origin) : f = g :=
+  morphismToOrigin_unique a f g
 
-All properties are THEOREMS from Foundations.
--/
-
-/-- Empty is initial -/
-theorem empty_initial (a : Obj) (f g : Hom .empty a) : f = g :=
-  morphismFromEmpty_unique a f g
-
-/-- Infinite is terminal -/
-theorem infinite_terminal (a : Obj) (f g : Hom a .infinite) : f = g :=
-  morphismToInfinite_unique a f g
-
-/-- Section-retraction property -/
-theorem section_property : Hom.comp .iota .tau = .id .unit :=
-  iota_tau_section
+-- Aspect isomorphism
+theorem aspects_iso : ∃ (f : Hom Empty Infinite) (g : Hom Infinite Empty),
+    Hom.comp f g = Hom.id Empty ∧ Hom.comp g f = Hom.id Infinite :=
+  aspects_isomorphic
 
 end GIP.Basic
