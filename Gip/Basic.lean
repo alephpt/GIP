@@ -1,16 +1,16 @@
+import Gip.Foundations
+
 /-!
 # Basic GIP Definitions
 
-Re-exports from the zero object model Foundations.
+Re-exports from the restricted origin model Foundations.
 
 ## The Model
 
-- **○** is the zero object (initial AND terminal)
+- **○** connects only to aspects (∅ and ∞)
 - **∅ ≅ ∞** are isomorphic dual aspects
-- **n** is the hub
+- **n** is the hub (connects to aspects, not directly to ○)
 -/
-
-import Gip.Foundations
 
 namespace GIP.Basic
 
@@ -26,9 +26,11 @@ abbrev Identity := Obj.identity
 -- Morphisms
 abbrev GIPHom := Hom
 
--- Zero object morphisms
-abbrev fromOrigin := Hom.from_origin
-abbrev toOrigin := Hom.to_origin
+-- Origin morphisms (○ ↔ aspects only)
+abbrev originToEmpty := Hom.origin_to_empty
+abbrev originToInf := Hom.origin_to_inf
+abbrev emptyToOrigin := Hom.empty_to_origin
+abbrev infToOrigin := Hom.inf_to_origin
 
 -- Aspect isomorphism
 abbrev emptyToInfinite := emptyToInf
@@ -38,12 +40,18 @@ abbrev infiniteToEmpty := infToEmpty
 abbrev gen := Gen
 abbrev res := Res
 
--- Zero object properties
-theorem origin_initial (a : Obj) (f g : Hom Obj.origin a) : f = g :=
-  morphismFromOrigin_unique a f g
+-- Origin properties (○ ↔ aspects uniqueness)
+theorem origin_to_empty_unique (f g : Hom Origin Empty) : f = g :=
+  morphismOriginToEmpty_unique f g
 
-theorem origin_terminal (a : Obj) (f g : Hom a Obj.origin) : f = g :=
-  morphismToOrigin_unique a f g
+theorem origin_to_inf_unique (f g : Hom Origin Infinite) : f = g :=
+  morphismOriginToInf_unique f g
+
+theorem empty_to_origin_unique (f g : Hom Empty Obj.origin) : f = g :=
+  morphismEmptyToOrigin_unique f g
+
+theorem inf_to_origin_unique (f g : Hom Infinite Obj.origin) : f = g :=
+  morphismInfToOrigin_unique f g
 
 -- Aspect isomorphism
 theorem aspects_iso : ∃ (f : Hom Empty Infinite) (g : Hom Infinite Empty),

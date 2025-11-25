@@ -7,10 +7,10 @@ import Gip.Origin
 This module formalizes the fundamental insight that the origin ○ is not
 EITHER an object OR a process, but the **identity of both**.
 
-## The Zero Object Model Context
+## The Restricted Origin Model Context
 
-- ○ is the zero object (initial AND terminal)
-- ○/○ = (∅ ≅ ∞) : {N}
+- ○ connects only to aspects (∅ and ∞)
+- ∅ ≅ ∞ are isomorphic aspects
 - n is the hub
 
 ## The Core Insight
@@ -25,7 +25,6 @@ EITHER an object OR a process, but the **identity of both**.
 ## Dissolution of Dichotomy
 
 At ○, traditional dichotomies collapse:
-- Initial = Terminal (zero object property)
 - Object = Process (this module)
 - Properties = Methods
 -/
@@ -45,13 +44,22 @@ The "noun" aspect - what ○ IS as structure.
 structure OriginAsObject where
   /-- The aspects as structure -/
   aspects : Type
-  /-- The zero object property -/
-  is_zero : ∀ a : Obj, (∃ f : Hom Obj.origin a, True) ∧ (∃ g : Hom a Obj.origin, True)
+  /-- ○ → ∅ exists -/
+  has_to_empty : ∃ f : Hom Obj.origin Obj.aspect_empty, True
+  /-- ○ → ∞ exists -/
+  has_to_inf : ∃ f : Hom Obj.origin Obj.aspect_infinite, True
+  /-- ∅ → ○ exists -/
+  has_from_empty : ∃ f : Hom Obj.aspect_empty Obj.origin, True
+  /-- ∞ → ○ exists -/
+  has_from_inf : ∃ f : Hom Obj.aspect_infinite Obj.origin, True
 
 /-- The canonical object view -/
 def origin_as_object : OriginAsObject where
   aspects := Obj
-  is_zero := fun a => ⟨⟨Hom.from_origin a, trivial⟩, ⟨Hom.to_origin a, trivial⟩⟩
+  has_to_empty := ⟨Hom.origin_to_empty, trivial⟩
+  has_to_inf := ⟨Hom.origin_to_inf, trivial⟩
+  has_from_empty := ⟨Hom.empty_to_origin, trivial⟩
+  has_from_inf := ⟨Hom.inf_to_origin, trivial⟩
 
 /-!
 ## Section 2: ○ as Process (Methods)
@@ -100,17 +108,19 @@ def the_origin_unified : OriginUnified where
   identity := trivial
 
 /-!
-## Section 4: The Zero Dichotomy
+## Section 4: The Dichotomy Collapse
 
-Just as ○ is a zero object (initial = terminal),
-○ is also where object = process.
+○ is where object = process.
 -/
 
-/-- Zero Object Property: ○ is both initial and terminal -/
-theorem zero_object_property :
-    (∀ a : Obj, ∃ f : Hom Obj.origin a, True) ∧
-    (∀ a : Obj, ∃ g : Hom a Obj.origin, True) :=
-  ⟨fun a => ⟨Hom.from_origin a, trivial⟩, fun a => ⟨Hom.to_origin a, trivial⟩⟩
+/-- Origin Property: ○ connects to aspects -/
+theorem origin_property :
+    (∃ f : Hom Obj.origin Obj.aspect_empty, True) ∧
+    (∃ g : Hom Obj.origin Obj.aspect_infinite, True) ∧
+    (∃ f : Hom Obj.aspect_empty Obj.origin, True) ∧
+    (∃ g : Hom Obj.aspect_infinite Obj.origin, True) :=
+  ⟨⟨Hom.origin_to_empty, trivial⟩, ⟨Hom.origin_to_inf, trivial⟩,
+   ⟨Hom.empty_to_origin, trivial⟩, ⟨Hom.inf_to_origin, trivial⟩⟩
 
 /-- Zero Dichotomy Property: ○ is both object and process -/
 theorem zero_dichotomy_property :
@@ -126,7 +136,7 @@ theorem dichotomy_collapse_essential :
 /-!
 ## Section 5: Properties ARE Methods
 
-The aspects ARE the transformations.
+The aspects participate in transformations.
 -/
 
 /-- The aspects participate in transformations -/
@@ -146,7 +156,6 @@ theorem transformations_are_aspects :
 Final statement: ○ is the identity of all dichotomies.
 
 ○ is where all fundamental oppositions collapse:
-- Initial = Terminal (zero object)
 - Object = Process (zero dichotomy)
 - Properties = Methods
 - What = How

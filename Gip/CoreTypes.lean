@@ -1,3 +1,5 @@
+import Gip.Foundations
+
 /-!
 # Core GIP Types
 
@@ -9,8 +11,6 @@ Re-exports the foundational types from `Foundations.lean`.
 - **○/○ = (∅ ≅ ∞)** produces isomorphic dual aspects
 - **{N}** emerges as the universe of structures
 -/
-
-import Gip.Foundations
 
 namespace GIP.CoreTypes
 

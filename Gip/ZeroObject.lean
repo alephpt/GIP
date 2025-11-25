@@ -1,50 +1,99 @@
-/-!
-# Zero Object Theory
-
-○ is THE zero object - both initial AND terminal.
-
-## Properties of a Zero Object
-
-A zero object Z satisfies:
-1. ∀ A, ∃! f : Z → A (initial)
-2. ∀ A, ∃! g : A → Z (terminal)
-3. All paths through Z collapse (A → Z → B is unique)
-
-In GIP, ○ is this zero object.
--/
-
 import Gip.Foundations
+
+/-!
+# Origin Object Theory (Restricted Model)
+
+○ connects only to aspects (∅ and ∞).
+
+## Properties
+
+The restricted origin ○ satisfies:
+1. ∃! f : ○ → ∅ and ∃! g : ○ → ∞ (to aspects only)
+2. ∃! f : ∅ → ○ and ∃! g : ∞ → ○ (from aspects only)
+3. Paths through ○ between aspects collapse (unique)
+
+This is NOT a zero object in the traditional sense (which would have
+morphisms to/from ALL objects). Instead, ○ only connects to aspects.
+-/
 
 namespace GIP.ZeroObject
 
 open GIP.Foundations
 
 /-!
-## ○ is the Zero Object
+## ○ → Aspects
 -/
 
-/-- ○ → A exists for all A -/
-theorem zero_to_all (a : Obj) : ∃ f : Hom Obj.origin a, True :=
-  ⟨Hom.from_origin a, trivial⟩
+/-- ○ → ∅ exists -/
+theorem origin_to_empty : ∃ f : Hom Obj.origin Obj.aspect_empty, True :=
+  ⟨Hom.origin_to_empty, trivial⟩
 
-/-- A → ○ exists for all A -/
-theorem all_to_zero (a : Obj) : ∃ f : Hom a Obj.origin, True :=
-  ⟨Hom.to_origin a, trivial⟩
+/-- ○ → ∞ exists -/
+theorem origin_to_inf : ∃ f : Hom Obj.origin Obj.aspect_infinite, True :=
+  ⟨Hom.origin_to_inf, trivial⟩
 
-/-- ○ → A is unique -/
-theorem zero_to_unique (a : Obj) (f g : Hom Obj.origin a) : f = g :=
-  morphismFromOrigin_unique a f g
+/-- ○ → ∅ is unique -/
+theorem origin_to_empty_unique (f g : Hom Obj.origin Obj.aspect_empty) : f = g :=
+  morphismOriginToEmpty_unique f g
 
-/-- A → ○ is unique -/
-theorem to_zero_unique (a : Obj) (f g : Hom a Obj.origin) : f = g :=
-  morphismToOrigin_unique a f g
+/-- ○ → ∞ is unique -/
+theorem origin_to_inf_unique (f g : Hom Obj.origin Obj.aspect_infinite) : f = g :=
+  morphismOriginToInf_unique f g
 
-/-- The zero object property: paths through ○ collapse -/
-theorem zero_collapse (a b : Obj)
-    (f₁ f₂ : Hom a Obj.origin) (g₁ g₂ : Hom Obj.origin b) :
+/-!
+## Aspects → ○
+-/
+
+/-- ∅ → ○ exists -/
+theorem empty_to_origin : ∃ f : Hom Obj.aspect_empty Obj.origin, True :=
+  ⟨Hom.empty_to_origin, trivial⟩
+
+/-- ∞ → ○ exists -/
+theorem inf_to_origin : ∃ f : Hom Obj.aspect_infinite Obj.origin, True :=
+  ⟨Hom.inf_to_origin, trivial⟩
+
+/-- ∅ → ○ is unique -/
+theorem empty_to_origin_unique (f g : Hom Obj.aspect_empty Obj.origin) : f = g :=
+  morphismEmptyToOrigin_unique f g
+
+/-- ∞ → ○ is unique -/
+theorem inf_to_origin_unique (f g : Hom Obj.aspect_infinite Obj.origin) : f = g :=
+  morphismInfToOrigin_unique f g
+
+/-!
+## Path Collapse (Holographic Principle)
+-/
+
+/-- Paths ∅ → ○ → ∅ collapse -/
+theorem empty_origin_empty_collapse
+    (f₁ f₂ : Hom Obj.aspect_empty Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_empty) :
     Hom.comp f₁ g₁ = Hom.comp f₂ g₂ := by
-  have hf : f₁ = f₂ := to_zero_unique a f₁ f₂
-  have hg : g₁ = g₂ := zero_to_unique b g₁ g₂
+  have hf : f₁ = f₂ := empty_to_origin_unique f₁ f₂
+  have hg : g₁ = g₂ := origin_to_empty_unique g₁ g₂
+  rw [hf, hg]
+
+/-- Paths ∅ → ○ → ∞ collapse -/
+theorem empty_origin_inf_collapse
+    (f₁ f₂ : Hom Obj.aspect_empty Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_infinite) :
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ := by
+  have hf : f₁ = f₂ := empty_to_origin_unique f₁ f₂
+  have hg : g₁ = g₂ := origin_to_inf_unique g₁ g₂
+  rw [hf, hg]
+
+/-- Paths ∞ → ○ → ∅ collapse -/
+theorem inf_origin_empty_collapse
+    (f₁ f₂ : Hom Obj.aspect_infinite Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_empty) :
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ := by
+  have hf : f₁ = f₂ := inf_to_origin_unique f₁ f₂
+  have hg : g₁ = g₂ := origin_to_empty_unique g₁ g₂
+  rw [hf, hg]
+
+/-- Paths ∞ → ○ → ∞ collapse -/
+theorem inf_origin_inf_collapse
+    (f₁ f₂ : Hom Obj.aspect_infinite Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_infinite) :
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ := by
+  have hf : f₁ = f₂ := inf_to_origin_unique f₁ f₂
+  have hg : g₁ = g₂ := origin_to_inf_unique g₁ g₂
   rw [hf, hg]
 
 /-!
@@ -68,15 +117,16 @@ structure Bifurcation where
 
 /-- The canonical bifurcation -/
 def bifurcation : Bifurcation where
-  to_empty := Hom.from_origin Obj.aspect_empty
-  to_infinite := Hom.from_origin Obj.aspect_infinite
+  to_empty := Hom.origin_to_empty
+  to_infinite := Hom.origin_to_inf
 
 /-!
 ## Summary
 
-○ is the zero object:
-- Unique morphisms to/from all objects
-- All paths through ○ collapse
+○ in the restricted model:
+- Unique morphisms TO aspects (∅ and ∞) only
+- Unique morphisms FROM aspects only
+- Paths through ○ between aspects collapse
 - ○/○ = (∅ ≅ ∞) : {N}
 -/
 

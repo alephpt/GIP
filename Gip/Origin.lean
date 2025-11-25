@@ -1,33 +1,34 @@
+import Gip.Foundations
+
 /-!
-# Origin Theory: The Zero Object Model
+# Origin Theory: The Restricted Model
 
 This module defines the higher-level transformations,
-grounded in the correct understanding:
+grounded in the restricted origin model:
 
-- **○** is the zero object (initial AND terminal)
-- **○/○ = (∅, ∞)** produces isomorphic dual aspects
-- **n** emerges and participates in the cycle
+- **○** connects only to aspects (∅ and ∞)
+- **∅ ≅ ∞** are isomorphic dual aspects
+- **n** is the hub (connects to aspects, not directly to ○)
 
-## The Cycle
+## The Structure
 
 ```
-        ○ (zero object)
-        ↓ ○/○
-     (∅ ≅ ∞)
+        ○
+       ↗ ↖
+      ↙   ↘
+     ∅  ≅  ∞
       ↓   ↓
    Gen   Res
       ↘ ↙
-       n
+       n (hub)
       ↙ ↘
    Act   Act
       ↓   ↓
-     (∅ ≅ ∞)
-        ↓
+     ∅  ≅  ∞
+      ↘   ↙
         ○
 ```
 -/
-
-import Gip.Foundations
 
 namespace GIP.Origin
 
@@ -36,17 +37,12 @@ open GIP.Foundations
 /-!
 ## The Three Transformations
 
-All are categorically valid in the zero object model.
+All are categorically valid in the restricted model.
 -/
 
-/-- **Gen**: Generation pathway ∅ → n -/
-def Gen : Hom Obj.aspect_empty Obj.identity := Hom.gen
-
-/-- **Res**: Resolution pathway ∞ → n -/
-def Res : Hom Obj.aspect_infinite Obj.identity := Hom.res
-
-/-- **Act**: Action from n back to the dual aspects -/
-def Act : Action := act
+-- Gen, Res are imported from Foundations (no local redefinition to avoid ambiguity)
+-- Act is an alias to the Foundations instance
+abbrev Act := act
 
 /-!
 ## Path Properties
@@ -65,74 +61,56 @@ theorem res_gen_via_isomorphism :
   rfl
 
 /-!
-## The Full Cycle Through ○
+## Paths Through Aspects
 
-Everything flows through the zero object ○.
+Since ○ only connects to aspects, all paths between ○ and n go through ∅ or ∞.
 -/
 
-/-- From ○ to n via ∅ -/
-def originToIdentityViaEmpty : Hom Obj.origin Obj.identity :=
-  Hom.comp (Hom.from_origin Obj.aspect_empty) Gen
+/-- From n back to ○ via ∅ (n has no direct morphism to origin) -/
+def identityToOriginViaEmpty : Hom Obj.identity Obj.origin :=
+  Hom.comp Act.to_empty emptyToOrigin
 
-/-- From ○ to n via ∞ -/
-def originToIdentityViaInfinite : Hom Obj.origin Obj.identity :=
-  Hom.comp (Hom.from_origin Obj.aspect_infinite) Res
-
-/-- Both paths ○ → n are equal (by zero object uniqueness) -/
-theorem origin_to_identity_unique :
-    originToIdentityViaEmpty = originToIdentityViaInfinite := by
-  -- Both are morphisms ○ → n, and ○ is initial
-  unfold originToIdentityViaEmpty originToIdentityViaInfinite
-  sorry  -- Requires full composition proof
-
-/-- From n back to ○ -/
-def identityToOrigin : Hom Obj.identity Obj.origin :=
-  Hom.to_origin Obj.identity
+/-- From n back to ○ via ∞ -/
+def identityToOriginViaInf : Hom Obj.identity Obj.origin :=
+  Hom.comp Act.to_infinite infToOrigin
 
 /-!
-## The Recursive n Property
+## Information Collapse
 
-n exhibits zero-like behavior through the cycle.
+Paths from aspects through ○ collapse - uniqueness on both ends.
 -/
 
-/-- The cycle n → ∅ → n -/
-def cycleViaEmpty : Hom Obj.identity Obj.identity :=
-  Hom.comp Act.to_empty Gen
-
-/-- The cycle n → ∞ → n -/
-def cycleViaInfinite : Hom Obj.identity Obj.identity :=
-  Hom.comp Act.to_infinite Res
-
-/-- Both cycles should be equal (by the isomorphism) -/
-theorem cycles_equal : cycleViaEmpty = cycleViaInfinite := by
-  unfold cycleViaEmpty cycleViaInfinite
-  sorry  -- Deep property about n's zero-like nature
-
-/-!
-## Information Loss
-
-All paths through ○ collapse - this is the zero object property.
--/
-
-/-- Any two morphisms A → ○ → B are equal -/
-theorem zero_object_collapse (a b : Obj)
-    (f₁ f₂ : Hom a Obj.origin) (g₁ g₂ : Hom Obj.origin b) :
+/-- Paths ∅ → ○ → ∅ are unique -/
+theorem empty_origin_empty_collapse
+    (f₁ f₂ : Hom Obj.aspect_empty Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_empty) :
     Hom.comp f₁ g₁ = Hom.comp f₂ g₂ := by
-  -- f₁ = f₂ by terminal uniqueness, g₁ = g₂ by initial uniqueness
-  have hf : f₁ = f₂ := morphismToOrigin_unique a f₁ f₂
-  have hg : g₁ = g₂ := morphismFromOrigin_unique b g₁ g₂
+  have hf : f₁ = f₂ := morphismEmptyToOrigin_unique f₁ f₂
+  have hg : g₁ = g₂ := morphismOriginToEmpty_unique g₁ g₂
   rw [hf, hg]
 
-/-- The full round trip n → ○ → n -/
-def fullCycle : Hom Obj.identity Obj.identity :=
-  Hom.comp identityToOrigin (Hom.from_origin Obj.identity)
+/-- Paths ∅ → ○ → ∞ are unique -/
+theorem empty_origin_inf_collapse
+    (f₁ f₂ : Hom Obj.aspect_empty Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_infinite) :
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ := by
+  have hf : f₁ = f₂ := morphismEmptyToOrigin_unique f₁ f₂
+  have hg : g₁ = g₂ := morphismOriginToInf_unique g₁ g₂
+  rw [hf, hg]
 
-/-- All paths n → ○ → n are equal -/
-theorem fullCycle_unique (f : Hom Obj.identity Obj.origin)
-    (g : Hom Obj.origin Obj.identity) :
-    Hom.comp f g = fullCycle := by
-  unfold fullCycle
-  exact zero_object_collapse Obj.identity Obj.identity f identityToOrigin g (Hom.from_origin Obj.identity)
+/-- Paths ∞ → ○ → ∅ are unique -/
+theorem inf_origin_empty_collapse
+    (f₁ f₂ : Hom Obj.aspect_infinite Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_empty) :
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ := by
+  have hf : f₁ = f₂ := morphismInfToOrigin_unique f₁ f₂
+  have hg : g₁ = g₂ := morphismOriginToEmpty_unique g₁ g₂
+  rw [hf, hg]
+
+/-- Paths ∞ → ○ → ∞ are unique -/
+theorem inf_origin_inf_collapse
+    (f₁ f₂ : Hom Obj.aspect_infinite Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_infinite) :
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ := by
+  have hf : f₁ = f₂ := morphismInfToOrigin_unique f₁ f₂
+  have hg : g₁ = g₂ := morphismOriginToInf_unique g₁ g₂
+  rw [hf, hg]
 
 /-!
 ## DualAspect Structure
@@ -147,25 +125,25 @@ structure DualAspect where
   isomorphism_witness : Hom.comp empty_morphism emptyToInf = infinite_morphism
 
 /-- The canonical dual aspect from ○ -/
-def bifurcate : DualAspect where
-  empty_morphism := Hom.from_origin Obj.aspect_empty
-  infinite_morphism := Hom.from_origin Obj.aspect_infinite
-  isomorphism_witness := sorry  -- Needs composition proof
+def bifurcate_dual : DualAspect where
+  empty_morphism := Hom.origin_to_empty
+  infinite_morphism := Hom.origin_to_inf
+  isomorphism_witness := by unfold Hom.comp emptyToInf; rfl
 
 /-!
 ## Summary
 
-### Valid (in zero object model):
+### Valid (in restricted model):
 - `Gen : ∅ → n` (generation)
 - `Res : ∞ → n` (resolution)
 - `Act : n → (∅, ∞)` (action)
-- All paths through ○ collapse (zero object property)
+- ○ ↔ aspects (unique morphisms)
 - Gen ≈ Res via ∅ ≅ ∞
 
 ### The Key Insight:
-○ being a zero object means it's BOTH source and sink.
-The bifurcation ○/○ = (∅, ∞) produces isomorphic aspects.
-n participates in the cycle with recursive zero-like behavior.
+○ connects only to aspects (∅ and ∞).
+n connects only to aspects (∅ and ∞).
+The aspects serve as the interface layer between ○ and n.
 -/
 
 end GIP.Origin

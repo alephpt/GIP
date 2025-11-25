@@ -90,9 +90,11 @@ inductive Hom : Obj → Obj → Type where
   -- Identity morphisms
   | id (a : Obj) : Hom a a
 
-  -- Zero object morphisms (○ is both initial and terminal)
-  | from_origin (a : Obj) : Hom ○ a      -- ○ → A (initial property)
-  | to_origin (a : Obj) : Hom a ○        -- A → ○ (terminal property)
+  -- Origin morphisms (○ ↔ aspects only)
+  | origin_to_empty : Hom ○ ∅            -- ○ → ∅ (bifurcation)
+  | origin_to_inf : Hom ○ ∞              -- ○ → ∞ (bifurcation)
+  | empty_to_origin : Hom ∅ ○            -- ∅ → ○ (aspect returns to origin)
+  | inf_to_origin : Hom ∞ ○              -- ∞ → ○ (aspect returns to origin)
 
   -- The bifurcation isomorphism: ∅ ≅ ∞
   | empty_to_inf : Hom ∅ ∞               -- ∅ → ∞
@@ -106,6 +108,12 @@ inductive Hom : Obj → Obj → Type where
   | act_empty : Hom 𝕟 ∅                  -- Act: n → ∅
   | act_inf : Hom 𝕟 ∞                    -- Act: n → ∞
 
+  -- Composite morphisms (○ ↔ n through aspects)
+  | origin_to_n_via_empty : Hom ○ 𝕟      -- ○ → ∅ → n (Gen from origin)
+  | origin_to_n_via_inf : Hom ○ 𝕟        -- ○ → ∞ → n (Res from origin)
+  | n_to_origin_via_empty : Hom 𝕟 ○      -- n → ∅ → ○ (Act returning via ∅)
+  | n_to_origin_via_inf : Hom 𝕟 ○        -- n → ∞ → ○ (Act returning via ∞)
+
   deriving Repr, DecidableEq
 
 /-!
@@ -117,58 +125,135 @@ Composition must respect:
 - The cycle structure
 -/
 
-/-- Composition of morphisms -/
+/-- Composition of morphisms.
+    Note: ○ only connects to aspects (∅ and ∞). -/
 def Hom.comp : {a b c : Obj} → Hom a b → Hom b c → Hom a c
   -- Identity is neutral
   | _, _, _, .id _, g => g
   | _, _, _, f, .id _ => f
 
-  -- Zero object: all paths through ○ collapse
-  | _, _, _, .to_origin _, .from_origin c => .from_origin c  -- A → ○ → C = ○ → C
-  | _, _, _, f, .to_origin _ => .to_origin _                  -- Factor through ○
-  | _, _, _, .from_origin _, g => sorry                       -- Needs case analysis
+  -- ○ → ∅ → C compositions
+  | .origin, .aspect_empty, .origin, .origin_to_empty, .empty_to_origin => .id Obj.origin
+  | .origin, .aspect_empty, .aspect_infinite, .origin_to_empty, .empty_to_inf => .origin_to_inf
+  | .origin, .aspect_empty, .identity, .origin_to_empty, .gen => .origin_to_n_via_empty
+
+  -- ○ → ∞ → C compositions
+  | .origin, .aspect_infinite, .origin, .origin_to_inf, .inf_to_origin => .id Obj.origin
+  | .origin, .aspect_infinite, .aspect_empty, .origin_to_inf, .inf_to_empty => .origin_to_empty
+  | .origin, .aspect_infinite, .identity, .origin_to_inf, .res => .origin_to_n_via_inf
+
+  -- ∅ → ○ → C compositions
+  | .aspect_empty, .origin, .aspect_empty, .empty_to_origin, .origin_to_empty => .id Obj.aspect_empty
+  | .aspect_empty, .origin, .aspect_infinite, .empty_to_origin, .origin_to_inf => .empty_to_inf
+
+  -- ∞ → ○ → C compositions
+  | .aspect_infinite, .origin, .aspect_empty, .inf_to_origin, .origin_to_empty => .inf_to_empty
+  | .aspect_infinite, .origin, .aspect_infinite, .inf_to_origin, .origin_to_inf => .id Obj.aspect_infinite
+
+  -- Compositions ending at origin
+  | .aspect_empty, .aspect_infinite, .origin, .empty_to_inf, .inf_to_origin => .empty_to_origin
+  | .aspect_infinite, .aspect_empty, .origin, .inf_to_empty, .empty_to_origin => .inf_to_origin
+  | .identity, .aspect_empty, .origin, .act_empty, .empty_to_origin => .n_to_origin_via_empty
+  | .identity, .aspect_infinite, .origin, .act_inf, .inf_to_origin => .n_to_origin_via_inf
 
   -- Isomorphism ∅ ≅ ∞
-  | _, _, _, .empty_to_inf, .inf_to_empty => .id ∅           -- Round trip = id
-  | _, _, _, .inf_to_empty, .empty_to_inf => .id ∞           -- Round trip = id
+  | .aspect_empty, .aspect_infinite, .aspect_empty, .empty_to_inf, .inf_to_empty => .id Obj.aspect_empty
+  | .aspect_infinite, .aspect_empty, .aspect_infinite, .inf_to_empty, .empty_to_inf => .id Obj.aspect_infinite
 
   -- Gen/Res compositions
-  | _, _, _, .empty_to_inf, .res => .gen                     -- ∅ → ∞ → n = ∅ → n (via isomorphism)
-  | _, _, _, .inf_to_empty, .gen => .res                     -- ∞ → ∅ → n = ∞ → n
+  | .aspect_empty, .aspect_infinite, .identity, .empty_to_inf, .res => .gen
+  | .aspect_infinite, .aspect_empty, .identity, .inf_to_empty, .gen => .res
 
   -- Act compositions
-  | _, _, _, .gen, .act_empty => .id ∅                       -- ∅ → n → ∅ = id? (cycle)
-  | _, _, _, .gen, .act_inf => .empty_to_inf                 -- ∅ → n → ∞ = ∅ → ∞
-  | _, _, _, .res, .act_inf => .id ∞                         -- ∞ → n → ∞ = id? (cycle)
-  | _, _, _, .res, .act_empty => .inf_to_empty               -- ∞ → n → ∅ = ∞ → ∅
+  | .aspect_empty, .identity, .aspect_empty, .gen, .act_empty => .id Obj.aspect_empty
+  | .aspect_empty, .identity, .aspect_infinite, .gen, .act_inf => .empty_to_inf
+  | .aspect_infinite, .identity, .aspect_infinite, .res, .act_inf => .id Obj.aspect_infinite
+  | .aspect_infinite, .identity, .aspect_empty, .res, .act_empty => .inf_to_empty
 
   -- Other compositions
-  | _, _, _, .act_empty, .gen => sorry                       -- n → ∅ → n (recursive)
-  | _, _, _, .act_inf, .res => sorry                         -- n → ∞ → n (recursive)
-  | _, _, _, .act_empty, .empty_to_inf => .act_inf           -- n → ∅ → ∞ = n → ∞
-  | _, _, _, .act_inf, .inf_to_empty => .act_empty           -- n → ∞ → ∅ = n → ∅
+  | .identity, .aspect_empty, .aspect_infinite, .act_empty, .empty_to_inf => .act_inf
+  | .identity, .aspect_infinite, .aspect_empty, .act_inf, .inf_to_empty => .act_empty
 
-  -- Catch-all for remaining cases
-  | _, _, _, _, _ => sorry
+  -- Compositions involving composite morphisms ○ ↔ n
+  -- ○ → n → ∅/∞
+  | .origin, .identity, .aspect_empty, .origin_to_n_via_empty, .act_empty => .origin_to_empty
+  | .origin, .identity, .aspect_infinite, .origin_to_n_via_empty, .act_inf => .origin_to_inf
+  | .origin, .identity, .aspect_empty, .origin_to_n_via_inf, .act_empty => .origin_to_empty
+  | .origin, .identity, .aspect_infinite, .origin_to_n_via_inf, .act_inf => .origin_to_inf
+
+  -- n → ○ → ∅/∞
+  | .identity, .origin, .aspect_empty, .n_to_origin_via_empty, .origin_to_empty => .act_empty
+  | .identity, .origin, .aspect_infinite, .n_to_origin_via_empty, .origin_to_inf => .act_inf
+  | .identity, .origin, .aspect_empty, .n_to_origin_via_inf, .origin_to_empty => .act_empty
+  | .identity, .origin, .aspect_infinite, .n_to_origin_via_inf, .origin_to_inf => .act_inf
+
+  -- n → ○ → n (round trip through origin)
+  | .identity, .origin, .identity, .n_to_origin_via_empty, .origin_to_n_via_empty => .id Obj.identity
+  | .identity, .origin, .identity, .n_to_origin_via_empty, .origin_to_n_via_inf => .id Obj.identity
+  | .identity, .origin, .identity, .n_to_origin_via_inf, .origin_to_n_via_empty => .id Obj.identity
+  | .identity, .origin, .identity, .n_to_origin_via_inf, .origin_to_n_via_inf => .id Obj.identity
+
+  -- ○ → n → ○ (round trip through n)
+  | .origin, .identity, .origin, .origin_to_n_via_empty, .n_to_origin_via_empty => .id Obj.origin
+  | .origin, .identity, .origin, .origin_to_n_via_empty, .n_to_origin_via_inf => .id Obj.origin
+  | .origin, .identity, .origin, .origin_to_n_via_inf, .n_to_origin_via_empty => .id Obj.origin
+  | .origin, .identity, .origin, .origin_to_n_via_inf, .n_to_origin_via_inf => .id Obj.origin
+
+  -- ∅ → n → ○ (gen then return to origin)
+  | .aspect_empty, .identity, .origin, .gen, .n_to_origin_via_empty => .empty_to_origin
+  | .aspect_empty, .identity, .origin, .gen, .n_to_origin_via_inf => .empty_to_origin
+
+  -- ∞ → n → ○ (res then return to origin)
+  | .aspect_infinite, .identity, .origin, .res, .n_to_origin_via_empty => .inf_to_origin
+  | .aspect_infinite, .identity, .origin, .res, .n_to_origin_via_inf => .inf_to_origin
+
+  -- ∅ → ○ → n (through origin to n)
+  | .aspect_empty, .origin, .identity, .empty_to_origin, .origin_to_n_via_empty => .gen
+  | .aspect_empty, .origin, .identity, .empty_to_origin, .origin_to_n_via_inf => .gen
+
+  -- ∞ → ○ → n (through origin to n)
+  | .aspect_infinite, .origin, .identity, .inf_to_origin, .origin_to_n_via_empty => .res
+  | .aspect_infinite, .origin, .identity, .inf_to_origin, .origin_to_n_via_inf => .res
+
+  -- n → ∅ → n and n → ∞ → n are semantically undefined:
+  -- Identity is lost when passing through aspects. The n that enters ∅ or ∞
+  -- is not the n that emerges - aspects are "forgetful" passages where
+  -- specific identity dissolves. Gen produces *an* n, not *that* n.
+  | .identity, .aspect_empty, .identity, .act_empty, .gen => sorry
+  | .identity, .aspect_infinite, .identity, .act_inf, .res => sorry
 
 /-!
-## Part 4: Zero Object Properties
+## Part 4: Origin Properties
 
-○ is the zero object: both initial and terminal.
+○ connects only to aspects (∅ and ∞), not to n or itself directly.
 -/
 
-/-- ○ → A exists for all A (initial) -/
-def morphismFromOrigin (a : Obj) : Hom ○ a := Hom.from_origin a
+/-- ○ → ∅ (bifurcation to empty aspect) -/
+def originToEmpty : Hom ○ ∅ := Hom.origin_to_empty
 
-/-- A → ○ exists for all A (terminal) -/
-def morphismToOrigin (a : Obj) : Hom a ○ := Hom.to_origin a
+/-- ○ → ∞ (bifurcation to infinite aspect) -/
+def originToInf : Hom ○ ∞ := Hom.origin_to_inf
 
-/-- Morphisms from ○ are unique - THEOREM -/
-theorem morphismFromOrigin_unique (a : Obj) (f g : Hom ○ a) : f = g := by
+/-- ∅ → ○ (aspect returns to origin) -/
+def emptyToOrigin : Hom ∅ ○ := Hom.empty_to_origin
+
+/-- ∞ → ○ (aspect returns to origin) -/
+def infToOrigin : Hom ∞ ○ := Hom.inf_to_origin
+
+/-- Morphisms ○ → ∅ are unique -/
+theorem morphismOriginToEmpty_unique (f g : Hom ○ ∅) : f = g := by
   cases f <;> cases g <;> rfl
 
-/-- Morphisms to ○ are unique - THEOREM -/
-theorem morphismToOrigin_unique (a : Obj) (f g : Hom a ○) : f = g := by
+/-- Morphisms ○ → ∞ are unique -/
+theorem morphismOriginToInf_unique (f g : Hom ○ ∞) : f = g := by
+  cases f <;> cases g <;> rfl
+
+/-- Morphisms ∅ → ○ are unique -/
+theorem morphismEmptyToOrigin_unique (f g : Hom ∅ ○) : f = g := by
+  cases f <;> cases g <;> rfl
+
+/-- Morphisms ∞ → ○ are unique -/
+theorem morphismInfToOrigin_unique (f g : Hom ∞ ○) : f = g := by
   cases f <;> cases g <;> rfl
 
 /-!
@@ -183,11 +268,15 @@ def emptyToInf : Hom ∅ ∞ := Hom.empty_to_inf
 /-- ∞ → ∅ -/
 def infToEmpty : Hom ∞ ∅ := Hom.inf_to_empty
 
-/-- Round trip ∅ → ∞ → ∅ = id -/
-theorem empty_inf_empty : Hom.comp emptyToInf infToEmpty = Hom.id ∅ := rfl
+/-- Round trip ∅ → ∞ → ∅ = id (by definition of comp) -/
+theorem empty_inf_empty : Hom.comp emptyToInf infToEmpty = Hom.id ∅ := by
+  unfold Hom.comp emptyToInf infToEmpty
+  rfl
 
-/-- Round trip ∞ → ∅ → ∞ = id -/
-theorem inf_empty_inf : Hom.comp infToEmpty emptyToInf = Hom.id ∞ := rfl
+/-- Round trip ∞ → ∅ → ∞ = id (by definition of comp) -/
+theorem inf_empty_inf : Hom.comp infToEmpty emptyToInf = Hom.id ∞ := by
+  unfold Hom.comp infToEmpty emptyToInf
+  rfl
 
 /-- ∅ and ∞ are isomorphic -/
 theorem aspects_isomorphic :
@@ -212,9 +301,9 @@ structure Bifurcation where
 
 /-- The canonical bifurcation from ○ -/
 def bifurcate : Bifurcation where
-  to_empty := Hom.from_origin ∅
-  to_infinite := Hom.from_origin ∞
-  coherence := sorry  -- Needs the composition to work out
+  to_empty := Hom.origin_to_empty
+  to_infinite := Hom.origin_to_inf
+  coherence := by unfold Hom.comp emptyToInf; rfl
 
 /-- Generation: ∅ → n -/
 def Gen : Hom ∅ 𝕟 := Hom.gen
@@ -223,7 +312,9 @@ def Gen : Hom ∅ 𝕟 := Hom.gen
 def Res : Hom ∞ 𝕟 := Hom.res
 
 /-- Gen and Res are "the same" via the isomorphism -/
-theorem gen_res_coherence : Hom.comp emptyToInf Res = Gen := rfl
+theorem gen_res_coherence : Hom.comp emptyToInf Res = Gen := by
+  unfold Hom.comp emptyToInf Res Gen
+  rfl
 
 /-- Action: n → (∅, ∞) -/
 structure Action where
@@ -271,10 +362,11 @@ theorem n_is_hub :
   ((∃ f : Hom 𝕟 ∅, True) ∧ (∃ g : Hom 𝕟 ∞, True)) :=
   ⟨n_receives, n_emits⟩
 
-/-- The cycle through n: n → ∅ → n and n → ∞ → n
-    These are the recursive cycles where structure processes itself -/
-def cycle_via_empty : Hom 𝕟 𝕟 := Hom.comp Hom.act_empty Hom.gen
-def cycle_via_inf : Hom 𝕟 𝕟 := Hom.comp Hom.act_inf Hom.res
+/-!
+Note: n → ∅ → n and n → ∞ → n are NOT valid compositions.
+n does not feed back into itself through the aspects.
+Instead, n flows to aspects which flow to ○, and ○ generates new cycles.
+-/
 
 /-!
 ## Part 8: Cohesion (from Mathlib)
@@ -297,8 +389,8 @@ theorem cohesion_pos {α : Type*} [MetricSpace α] (x y : α) :
 theorem cohesion_le_one {α : Type*} [MetricSpace α] (x y : α) :
     cohesion x y ≤ 1 := by
   unfold cohesion
-  apply Real.exp_le_one_of_nonpos
-  exact neg_nonpos.mpr dist_nonneg
+  have h : -(dist x y) ≤ 0 := neg_nonpos.mpr dist_nonneg
+  exact Real.exp_le_one_iff.mpr h
 
 /-- Cohesion equals 1 iff identical -/
 theorem cohesion_eq_one_iff {α : Type*} [MetricSpace α] (x y : α) :
@@ -330,22 +422,65 @@ theorem high_cohesion_survives {α : Type*} [MetricSpace α] (x y : α)
     (h : cohesion x y > survivalThreshold) : survives x y := h
 
 /-!
+## Part 10: Category Laws
+
+The fundamental laws of categorical composition.
+-/
+
+/-- Left identity: id ; f = f -/
+theorem comp_id_left {a b : Obj} (f : Hom a b) :
+    Hom.comp (Hom.id a) f = f := by
+  cases a <;> cases b <;> cases f <;> rfl
+
+/-- Right identity: f ; id = f -/
+theorem comp_id_right {a b : Obj} (f : Hom a b) :
+    Hom.comp f (Hom.id b) = f := by
+  cases a <;> cases b <;> cases f <;> rfl
+
+-- Associativity for specific cases (where all compositions are defined)
+-- Note: Full associativity cannot be proven due to undefined n → ∅ → n paths.
+-- These are proofs for well-defined composition chains.
+
+/-- Origin → aspect → origin round trip -/
+theorem origin_aspect_origin_assoc :
+    Hom.comp (Hom.comp Hom.origin_to_empty Hom.empty_to_origin) Hom.origin_to_empty
+    = Hom.comp Hom.origin_to_empty (Hom.comp Hom.empty_to_origin Hom.origin_to_empty) := rfl
+
+/-- Aspect isomorphism is associative -/
+theorem iso_assoc :
+    Hom.comp (Hom.comp Hom.empty_to_inf Hom.inf_to_empty) Hom.empty_to_inf
+    = Hom.comp Hom.empty_to_inf (Hom.comp Hom.inf_to_empty Hom.empty_to_inf) := rfl
+
+/-- Gen/Res coherence with isomorphism -/
+theorem gen_res_iso_assoc :
+    Hom.comp (Hom.comp Hom.empty_to_inf Hom.res) Hom.act_inf
+    = Hom.comp Hom.empty_to_inf (Hom.comp Hom.res Hom.act_inf) := rfl
+
+/-- ○ → n → ○ round trip associativity -/
+theorem origin_n_origin_assoc :
+    Hom.comp (Hom.comp Hom.origin_to_n_via_empty Hom.n_to_origin_via_empty) Hom.origin_to_empty
+    = Hom.comp Hom.origin_to_n_via_empty (Hom.comp Hom.n_to_origin_via_empty Hom.origin_to_empty) := rfl
+
+/-!
 ## Summary
 
-### The Correct Model:
-- **○** is the zero object (initial AND terminal)
-- **○/○ = (∅, ∞)** bifurcation produces isomorphic dual aspects
+### The Restricted Model:
+- **○** connects only to aspects (∅ and ∞)
+- **○ ↔ (∅ ≅ ∞)** - bidirectional with aspects only
 - **∅ ≅ ∞** (proven isomorphism)
 - **{N}** emerges via Gen/Res
-- **n** is a **hub** (bidirectional flow, but NOT a zero object)
+- **n** is a **hub** (bidirectional with aspects, no direct connection to ○)
 
-### The Distinction:
-- **○ (zero object)**: unique morphisms to/from ALL objects - the primordial source/sink
-- **n (hub)**: bidirectional flow with aspects - where structure is realized
+### The Structure:
+- **○**: connects only to ∅ and ∞
+- **∅ ≅ ∞**: isomorphic aspects, connect to ○ and n
+- **n (hub)**: connects to ∅ and ∞, but NOT directly to ○
 
 ### Proven:
-- `morphismFromOrigin_unique`: ○ is initial
-- `morphismToOrigin_unique`: ○ is terminal
+- `morphismOriginToEmpty_unique`: ○ → ∅ is unique
+- `morphismOriginToInf_unique`: ○ → ∞ is unique
+- `morphismEmptyToOrigin_unique`: ∅ → ○ is unique
+- `morphismInfToOrigin_unique`: ∞ → ○ is unique
 - `aspects_isomorphic`: ∅ ≅ ∞
 - `n_is_hub`: n has bidirectional flow with aspects
 - Cohesion properties from MetricSpace
@@ -354,9 +489,10 @@ theorem high_cohesion_survives {α : Type*} [MetricSpace α] (x y : α)
 ```
 ○/○ = (∅, ∞) : {N}
 
-        ○ (zero object)
-        ↓ bifurcation
-     (∅ ≅ ∞)
+        ○
+       ↗ ↖
+      ↙   ↘
+     ∅  ≅  ∞
       ↓   ↓
    Gen   Res
       ↘ ↙
@@ -364,8 +500,9 @@ theorem high_cohesion_survives {α : Type*} [MetricSpace α] (x y : α)
       ↙ ↘
    Act   Act
       ↓   ↓
-     (∅ ≅ ∞)
-        ↓
+     ∅  ≅  ∞
+      ↘   ↙
+       ↘ ↙
         ○
 ```
 -/

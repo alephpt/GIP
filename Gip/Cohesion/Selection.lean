@@ -1,3 +1,5 @@
+import Gip.Foundations
+
 /-!
 # Cohesion and Type Selection Through Survival
 
@@ -11,8 +13,6 @@ Structures with sufficient cohesion survive the cycle and form {N}.
 - {N} = structures that survive (cohesion > threshold)
 -/
 
-import Gip.Foundations
-
 namespace GIP.Cohesion
 
 open GIP.Foundations
@@ -24,7 +24,7 @@ Re-exported for convenience.
 -/
 
 /-- Cohesion measure -/
-noncomputable abbrev cohesion {α : Type*} [MetricSpace α] := GIP.Foundations.cohesion
+noncomputable abbrev cohesion {α : Type*} [MetricSpace α] (x y : α) : ℝ := GIP.Foundations.cohesion x y
 
 /-- Survival threshold -/
 abbrev survival_threshold := survivalThreshold

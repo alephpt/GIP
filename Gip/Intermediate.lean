@@ -1,19 +1,23 @@
+import Gip.Foundations
+
 /-!
 # The Intermediate Morphisms of GIP
 
-This file provides the morphism structure for the zero object model.
+This file provides the morphism structure for the restricted origin model.
 
-## The Zero Object Model
+## The Restricted Origin Model
 
-- **○** is the zero object (initial AND terminal)
+- **○** connects only to aspects (∅ and ∞)
 - **∅ ≅ ∞** are isomorphic dual aspects
-- **n** is the hub (bidirectional flow, not zero object)
+- **n** is the hub (bidirectional flow with aspects)
 
 ## Morphism Structure
 
-From ○ (zero object):
-- `from_origin`: ○ → A for all A (initial)
-- `to_origin`: A → ○ for all A (terminal)
+From/To ○ (aspects only):
+- `origin_to_empty`: ○ → ∅
+- `origin_to_inf`: ○ → ∞
+- `empty_to_origin`: ∅ → ○
+- `inf_to_origin`: ∞ → ○
 
 Between aspects:
 - `empty_to_inf`: ∅ → ∞ (isomorphism)
@@ -26,31 +30,43 @@ To/from hub n:
 - `act_inf`: n → ∞ (action)
 -/
 
-import Gip.Foundations
-
 namespace GIP.Intermediate
 
 open GIP.Foundations
 
 /-!
-## Zero Object Morphisms
+## Origin Morphisms
 
-○ has unique morphisms to/from all objects.
+○ connects only to aspects (∅ and ∞).
 -/
 
-/-- Morphism from origin to any object -/
-abbrev fromOrigin (a : Obj) : Hom Obj.origin a := Hom.from_origin a
+/-- Morphism from origin to empty -/
+abbrev originToEmpty : Hom Obj.origin Obj.aspect_empty := Hom.origin_to_empty
 
-/-- Morphism from any object to origin -/
-abbrev toOrigin (a : Obj) : Hom a Obj.origin := Hom.to_origin a
+/-- Morphism from origin to infinite -/
+abbrev originToInfinite : Hom Obj.origin Obj.aspect_infinite := Hom.origin_to_inf
 
-/-- Zero object property: unique from -/
-theorem from_origin_unique (a : Obj) (f g : Hom Obj.origin a) : f = g :=
-  morphismFromOrigin_unique a f g
+/-- Morphism from ∅ to origin -/
+abbrev emptyToOrigin : Hom Obj.aspect_empty Obj.origin := Hom.empty_to_origin
 
-/-- Zero object property: unique to -/
-theorem to_origin_unique (a : Obj) (f g : Hom a Obj.origin) : f = g :=
-  morphismToOrigin_unique a f g
+/-- Morphism from ∞ to origin -/
+abbrev infiniteToOrigin : Hom Obj.aspect_infinite Obj.origin := Hom.inf_to_origin
+
+/-- Unique ○ → ∅ -/
+theorem origin_to_empty_unique (f g : Hom Obj.origin Obj.aspect_empty) : f = g :=
+  morphismOriginToEmpty_unique f g
+
+/-- Unique ○ → ∞ -/
+theorem origin_to_inf_unique (f g : Hom Obj.origin Obj.aspect_infinite) : f = g :=
+  morphismOriginToInf_unique f g
+
+/-- Unique ∅ → ○ -/
+theorem empty_to_origin_unique (f g : Hom Obj.aspect_empty Obj.origin) : f = g :=
+  morphismEmptyToOrigin_unique f g
+
+/-- Unique ∞ → ○ -/
+theorem inf_to_origin_unique (f g : Hom Obj.aspect_infinite Obj.origin) : f = g :=
+  morphismInfToOrigin_unique f g
 
 /-!
 ## Aspect Isomorphism
@@ -106,8 +122,10 @@ theorem gen_res_coherent : Hom.comp emptyToInfinite resolution = generation :=
 
 | Morphism | Type | Role |
 |----------|------|------|
-| `from_origin` | ○ → A | Zero object (initial) |
-| `to_origin` | A → ○ | Zero object (terminal) |
+| `originToEmpty` | ○ → ∅ | Bifurcation to empty |
+| `originToInfinite` | ○ → ∞ | Bifurcation to infinite |
+| `emptyToOrigin` | ∅ → ○ | Return to origin |
+| `infiniteToOrigin` | ∞ → ○ | Return to origin |
 | `emptyToInfinite` | ∅ → ∞ | Aspect isomorphism |
 | `infiniteToEmpty` | ∞ → ∅ | Inverse isomorphism |
 | `generation` | ∅ → n | Into hub |

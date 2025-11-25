@@ -1,19 +1,18 @@
-/-!
-# Grand Unified Proof of the GIP Foundation
-
-The consistency proof for the zero object model.
-
-## The Model
-
-- **○** is the zero object (initial AND terminal)
-- **○/○ = (∅ ≅ ∞)** produces isomorphic dual aspects
-- **{N}** emerges as structures that survive
-- **n** is the hub (not a zero object)
--/
-
 import Gip.Foundations
 import Gip.Origin
 import Gip.HolographicInterface
+
+/-!
+# Grand Unified Proof of the GIP Foundation
+
+The consistency proof for the restricted origin model.
+
+## The Model
+
+- **○** connects only to aspects (∅ and ∞)
+- **∅ ≅ ∞** are isomorphic aspects
+- **n** is the hub (bidirectional flow with aspects)
+-/
 
 namespace GIP.GrandUnifiedProof
 
@@ -22,36 +21,30 @@ open GIP.Origin
 open GIP.HolographicInterface
 
 /-!
-## Part 1: Zero Object Properties
+## Part 1: Origin Properties
 
-○ is both initial and terminal.
+○ connects only to aspects (∅ and ∞).
 -/
 
-/-- ○ is initial: unique morphism to each object -/
-theorem origin_is_initial :
-    ∀ (a : Obj) (f g : Hom Obj.origin a), f = g :=
-  morphismFromOrigin_unique
+/-- ○ → ∅ is unique -/
+theorem origin_to_empty_is_unique :
+    ∀ (f g : Hom Obj.origin Obj.aspect_empty), f = g :=
+  morphismOriginToEmpty_unique
 
-/-- ○ is terminal: unique morphism from each object -/
-theorem origin_is_terminal :
-    ∀ (a : Obj) (f g : Hom a Obj.origin), f = g :=
-  morphismToOrigin_unique
+/-- ○ → ∞ is unique -/
+theorem origin_to_inf_is_unique :
+    ∀ (f g : Hom Obj.origin Obj.aspect_infinite), f = g :=
+  morphismOriginToInf_unique
 
-/-- ○ is a zero object -/
-theorem origin_is_zero_object :
-    (∀ a, ∃! f : Hom Obj.origin a, True) ∧
-    (∀ a, ∃! f : Hom a Obj.origin, True) := by
-  constructor
-  · intro a
-    use Hom.from_origin a
-    constructor
-    · trivial
-    · intro g _; exact morphismFromOrigin_unique a (Hom.from_origin a) g
-  · intro a
-    use Hom.to_origin a
-    constructor
-    · trivial
-    · intro g _; exact morphismToOrigin_unique a (Hom.to_origin a) g
+/-- ∅ → ○ is unique -/
+theorem empty_to_origin_is_unique :
+    ∀ (f g : Hom Obj.aspect_empty Obj.origin), f = g :=
+  morphismEmptyToOrigin_unique
+
+/-- ∞ → ○ is unique -/
+theorem inf_to_origin_is_unique :
+    ∀ (f g : Hom Obj.aspect_infinite Obj.origin), f = g :=
+  morphismInfToOrigin_unique
 
 /-!
 ## Part 2: Aspect Isomorphism
@@ -84,14 +77,32 @@ theorem hub_bidirectional :
 /-!
 ## Part 4: Information Collapse
 
-All paths through ○ are equal - the holographic principle.
+Paths through ○ between aspects are equal - the holographic principle.
 -/
 
-/-- Paths through ○ collapse -/
-theorem information_collapses :
-    ∀ (a b : Obj) (f₁ f₂ : Hom a Obj.origin) (g₁ g₂ : Hom Obj.origin b),
+/-- Paths ∅ → ○ → ∅ collapse -/
+theorem information_collapses_empty_empty :
+    ∀ (f₁ f₂ : Hom Obj.aspect_empty Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_empty),
     Hom.comp f₁ g₁ = Hom.comp f₂ g₂ :=
-  holographic_principle
+  holographic_principle_empty_empty
+
+/-- Paths ∅ → ○ → ∞ collapse -/
+theorem information_collapses_empty_inf :
+    ∀ (f₁ f₂ : Hom Obj.aspect_empty Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_infinite),
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ :=
+  holographic_principle_empty_inf
+
+/-- Paths ∞ → ○ → ∅ collapse -/
+theorem information_collapses_inf_empty :
+    ∀ (f₁ f₂ : Hom Obj.aspect_infinite Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_empty),
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ :=
+  holographic_principle_inf_empty
+
+/-- Paths ∞ → ○ → ∞ collapse -/
+theorem information_collapses_inf_inf :
+    ∀ (f₁ f₂ : Hom Obj.aspect_infinite Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_infinite),
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ :=
+  holographic_principle_inf_inf
 
 /-!
 ## Part 5: The Grand Unified Theorem
@@ -104,9 +115,11 @@ theorem GIP_is_consistent : True := trivial
 
 /-- The foundation is sound -/
 theorem foundation_is_sound :
-    -- ○ is zero object
-    ((∀ a, ∃! f : Hom Obj.origin a, True) ∧
-     (∀ a, ∃! f : Hom a Obj.origin, True)) ∧
+    -- ○ ↔ aspects uniqueness
+    ((∀ f g : Hom Obj.origin Obj.aspect_empty, f = g) ∧
+     (∀ f g : Hom Obj.origin Obj.aspect_infinite, f = g) ∧
+     (∀ f g : Hom Obj.aspect_empty Obj.origin, f = g) ∧
+     (∀ f g : Hom Obj.aspect_infinite Obj.origin, f = g)) ∧
     -- ∅ ≅ ∞
     (∃ (f : Hom Obj.aspect_empty Obj.aspect_infinite)
        (g : Hom Obj.aspect_infinite Obj.aspect_empty),
@@ -117,18 +130,21 @@ theorem foundation_is_sound :
       (∃ g : Hom Obj.aspect_infinite Obj.identity, True)) ∧
      ((∃ f : Hom Obj.identity Obj.aspect_empty, True) ∧
       (∃ g : Hom Obj.identity Obj.aspect_infinite, True))) :=
-  ⟨origin_is_zero_object, aspects_are_isomorphic, hub_bidirectional⟩
+  ⟨⟨origin_to_empty_is_unique, origin_to_inf_is_unique,
+    empty_to_origin_is_unique, inf_to_origin_is_unique⟩,
+   aspects_are_isomorphic, hub_bidirectional⟩
 
 /-!
 ## Summary
 
-### The Zero Object Model:
+### The Restricted Origin Model:
 ```
 ○/○ = (∅ ≅ ∞) : {N}
 
-        ○ (zero object)
-        ↓ bifurcation
-     (∅ ≅ ∞)
+        ○
+       ↗ ↖
+      ↙   ↘
+     ∅  ≅  ∞
       ↓   ↓
    Gen   Res
       ↘ ↙
@@ -136,16 +152,17 @@ theorem foundation_is_sound :
       ↙ ↘
    Act   Act
       ↓   ↓
-     (∅ ≅ ∞)
-        ↓
+     ∅  ≅  ∞
+      ↘   ↙
         ○
 ```
 
 ### Proven:
-- `origin_is_zero_object`: ○ is initial AND terminal
+- `origin_to_empty/inf_is_unique`: ○ → aspects is unique
+- `empty/inf_to_origin_is_unique`: aspects → ○ is unique
 - `aspects_are_isomorphic`: ∅ ≅ ∞
 - `hub_bidirectional`: n has bidirectional flow
-- `information_collapses`: Holographic principle
+- `information_collapses_X_Y`: Holographic principle for aspects
 - `foundation_is_sound`: Complete consistency proof
 -/
 

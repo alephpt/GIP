@@ -1,18 +1,18 @@
+import Gip.Foundations
+import Gip.Origin
+
 /-!
 # The Holographic Interface of the Origin
 
-The holographic properties of GIP in the zero object model.
+The holographic properties of GIP in the restricted origin model.
 
-## The Zero Object Model
+## The Restricted Origin Model
 
-- **○** is the zero object (initial AND terminal)
-- **○/○ = (∅ ≅ ∞)** bifurcation produces isomorphic aspects
-- **n** is the hub (bidirectional flow)
-- All paths through ○ collapse (zero object property)
+- **○** connects only to aspects (∅ and ∞)
+- **∅ ≅ ∞** are isomorphic aspects
+- **n** is the hub (bidirectional flow with aspects)
+- All paths through ○ between aspects collapse (uniqueness)
 -/
-
-import Gip.Foundations
-import Gip.Origin
 
 namespace GIP.HolographicInterface
 
@@ -20,24 +20,54 @@ open GIP.Foundations
 open GIP.Origin
 
 /-!
-## The Zero Object Property
+## Path Collapse Property
 
-All paths through ○ are equal - this is the holographic principle.
+All paths through ○ between aspects are equal - this is the holographic principle.
 -/
 
-/-- Any path A → ○ → B equals any other such path -/
-theorem paths_through_origin_collapse (a b : Obj)
-    (f₁ f₂ : Hom a Obj.origin) (g₁ g₂ : Hom Obj.origin b) :
+/-- Paths ∅ → ○ → ∅ collapse -/
+theorem empty_paths_through_origin_empty_collapse
+    (f₁ f₂ : Hom Obj.aspect_empty Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_empty) :
     Hom.comp f₁ g₁ = Hom.comp f₂ g₂ :=
-  zero_object_collapse a b f₁ f₂ g₁ g₂
+  empty_origin_empty_collapse f₁ f₂ g₁ g₂
 
-/-- All morphisms from ○ are equal -/
-theorem from_origin_unique (a : Obj) (f g : Hom Obj.origin a) : f = g :=
-  morphismFromOrigin_unique a f g
+/-- Paths ∅ → ○ → ∞ collapse -/
+theorem empty_paths_through_origin_inf_collapse
+    (f₁ f₂ : Hom Obj.aspect_empty Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_infinite) :
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ :=
+  empty_origin_inf_collapse f₁ f₂ g₁ g₂
 
-/-- All morphisms to ○ are equal -/
-theorem to_origin_unique (a : Obj) (f g : Hom a Obj.origin) : f = g :=
-  morphismToOrigin_unique a f g
+/-- Paths ∞ → ○ → ∅ collapse -/
+theorem inf_paths_through_origin_empty_collapse
+    (f₁ f₂ : Hom Obj.aspect_infinite Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_empty) :
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ :=
+  inf_origin_empty_collapse f₁ f₂ g₁ g₂
+
+/-- Paths ∞ → ○ → ∞ collapse -/
+theorem inf_paths_through_origin_inf_collapse
+    (f₁ f₂ : Hom Obj.aspect_infinite Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_infinite) :
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ :=
+  inf_origin_inf_collapse f₁ f₂ g₁ g₂
+
+/-!
+## Uniqueness Properties
+-/
+
+/-- Morphisms ○ → ∅ are unique -/
+theorem origin_to_empty_unique (f g : Hom Obj.origin Obj.aspect_empty) : f = g :=
+  morphismOriginToEmpty_unique f g
+
+/-- Morphisms ○ → ∞ are unique -/
+theorem origin_to_inf_unique (f g : Hom Obj.origin Obj.aspect_infinite) : f = g :=
+  morphismOriginToInf_unique f g
+
+/-- Morphisms ∅ → ○ are unique -/
+theorem empty_to_origin_unique (f g : Hom Obj.aspect_empty Obj.origin) : f = g :=
+  morphismEmptyToOrigin_unique f g
+
+/-- Morphisms ∞ → ○ are unique -/
+theorem inf_to_origin_unique (f g : Hom Obj.aspect_infinite Obj.origin) : f = g :=
+  morphismInfToOrigin_unique f g
 
 /-!
 ## The Aspect Isomorphism
@@ -59,56 +89,64 @@ theorem generation_resolution_coherent :
   gen_res_coherence
 
 /-!
-## The Full Cycle
+## Paths Through Aspects
 
-The complete path: ○ → (∅,∞) → n → (∅,∞) → ○
+Since ○ only connects to aspects, all paths between ○ and n go through ∅ or ∞.
 -/
 
-/-- Path from ○ to n -/
-def originToHub : Hom Obj.origin Obj.identity :=
-  Hom.comp (Hom.from_origin Obj.aspect_empty) Gen
+/-- Path from n to ○ via ∅ -/
+def hubToOriginViaEmpty : Hom Obj.identity Obj.origin :=
+  identityToOriginViaEmpty
 
-/-- Path from n to ○ -/
-def hubToOrigin : Hom Obj.identity Obj.origin :=
-  Hom.to_origin Obj.identity
-
-/-- The round trip n → ○ → n -/
-def hubRoundTrip : Hom Obj.identity Obj.identity :=
-  Hom.comp hubToOrigin (Hom.from_origin Obj.identity)
-
-/-- All round trips are equal (zero object property) -/
-theorem round_trips_equal (f : Hom Obj.identity Obj.origin)
-    (g : Hom Obj.origin Obj.identity) :
-    Hom.comp f g = hubRoundTrip :=
-  fullCycle_unique f g
+/-- Path from n to ○ via ∞ -/
+def hubToOriginViaInf : Hom Obj.identity Obj.origin :=
+  identityToOriginViaInf
 
 /-!
-## Information Collapse
+## The Holographic Principle
 
-The zero object property means information is lost through ○.
-Different paths become indistinguishable.
+Information collapses when passing through ○.
 -/
 
-/-- The "holographic" property: all information passes through ○ -/
-theorem holographic_principle :
-    ∀ (a b : Obj) (f₁ f₂ : Hom a Obj.origin) (g₁ g₂ : Hom Obj.origin b),
+/-- The "holographic" property for ∅ → ○ → ∅: all paths collapse -/
+theorem holographic_principle_empty_empty :
+    ∀ (f₁ f₂ : Hom Obj.aspect_empty Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_empty),
     Hom.comp f₁ g₁ = Hom.comp f₂ g₂ :=
-  paths_through_origin_collapse
+  empty_paths_through_origin_empty_collapse
+
+/-- The "holographic" property for ∅ → ○ → ∞: all paths collapse -/
+theorem holographic_principle_empty_inf :
+    ∀ (f₁ f₂ : Hom Obj.aspect_empty Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_infinite),
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ :=
+  empty_paths_through_origin_inf_collapse
+
+/-- The "holographic" property for ∞ → ○ → ∅: all paths collapse -/
+theorem holographic_principle_inf_empty :
+    ∀ (f₁ f₂ : Hom Obj.aspect_infinite Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_empty),
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ :=
+  inf_paths_through_origin_empty_collapse
+
+/-- The "holographic" property for ∞ → ○ → ∞: all paths collapse -/
+theorem holographic_principle_inf_inf :
+    ∀ (f₁ f₂ : Hom Obj.aspect_infinite Obj.origin) (g₁ g₂ : Hom Obj.origin Obj.aspect_infinite),
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ :=
+  inf_paths_through_origin_inf_collapse
 
 /-!
 ## Summary
 
-### The Zero Object Model:
-- ○ is both initial AND terminal
-- All paths through ○ collapse (holographic principle)
+### The Restricted Origin Model:
+- ○ connects only to aspects (∅ and ∞)
+- Paths through ○ between aspects collapse (holographic principle)
 - ∅ ≅ ∞ (dual aspects are isomorphic)
 - n is the hub where structure is realized
+- n flows to ○ through aspects (n → ∅ → ○ or n → ∞ → ○)
 
 ### Key Theorems:
-- `paths_through_origin_collapse`: Zero object property
+- `empty/inf_paths_through_origin_X_collapse`: Paths collapse through ○
 - `dual_aspects_isomorphic`: ∅ ≅ ∞
 - `generation_resolution_coherent`: Gen ≈ Res
-- `holographic_principle`: Information collapses through ○
+- `holographic_principle_X_Y`: Information collapses through ○
 -/
 
 end GIP.HolographicInterface
