@@ -1,37 +1,83 @@
 /-!
 # Core GIP Types
 
-This file defines the absolute foundational types for the GIP project,
-such as the `Origin` and its `Aspect`s. It is designed to have no
-other dependencies within the `Gip` namespace, allowing other files
-to import it without creating circular dependencies.
+This file re-exports the foundational types from `Foundations.lean`.
+
+## Design Note
+
+Previously this file contained "axioms" that were actually definitions:
+- `axiom OriginType : Type` → Now `Obj` (defined inductively)
+- `axiom the_origin` → Now `Obj.empty` (the initial object)
+- `axiom manifest` → Now derived from `Obj` structure
+
+All types are now DEFINED, not axiomatized.
 -/
+
+import Gip.Foundations
 
 namespace GIP.CoreTypes
 
--- Note: The `open GIP.Obj` was removed as it came from the conflicting `Gip.Core`
--- and is no longer needed.
+open GIP.Foundations
 
-/-- The three aspects through which the origin manifests -/
-inductive Aspect : Type where
-  | empty : Aspect      -- ∅: Initial limit, empty of constraints
-  | identity : Aspect   -- n: Knowable register, determination
-  | infinite : Aspect   -- ∞: Terminal limit, infinite capacity
-  deriving Repr, DecidableEq
+/-- The three aspects through which the origin manifests.
+    This is re-exported from Foundations for backwards compatibility. -/
+abbrev Aspect := Obj
 
-/-- The type of the Origin itself. -/
-axiom OriginType : Type
+/-- Backwards compatibility: Aspect.empty -/
+abbrev Aspect.empty := Obj.empty
 
-/-- An axiom asserting the existence of a single, unique term for the Origin. -/
-axiom the_origin : OriginType
+/-- Backwards compatibility: Aspect.identity -/
+abbrev Aspect.identity := Obj.identity
 
-/-- An axiom asserting that any term of OriginType is equal to `the_origin`. -/
-axiom origin_is_unique : ∀ o : OriginType, o = the_origin
+/-- Backwards compatibility: Aspect.infinite -/
+abbrev Aspect.infinite := Obj.infinite
 
-/--
-A manifestation of the Origin as one of its Aspects. For example,
-`manifest the_origin Aspect.empty` is the type of the empty set aspect.
+/-- The "type" of the origin - this is just Unit (singleton).
+    Previously axiomatized, now DEFINED. -/
+def OriginType := Unit
+
+/-- The unique origin - this is just the unit value.
+    Previously axiomatized, now DEFINED. -/
+def the_origin : OriginType := ()
+
+/-- Any origin equals the_origin - THEOREM, not axiom.
+    Follows immediately from OriginType being Unit. -/
+theorem origin_is_unique (o : OriginType) : o = the_origin := by
+  cases o
+  rfl
+
+/-- Manifestation of origin as an aspect.
+    Previously axiomatized, now DEFINED as a type family.
+
+    The "manifest" of an aspect is simply that aspect's type in our category.
+    - manifest empty = the initial object type
+    - manifest identity = the identity object type
+    - manifest infinite = the terminal object type
 -/
-axiom manifest (orig : OriginType) (a : Aspect) : Type
+def manifest (_orig : OriginType) (a : Obj) : Type :=
+  match a with
+  | .empty => Unit      -- Initial: one canonical element
+  | .unit => Unit       -- Proto-identity: one canonical element
+  | .identity => Nat    -- Identity: natural numbers as example structure
+  | .infinite => Unit   -- Terminal: one canonical element
+
+/-- The empty aspect has a unique inhabitant -/
+def manifest_empty : manifest the_origin .empty := ()
+
+/-- The infinite aspect has a unique inhabitant -/
+def manifest_infinite : manifest the_origin .infinite := ()
+
+/-!
+## Summary of Changes
+
+| Old (Axiom) | New (Definition/Theorem) |
+|-------------|-------------------------|
+| `axiom OriginType : Type` | `def OriginType := Unit` |
+| `axiom the_origin : OriginType` | `def the_origin : OriginType := ()` |
+| `axiom origin_is_unique` | `theorem origin_is_unique` (proven) |
+| `axiom manifest` | `def manifest` (defined) |
+
+No axioms remain in this file.
+-/
 
 end GIP.CoreTypes

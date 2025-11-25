@@ -1,98 +1,179 @@
-import Gip.CoreTypes
-import Gip.Intermediate
-
 /-!
-# Origin Theory: Composite Morphisms and Cycle Structure
+# Origin Theory: Grounded in Category Theory
 
-This module defines the higher-level concepts of the GIP cosmology.
-It is built upon the foundational types in `CoreTypes` and the
-bidirectional conduits in `Intermediate`.
+This module defines the higher-level transformations (Gen, Res, Act),
+now properly grounded in Foundations.lean.
+
+## Critical Design Issue
+
+The refactoring revealed that the original "bidirectional conduit" model
+contained **categorically invalid** axioms:
+
+- `gamma.res : 𝟙 → ∅` cannot exist (initial objects only emit)
+- `epsilon.res : ∞ → 𝟙` cannot exist (terminal objects only receive)
+
+This means the old `dissolve : ∞ → ∅` pathway was not well-founded.
+
+## Resolution
+
+We have two options:
+
+1. **Accept the asymmetry**: The cycle only goes one direction:
+   ∅ → 𝟙 → n → 𝟙 → ∞ (no return from ∞ to ∅)
+
+2. **Augment the category**: Add structure that allows "reverse" morphisms
+   (e.g., adjunctions, duality, or a different categorical framework)
+
+For now, we implement Option 1 and note where Option 2 would be needed.
 -/
+
+import Gip.Foundations
 
 namespace GIP.Origin
 
-open GIP.CoreTypes
-open GIP.Intermediate
+open GIP.Foundations
 
 /-!
-## Duality and Genesis
+## The Three Transformations (Valid Direction)
+
+These transformations follow the categorical flow from initial to terminal.
 -/
 
-/-- Dual aspect: the complementary poles produced by self-division -/
+/-- **Gen**: Generation pathway ∅ → n
+    Composition: γ;ι (gamma then iota)
+    This is categorically valid. -/
+def Gen : Hom Obj.empty Obj.identity := Hom.gamma_iota
+
+/-- **Sat**: Saturation pathway n → ∞
+    Composition: τ;ε (tau then epsilon)
+    This is categorically valid. -/
+def Sat : Hom Obj.identity Obj.infinite := Hom.tau_epsilon
+
+/-- **FullPath**: Complete forward path ∅ → ∞
+    Composition: γ;ε (through unit directly) or γ;ι;τ;ε (through identity)
+    Both are valid and equal by uniqueness of morphisms to terminal. -/
+def FullPath : Hom Obj.empty Obj.infinite := Hom.gamma_epsilon
+
+/-- The two paths to ∞ are equal - THEOREM from terminal uniqueness -/
+theorem paths_to_terminal_equal :
+    Hom.comp Gen Sat = FullPath := by
+  -- Both are morphisms ∅ → ∞, so equal by terminal uniqueness
+  exact morphismToInfinite_unique Obj.empty (Hom.comp Gen Sat) FullPath
+
+/-!
+## The Problematic Reverse Direction
+
+The old model had:
+- `Res : ∞ → n` (resolution from infinite)
+- `dissolve : ∞ → ∅` (dissolution)
+
+These require morphisms FROM terminal and TO initial, which don't exist
+in standard category theory.
+
+### Option 2 Sketch: Adjoint Structure
+
+If we wanted reverse morphisms, we could:
+1. Posit that (Gen, Res) form an adjunction
+2. Or work in a *-category with involution
+3. Or use a traced monoidal category
+
+This would require additional axioms WITH JUSTIFICATION.
+-/
+
+/-- Placeholder for reverse path - requires augmented structure -/
+axiom reverse_structure_postulate :
+  -- IF we add adjoint structure, THEN reverse morphisms exist
+  -- This is the ONLY new postulate beyond Foundations
+  ∃ (Res : Hom Obj.infinite Obj.identity),
+    -- With some coherence condition
+    True
+
+/-!
+## Duality and Bifurcation
+
+The old model's "DualAspect" and "bifurcate" can be reformulated.
+-/
+
+/-- DualAspect: The complementary poles
+    In proper categorical terms, this is the product ∅ × ∞
+    (initial and terminal as a pair) -/
 structure DualAspect where
-  empty : manifest the_origin Aspect.empty
-  infinite : manifest the_origin Aspect.infinite
-  complementary : Aspect.empty ≠ Aspect.infinite
-  inseparable : True
+  empty_witness : Hom Obj.empty Obj.empty  -- id on initial
+  infinite_witness : Hom Obj.infinite Obj.infinite  -- id on terminal
+  complementary : Obj.empty ≠ Obj.infinite  -- They're distinct
 
-/-- Self-division as bifurcation into dual aspects -/
-axiom bifurcate : DualAspect
+/-- The canonical dual aspect -/
+def bifurcate : DualAspect where
+  empty_witness := Hom.id Obj.empty
+  infinite_witness := Hom.id Obj.infinite
+  complementary := by decide  -- Obj.empty ≠ Obj.infinite by definition
 
-/-- Convergence: the true bidirectional genesis of identity from dual aspect tension. -/
-axiom converge : DualAspect → manifest the_origin Aspect.identity
-
-/-- CRITICAL AXIOM: Every identity requires BOTH poles to emerge. -/
-axiom identity_from_both :
-  ∀ (i : manifest the_origin Aspect.identity),
-  ∃ (e : manifest the_origin Aspect.empty)
-    (inf : manifest the_origin Aspect.infinite)
-    (dual : DualAspect),
-    dual.empty = e ∧
-    dual.infinite = inf ∧
-    i = converge dual
+/-- Convergence: Both aspects connect to identity
+    From ∅: via Gen (γ;ι)
+    From ∞: requires augmented structure -/
+def converge_from_empty : Hom Obj.empty Obj.identity := Gen
 
 /-!
-## The Three Fundamental Transformations: Gen, Rev, Syn
+## Information Loss (The Ouroboros)
+
+The key insight: even without reverse morphisms, we can express information loss.
+Any morphism ∅ → ∅ must be the identity (by initiality).
+But if we HAD a cycle ∅ → n → ∞ → ∅, it would equal id_∅.
+This means the cycle "forgets" which path was taken - information loss.
 -/
 
-/--
-**Gen (`{}` → `n`)**: The Generation pathway from Emptiness to Identity.
-Defined as: `iota.gen ∘ gamma.gen`
--/
-noncomputable def Gen (e : manifest the_origin Aspect.empty) : manifest the_origin Aspect.identity :=
-  iota.gen (gamma.gen e)
+/-- All morphisms ∅ → ∅ equal identity - THEOREM -/
+theorem empty_endomorphism_unique (f : Hom Obj.empty Obj.empty) :
+    f = Hom.id Obj.empty :=
+  morphismFromEmpty_unique Obj.empty f (Hom.id Obj.empty)
 
-/--
-**Res (`inf` → `n`)**: The Resolution pathway from Infinity to Identity.
-Defined as: `tau.res ∘ epsilon.res`
--/
-noncomputable def Res (inf : manifest the_origin Aspect.infinite) : manifest the_origin Aspect.identity :=
-  tau.res (epsilon.res inf)
-
-/--
-**Act (`n` → `({}, inf)`)**: The Action pathway, dissolving an Identity
-back into its dual potentials simultaneously.
--/
-noncomputable def Act (n : manifest the_origin Aspect.identity) : (manifest the_origin Aspect.empty × manifest the_origin Aspect.infinite) :=
-  -- The path to empty is `n → 1 → ∅`
-  let to_empty := gamma.res (iota.res n)
-  -- The path to infinite is `n → 1 → ∞`
-  let to_inf := epsilon.gen (tau.gen n)
-  (to_empty, to_inf)
-
+/-- Information loss formulation:
+    If a cycle existed, it would collapse all paths to id_∅ -/
+theorem information_loss_principle :
+    ∀ (f g : Hom Obj.empty Obj.empty), f = g :=
+  fun f g => by
+    rw [empty_endomorphism_unique f, empty_endomorphism_unique g]
 
 /-!
-## Legacy Composite Definitions
-The old monolithic functions, now defined in terms of the new primitives.
+## Legacy Compatibility (With Caveats)
+
+These definitions maintain API compatibility but some are now `sorry`
+because the old model was categorically invalid.
 -/
 
-/-- `actualize` is now defined as the `Gen` pathway. -/
-noncomputable def actualize (e : manifest the_origin Aspect.empty) : manifest the_origin Aspect.identity :=
-  Gen e
+/-- actualize = Gen (valid) -/
+abbrev actualize := Gen
 
-/-- `saturate` is now defined as the `inf` component of `Act`. -/
-noncomputable def saturate (n : manifest the_origin Aspect.identity) : manifest the_origin Aspect.infinite :=
-  (Act n).2
+/-- saturate = Sat (valid) -/
+abbrev saturate := Sat
 
-/-- `dissolve`'s old signature (`∞ → ∅`) is now part of the `Rev` and `Act` paths.
-    This definition is provided for compatibility, but the new pathways are preferred.
-    It represents the path from a bare `inf` to `empty` by first creating an `n`.
+/-- dissolve: Would require ∞ → ∅, which doesn't exist categorically -/
+-- def dissolve : Hom Obj.infinite Obj.empty := sorry  -- INVALID
+
+/-- circle_path: Would require going ∅ → n → ∅, but no n → ∅ exists -/
+-- def circle_path : Hom Obj.empty Obj.empty := sorry  -- INVALID
+
+/-!
+## Summary
+
+### Valid (Proven/Defined):
+- `Gen : ∅ → n` (generation)
+- `Sat : n → ∞` (saturation)
+- `FullPath : ∅ → ∞` (complete forward path)
+- `bifurcate : DualAspect` (the two poles)
+- `information_loss_principle` (all ∅ → ∅ equal id)
+
+### Invalid (Removed):
+- `Res : ∞ → n` (no morphisms from terminal to non-terminal)
+- `dissolve : ∞ → ∅` (no morphisms from terminal to initial)
+- `circle_path` (no cycle without reverse morphisms)
+
+### Requires Augmented Structure:
+- `reverse_structure_postulate` (ONE additional postulate, if needed)
+
+The old model conflated "bidirectional flow" with "categorical morphisms".
+Proper category theory only has one-directional morphisms.
+Bidirectionality requires additional structure (adjunctions, dualities).
 -/
-noncomputable def dissolve (inf : manifest the_origin Aspect.infinite) : manifest the_origin Aspect.empty :=
-  (Act (Res inf)).1
-
-/-- The old `circle_path` can be seen as a composition using `Act` and `Gen`. -/
-noncomputable def circle_path (n : manifest the_origin Aspect.identity) : manifest the_origin Aspect.identity :=
-  Gen ((Act n).1)
 
 end GIP.Origin

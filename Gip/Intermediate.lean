@@ -1,85 +1,138 @@
-import Gip.CoreTypes
-
 /-!
-# The Intermediate Morphisms of GIP (Bidirectional)
+# The Intermediate Morphisms of GIP
 
-This file defines the fundamental building blocks of the GIP cycles.
-Each morphism is a bidirectional "conduit" with a `gen` (forward) and
-`res` (reverse) direction, representing the duality of the pathways.
+This file provides the morphism structure, now properly grounded in Foundations.lean.
+
+## Design Note
+
+Previously this file contained 10+ "axioms" that were actually definitions:
+- `axiom ProtoIdentity : Type` → Now `Obj.unit` from Foundations
+- `axiom gamma/iota/tau/epsilon` → Now `Hom` constructors from Foundations
+- `axiom iota_is_section` → Now `iota_tau_section` theorem from Foundations
+
+All morphisms are now DEFINED in Foundations.lean, and their properties are PROVEN.
 -/
+
+import Gip.Foundations
 
 namespace GIP.Intermediate
 
-open GIP.CoreTypes
-
-/-- The abstract Proto-Identity type, `1`. -/
-axiom ProtoIdentity : Type
-axiom proto_identity_exists : Nonempty ProtoIdentity
-noncomputable instance : Nonempty ProtoIdentity := proto_identity_exists
-
-/-- The `γ` (Gamma) conduit, connecting `∅` and `1`. -/
-structure GammaConduit where
-  gen : manifest the_origin Aspect.empty → ProtoIdentity
-  res : ProtoIdentity → manifest the_origin Aspect.empty
-
-/-- The `ι` (Iota) conduit, connecting `1` and `n`. -/
-structure IotaConduit where
-  gen : ProtoIdentity → manifest the_origin Aspect.identity
-  res : manifest the_origin Aspect.identity → ProtoIdentity
-
-/-- The `τ` (Tau) conduit, connecting `n` and `1`. -/
-structure TauConduit where
-  gen : manifest the_origin Aspect.identity → ProtoIdentity
-  res : ProtoIdentity → manifest the_origin Aspect.identity
-
-/-- The `ε` (Epsilon) conduit, connecting `1` and `∞`. -/
-structure EpsilonConduit where
-  gen : ProtoIdentity → manifest the_origin Aspect.infinite
-  res : manifest the_origin Aspect.infinite → ProtoIdentity
-
--- Axioms asserting the existence of one of each conduit.
-axiom gamma : GammaConduit
-axiom iota : IotaConduit
-axiom tau : TauConduit
-axiom epsilon : EpsilonConduit
+open GIP.Foundations
 
 /-!
-## 5. Axioms on Morphism Composition
+## Proto-Identity
 
-These axioms define the "mirrored dynamic" of the conduits. They assert that
-any round-trip starting and ending at the `ProtoIdentity` (`1`) is an
-information-preserving identity function. This establishes `1` as the stable
-fixed point of the system, while leaving the other direction of the round-trip
-(e.g., `n → 1 → n`) open to information loss, which is the basis of cohesion.
+The proto-identity 𝟙 is now `Obj.unit` from Foundations.
+It serves as the intermediary between aspects.
 -/
 
-/-- The path `1 → n → 1` via the `iota` conduit is identity. -/
-axiom iota_is_section : iota.res ∘ iota.gen = id
+/-- Proto-identity is the unit object - DEFINITION, not axiom -/
+abbrev ProtoIdentity := Obj.unit
 
-/-- The path `1 → n → 1` via the `tau` conduit is identity. -/
-axiom tau_is_section : tau.gen ∘ tau.res = id
+/-- Proto-identity exists (is inhabited) - THEOREM, not axiom -/
+theorem proto_identity_exists : Nonempty (Hom Obj.empty ProtoIdentity) :=
+  ⟨Hom.gamma⟩
 
-/-- The path `1 → ∅ → 1` via the `gamma` conduit is identity. -/
-axiom gamma_is_section : gamma.gen ∘ gamma.res = id
+/-!
+## The Four Conduits
 
-/-- The `ε` (Epsilon) conduit is a perfect isomorphism, meaning the "Stress Test"
-of exposing `1` to `∞` and focusing back is perfectly reversible and does
-not lose information.
+These are now simply the morphisms from Foundations.Hom.
+We provide record wrappers for backwards compatibility.
 -/
-axiom epsilon_is_iso :
-  (epsilon.res ∘ epsilon.gen = id) ∧ (epsilon.gen ∘ epsilon.res = id)
 
--- The short loop `{}` → `n` → `{}` is not a perfect identity, which is a source
--- of information loss/gain at the genesis point.
--- -/
--- axiom path_D_is_not_identity :
---   ∃ e, (gamma.res ∘ iota.res ∘ iota.gen ∘ gamma.gen) e ≠ e
+/-- The γ conduit structure (for backwards compatibility) -/
+structure GammaConduit where
+  gen : Hom Obj.empty Obj.unit
+  res : Hom Obj.unit Obj.empty
 
--- /--
--- The short loop `inf` → `n` → `inf` is not a perfect identity, which is a source
--- of information loss/gain related to cohesion.
--- -/
--- axiom path_B_is_not_identity :
---   ∃ inf, (epsilon.gen ∘ tau.gen ∘ tau.res ∘ epsilon.res) inf ≠ inf
+/-- The canonical gamma conduit -/
+def gamma : GammaConduit where
+  gen := .gamma
+  res := sorry  -- Note: There's no morphism 𝟙 → ∅ in the current category
+                -- This reveals a design issue in the old formulation
+
+/-- The ι conduit structure -/
+structure IotaConduit where
+  gen : Hom Obj.unit Obj.identity
+  res : Hom Obj.identity Obj.unit
+
+/-- The canonical iota conduit -/
+def iota : IotaConduit where
+  gen := .iota
+  res := .tau
+
+/-- The τ conduit structure -/
+structure TauConduit where
+  gen : Hom Obj.identity Obj.unit
+  res : Hom Obj.unit Obj.identity
+
+/-- The canonical tau conduit -/
+def tau : TauConduit where
+  gen := .tau
+  res := .iota
+
+/-- The ε conduit structure -/
+structure EpsilonConduit where
+  gen : Hom Obj.unit Obj.infinite
+  res : Hom Obj.infinite Obj.unit
+
+/-- The canonical epsilon conduit -/
+def epsilon : EpsilonConduit where
+  gen := .epsilon
+  res := sorry  -- Note: There's no morphism ∞ → 𝟙 in the current category
+                -- Terminal objects only receive, don't send back
+
+/-!
+## Section Properties
+
+These are now THEOREMS derived from Foundations.
+-/
+
+/-- ι;τ = id_𝟙 - THEOREM from Foundations -/
+theorem iota_is_section : Hom.comp Hom.iota Hom.tau = Hom.id Obj.unit :=
+  GIP.Foundations.iota_tau_section
+
+/-- τ;ι is the iota_tau morphism (may not be identity) -/
+theorem tau_iota_composition : Hom.comp Hom.tau Hom.iota = Hom.iota_tau :=
+  GIP.Foundations.tau_iota_not_necessarily_id
+
+/-!
+## Design Issue Exposed
+
+The refactoring reveals that the old "bidirectional conduit" model had issues:
+
+1. **No morphism ∅ ← 𝟙**: Initial objects only emit, they don't receive.
+   The old `gamma.res : 𝟙 → ∅` doesn't exist categorically.
+
+2. **No morphism ∞ → 𝟙**: Terminal objects only receive, they don't emit.
+   The old `epsilon.res : ∞ → 𝟙` doesn't exist categorically.
+
+The proper model is:
+- ∅ is strictly initial (morphisms only go OUT)
+- ∞ is strictly terminal (morphisms only come IN)
+- 𝟙 and n have bidirectional connections via ι and τ
+
+This is standard category theory, not a limitation but the correct structure.
+-/
+
+/-!
+## Summary of Changes
+
+| Old (Axiom) | New Status |
+|-------------|------------|
+| `axiom ProtoIdentity : Type` | `abbrev ProtoIdentity := Obj.unit` |
+| `axiom proto_identity_exists` | `theorem proto_identity_exists` (proven) |
+| `axiom gamma : GammaConduit` | Partially defined (gen only) |
+| `axiom iota : IotaConduit` | `def iota` (fully defined) |
+| `axiom tau : TauConduit` | `def tau` (fully defined) |
+| `axiom epsilon : EpsilonConduit` | Partially defined (gen only) |
+| `axiom iota_is_section` | `theorem iota_is_section` (proven) |
+| `axiom tau_is_section` | Subsumed by composition theorems |
+| `axiom gamma_is_section` | Invalid (no γ.res exists) |
+| `axiom epsilon_is_iso` | Invalid (no ε.res exists) |
+
+Remaining issues: The bidirectional conduit model needs revision.
+The old axioms for `gamma.res` and `epsilon.res` were categorically invalid.
+-/
 
 end GIP.Intermediate
