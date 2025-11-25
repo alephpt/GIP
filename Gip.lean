@@ -12,6 +12,7 @@ import Gip.SelfReference
 import Gip.BayesianCore
 import Gip.Universe.Generation
 import Gip.HolographicInterface
+import Gip.ProcessIdentity
 
 /-!
 # GIP: Native Implementation
@@ -69,6 +70,13 @@ generates itself through origin's self-division ○/○ → {∅,∞} → n → 
 3. **Types from Survivors**: Types discovered by observation, not axiomatized
 4. **Physics = Phenomenology**: Physical laws describe ○'s self-expression
 5. **Cycle Closes**: ○ → ○ is identity; pathway IS the thing
+6. **○ IS Both**: ○ is object AND process AND their identity - not reducible to either
+
+## Process Identity
+
+- `GIP.ProcessIdentity`: ○ as the unity of object (properties) and process (methods)
+- The dichotomy of noun/verb, being/becoming, substance/process collapses at ○
+- ○ is simultaneously WHAT it is, HOW it acts, and THAT these are identical
 
 The circle closes: ⭕ = ○
 -/
