@@ -25,11 +25,11 @@ open GIP.Foundations
 -/
 
 /-- ○ → ∅ exists -/
-theorem origin_to_empty : ∃ f : Hom Obj.origin Obj.aspect_empty, True :=
+theorem origin_to_empty : ∃ _ : Hom Obj.origin Obj.aspect_empty, True :=
   ⟨Hom.origin_to_empty, trivial⟩
 
 /-- ○ → ∞ exists -/
-theorem origin_to_inf : ∃ f : Hom Obj.origin Obj.aspect_infinite, True :=
+theorem origin_to_inf : ∃ _ : Hom Obj.origin Obj.aspect_infinite, True :=
   ⟨Hom.origin_to_inf, trivial⟩
 
 /-- ○ → ∅ is unique -/
@@ -45,11 +45,11 @@ theorem origin_to_inf_unique (f g : Hom Obj.origin Obj.aspect_infinite) : f = g 
 -/
 
 /-- ∅ → ○ exists -/
-theorem empty_to_origin : ∃ f : Hom Obj.aspect_empty Obj.origin, True :=
+theorem empty_to_origin : ∃ _ : Hom Obj.aspect_empty Obj.origin, True :=
   ⟨Hom.empty_to_origin, trivial⟩
 
 /-- ∞ → ○ exists -/
-theorem inf_to_origin : ∃ f : Hom Obj.aspect_infinite Obj.origin, True :=
+theorem inf_to_origin : ∃ _ : Hom Obj.aspect_infinite Obj.origin, True :=
   ⟨Hom.inf_to_origin, trivial⟩
 
 /-- ∅ → ○ is unique -/

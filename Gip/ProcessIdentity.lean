@@ -45,13 +45,13 @@ structure OriginAsObject where
   /-- The aspects as structure -/
   aspects : Type
   /-- ○ → ∅ exists -/
-  has_to_empty : ∃ f : Hom Obj.origin Obj.aspect_empty, True
+  has_to_empty : ∃ _ : Hom Obj.origin Obj.aspect_empty, True
   /-- ○ → ∞ exists -/
-  has_to_inf : ∃ f : Hom Obj.origin Obj.aspect_infinite, True
+  has_to_inf : ∃ _ : Hom Obj.origin Obj.aspect_infinite, True
   /-- ∅ → ○ exists -/
-  has_from_empty : ∃ f : Hom Obj.aspect_empty Obj.origin, True
+  has_from_empty : ∃ _ : Hom Obj.aspect_empty Obj.origin, True
   /-- ∞ → ○ exists -/
-  has_from_inf : ∃ f : Hom Obj.aspect_infinite Obj.origin, True
+  has_from_inf : ∃ _ : Hom Obj.aspect_infinite Obj.origin, True
 
 /-- The canonical object view -/
 def origin_as_object : OriginAsObject where
@@ -115,17 +115,17 @@ def the_origin_unified : OriginUnified where
 
 /-- Origin Property: ○ connects to aspects -/
 theorem origin_property :
-    (∃ f : Hom Obj.origin Obj.aspect_empty, True) ∧
-    (∃ g : Hom Obj.origin Obj.aspect_infinite, True) ∧
-    (∃ f : Hom Obj.aspect_empty Obj.origin, True) ∧
-    (∃ g : Hom Obj.aspect_infinite Obj.origin, True) :=
+    (∃ _ : Hom Obj.origin Obj.aspect_empty, True) ∧
+    (∃ _ : Hom Obj.origin Obj.aspect_infinite, True) ∧
+    (∃ _ : Hom Obj.aspect_empty Obj.origin, True) ∧
+    (∃ _ : Hom Obj.aspect_infinite Obj.origin, True) :=
   ⟨⟨Hom.origin_to_empty, trivial⟩, ⟨Hom.origin_to_inf, trivial⟩,
    ⟨Hom.empty_to_origin, trivial⟩, ⟨Hom.inf_to_origin, trivial⟩⟩
 
 /-- Zero Dichotomy Property: ○ is both object and process -/
 theorem zero_dichotomy_property :
-    (∃ obj : OriginAsObject, True) ∧
-    (∃ proc : OriginAsProcess, True) :=
+    (∃ _ : OriginAsObject, True) ∧
+    (∃ _ : OriginAsProcess, True) :=
   ⟨⟨origin_as_object, trivial⟩, ⟨origin_as_process, trivial⟩⟩
 
 /-- Dichotomy collapse is essential to ○'s nature -/
@@ -141,8 +141,8 @@ The aspects participate in transformations.
 
 /-- The aspects participate in transformations -/
 theorem aspects_are_transformations :
-    (∃ f : Hom Obj.aspect_empty Obj.identity, True) ∧
-    (∃ g : Hom Obj.aspect_infinite Obj.identity, True) :=
+    (∃ _ : Hom Obj.aspect_empty Obj.identity, True) ∧
+    (∃ _ : Hom Obj.aspect_infinite Obj.identity, True) :=
   ⟨⟨Gen, trivial⟩, ⟨Res, trivial⟩⟩
 
 /-- The transformations define the aspects -/
@@ -164,9 +164,9 @@ Final statement: ○ is the identity of all dichotomies.
 
 /-- The ultimate theorem: ○ is both and the identity of both -/
 theorem origin_is_both_and_identity :
-    (∃ o : OriginAsObject, True) ∧
-    (∃ p : OriginAsProcess, True) ∧
-    (∃ u : OriginUnified, True) :=
+    (∃ _ : OriginAsObject, True) ∧
+    (∃ _ : OriginAsProcess, True) ∧
+    (∃ _ : OriginUnified, True) :=
   ⟨⟨origin_as_object, trivial⟩,
    ⟨origin_as_process, trivial⟩,
    ⟨the_origin_unified, trivial⟩⟩

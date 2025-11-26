@@ -242,19 +242,19 @@ def infToOrigin : Hom ∞ ○ := Hom.inf_to_origin
 
 /-- Morphisms ○ → ∅ are unique -/
 theorem morphismOriginToEmpty_unique (f g : Hom ○ ∅) : f = g := by
-  cases f <;> cases g <;> rfl
+  cases f; cases g; rfl
 
 /-- Morphisms ○ → ∞ are unique -/
 theorem morphismOriginToInf_unique (f g : Hom ○ ∞) : f = g := by
-  cases f <;> cases g <;> rfl
+  cases f; cases g; rfl
 
 /-- Morphisms ∅ → ○ are unique -/
 theorem morphismEmptyToOrigin_unique (f g : Hom ∅ ○) : f = g := by
-  cases f <;> cases g <;> rfl
+  cases f; cases g; rfl
 
 /-- Morphisms ∞ → ○ are unique -/
 theorem morphismInfToOrigin_unique (f g : Hom ∞ ○) : f = g := by
-  cases f <;> cases g <;> rfl
+  cases f; cases g; rfl
 
 /-!
 ## Part 5: The Isomorphism ∅ ≅ ∞
@@ -345,21 +345,21 @@ n is where structure "happens" - it's the realization, not the source/sink.
 
 /-- n receives from both aspects -/
 theorem n_receives :
-    (∃ f : Hom ∅ 𝕟, True) ∧ (∃ g : Hom ∞ 𝕟, True) :=
+    (∃ _ : Hom ∅ 𝕟, True) ∧ (∃ _ : Hom ∞ 𝕟, True) :=
   ⟨⟨Gen, trivial⟩, ⟨Res, trivial⟩⟩
 
 /-- n emits to both aspects -/
 theorem n_emits :
-    (∃ f : Hom 𝕟 ∅, True) ∧ (∃ g : Hom 𝕟 ∞, True) :=
+    (∃ _ : Hom 𝕟 ∅, True) ∧ (∃ _ : Hom 𝕟 ∞, True) :=
   ⟨⟨act.to_empty, trivial⟩, ⟨act.to_infinite, trivial⟩⟩
 
 /-- n is a hub: it has bidirectional flow with the aspects
     This is NOT the same as being a zero object -/
 theorem n_is_hub :
   -- n receives from both aspects
-  ((∃ f : Hom ∅ 𝕟, True) ∧ (∃ g : Hom ∞ 𝕟, True)) ∧
+  ((∃ _ : Hom ∅ 𝕟, True) ∧ (∃ _ : Hom ∞ 𝕟, True)) ∧
   -- n emits to both aspects
-  ((∃ f : Hom 𝕟 ∅, True) ∧ (∃ g : Hom 𝕟 ∞, True)) :=
+  ((∃ _ : Hom 𝕟 ∅, True) ∧ (∃ _ : Hom 𝕟 ∞, True)) :=
   ⟨n_receives, n_emits⟩
 
 /-!

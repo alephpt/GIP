@@ -66,25 +66,25 @@ Other objects reach ○ through the aspects.
 
 /-- ∅ → ∅ factors as ∅ → ○ → ∅ -/
 theorem empty_factors_through_origin_empty :
-    ∃ (f : Hom Obj.aspect_empty Obj.origin) (g : Hom Obj.origin Obj.aspect_empty),
+    ∃ (_ : Hom Obj.aspect_empty Obj.origin) (_ : Hom Obj.origin Obj.aspect_empty),
       True :=
   ⟨Hom.empty_to_origin, Hom.origin_to_empty, trivial⟩
 
 /-- ∅ → ∞ factors as ∅ → ○ → ∞ -/
 theorem empty_factors_through_origin_inf :
-    ∃ (f : Hom Obj.aspect_empty Obj.origin) (g : Hom Obj.origin Obj.aspect_infinite),
+    ∃ (_ : Hom Obj.aspect_empty Obj.origin) (_ : Hom Obj.origin Obj.aspect_infinite),
       True :=
   ⟨Hom.empty_to_origin, Hom.origin_to_inf, trivial⟩
 
 /-- ∞ → ∅ factors as ∞ → ○ → ∅ -/
 theorem inf_factors_through_origin_empty :
-    ∃ (f : Hom Obj.aspect_infinite Obj.origin) (g : Hom Obj.origin Obj.aspect_empty),
+    ∃ (_ : Hom Obj.aspect_infinite Obj.origin) (_ : Hom Obj.origin Obj.aspect_empty),
       True :=
   ⟨Hom.inf_to_origin, Hom.origin_to_empty, trivial⟩
 
 /-- ∞ → ∞ factors as ∞ → ○ → ∞ -/
 theorem inf_factors_through_origin_inf :
-    ∃ (f : Hom Obj.aspect_infinite Obj.origin) (g : Hom Obj.origin Obj.aspect_infinite),
+    ∃ (_ : Hom Obj.aspect_infinite Obj.origin) (_ : Hom Obj.origin Obj.aspect_infinite),
       True :=
   ⟨Hom.inf_to_origin, Hom.origin_to_inf, trivial⟩
 

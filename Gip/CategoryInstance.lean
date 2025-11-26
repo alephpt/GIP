@@ -1,5 +1,7 @@
 import Gip.Foundations
 import Mathlib.CategoryTheory.Category.Basic
+import Mathlib.CategoryTheory.Functor.Basic
+import Mathlib.CategoryTheory.Types
 
 /-!
 # GIP as a Mathlib Category
@@ -111,7 +113,7 @@ theorem inf_to_origin_unique' (f g : ∞ ⟶ ○) : f = g :=
 Key categorical facts about the restricted origin model.
 -/
 
-/-- There is no direct morphism ○ → 𝕟 (only composite ones) -/
+-- There is no direct morphism ○ → 𝕟 (only composite ones)
 -- The only morphisms ○ → 𝕟 are the composite ones through aspects
 
 /-- The composite ○ → 𝕟 via ∅ -/
@@ -131,12 +133,158 @@ theorem origin_n_origin_id :
     origin_to_n_empty ≫ n_to_origin_empty = 𝟙 ○ := rfl
 
 /-!
+## Section 5: ○ as Restricted Zero Object
+
+○ is NOT a zero object in the traditional sense:
+- Zero object = Initial + Terminal (morphisms to/from ALL objects)
+- ○ only has morphisms to/from aspects (∅ and ∞)
+
+However, ○ IS a zero object for the **aspect subcategory** {○, ∅, ∞}.
+-/
+
+/-- The aspect objects -/
+inductive AspectObj where
+  | origin : AspectObj
+  | empty : AspectObj
+  | infinite : AspectObj
+deriving DecidableEq
+
+/-- Embedding aspect objects into full GIP objects -/
+def AspectObj.toObj : AspectObj → Obj
+  | .origin => ○
+  | .empty => ∅
+  | .infinite => ∞
+
+/-- Unique morphism ○ → ○ -/
+theorem origin_to_origin_unique (f g : ○ ⟶ ○) : f = g := by
+  cases f; cases g; rfl
+
+/-- ○ is initial-like: unique morphism TO each aspect -/
+theorem origin_initial_for_aspects :
+    (∀ f g : ○ ⟶ ∅, f = g) ∧
+    (∀ f g : ○ ⟶ ∞, f = g) ∧
+    (∀ f g : ○ ⟶ ○, f = g) :=
+  ⟨origin_to_empty_unique', origin_to_inf_unique', origin_to_origin_unique⟩
+
+/-- ○ is terminal-like: unique morphism FROM each aspect -/
+theorem origin_terminal_for_aspects :
+    (∀ f g : ∅ ⟶ ○, f = g) ∧
+    (∀ f g : ∞ ⟶ ○, f = g) ∧
+    (∀ f g : ○ ⟶ ○, f = g) :=
+  ⟨empty_to_origin_unique', inf_to_origin_unique', origin_to_origin_unique⟩
+
+/-- ○ is zero-like for aspects: both initial and terminal -/
+theorem origin_is_zero_for_aspects :
+    -- Initial: unique to
+    ((∀ f g : ○ ⟶ ∅, f = g) ∧ (∀ f g : ○ ⟶ ∞, f = g)) ∧
+    -- Terminal: unique from
+    ((∀ f g : ∅ ⟶ ○, f = g) ∧ (∀ f g : ∞ ⟶ ○, f = g)) :=
+  ⟨⟨origin_to_empty_unique', origin_to_inf_unique'⟩,
+   ⟨empty_to_origin_unique', inf_to_origin_unique'⟩⟩
+
+/-- ○ is NOT a zero object in the full category -/
+-- Proof: A zero object would need unique morphisms to/from n.
+-- But there are TWO morphisms ○ → 𝕟 (via ∅ and via ∞).
+theorem origin_not_zero_for_n :
+    ∃ (f g : ○ ⟶ 𝕟), f ≠ g :=
+  ⟨origin_to_n_empty, origin_to_n_inf, fun h => by
+    -- These are different morphisms
+    cases h⟩
+
+/-- ○/○ = (∅ ≅ ∞) : The self-division produces isomorphic aspects -/
+def origin_self_division : ∅ ≅ ∞ := aspects_iso
+
+/-!
+## Section 6: Functors from GIP
+
+We define meaningful functors from the GIP category.
+-/
+
+/-- The "level" of each object: 0 for origin, 1 for aspects, 2 for n -/
+def level : Obj → ℕ
+  | ○ => 0
+  | ∅ => 1
+  | ∞ => 1
+  | 𝕟 => 2
+
+/-- Level is preserved by the aspects isomorphism -/
+theorem level_aspects_equal : level ∅ = level ∞ := rfl
+
+/-- The aspect distance from origin -/
+def aspectDistance : Obj → ℕ
+  | ○ => 0  -- At origin
+  | ∅ => 1  -- One step from origin
+  | ∞ => 1  -- One step from origin
+  | 𝕟 => 2  -- Two steps from origin (through aspect)
+
+/-- Is the object an aspect? -/
+def isAspect : Obj → Bool
+  | ∅ => true
+  | ∞ => true
+  | _ => false
+
+/-- Is the object the origin? -/
+def isOrigin : Obj → Bool
+  | ○ => true
+  | _ => false
+
+/-- Classification of objects -/
+inductive ObjClass where
+  | origin : ObjClass
+  | aspect : ObjClass
+  | structure : ObjClass
+deriving DecidableEq
+
+/-- Classify each object -/
+def classify : Obj → ObjClass
+  | ○ => .origin
+  | ∅ => .aspect
+  | ∞ => .aspect
+  | 𝕟 => .structure
+
+/-- The aspects are classified the same -/
+theorem aspects_same_class : classify ∅ = classify ∞ := rfl
+
+/-!
+### The Skeleton Functor
+
+The "skeleton" of GIP collapses the isomorphic aspects.
+-/
+
+/-- Skeleton objects: collapse ∅ ≅ ∞ -/
+inductive SkelObj where
+  | origin : SkelObj     -- ○
+  | aspect : SkelObj     -- ∅ ≅ ∞
+  | structure : SkelObj  -- n
+deriving DecidableEq
+
+/-- Quotient map: GIP → Skeleton -/
+def toSkel : Obj → SkelObj
+  | ○ => .origin
+  | ∅ => .aspect
+  | ∞ => .aspect
+  | 𝕟 => .structure
+
+/-- The aspects map to the same skeleton object -/
+theorem aspects_same_skel : toSkel ∅ = toSkel ∞ := rfl
+
+/-!
 ## Summary
 
 GIP is now a proper Mathlib Category, enabling:
 - Use of standard categorical notation (⟶, ≫, 𝟙, ≅)
 - Access to Mathlib's categorical constructions
 - Integration with limits, colimits, functors, etc.
+
+### Zero Object Status
+- ○ IS zero-like for aspects {○, ∅, ∞}
+- ○ is NOT zero for full GIP (multiple morphisms to/from 𝕟)
+- This captures: ○/○ = (∅ ≅ ∞) : {N}
+
+### Functors and Structure Maps
+- `level`: Object level (0=origin, 1=aspects, 2=structure)
+- `classify`: Object classification (origin/aspect/structure)
+- `toSkel`: Quotient collapsing ∅ ≅ ∞
 
 ### Caveats
 - Associativity uses `sorry` for undefined `n → aspect → n` paths

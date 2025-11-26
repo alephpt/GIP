@@ -68,10 +68,10 @@ n is a hub with bidirectional flow, not a zero object.
 
 /-- n has bidirectional flow with aspects -/
 theorem hub_bidirectional :
-    ((∃ f : Hom Obj.aspect_empty Obj.identity, True) ∧
-     (∃ g : Hom Obj.aspect_infinite Obj.identity, True)) ∧
-    ((∃ f : Hom Obj.identity Obj.aspect_empty, True) ∧
-     (∃ g : Hom Obj.identity Obj.aspect_infinite, True)) :=
+    ((∃ _ : Hom Obj.aspect_empty Obj.identity, True) ∧
+     (∃ _ : Hom Obj.aspect_infinite Obj.identity, True)) ∧
+    ((∃ _ : Hom Obj.identity Obj.aspect_empty, True) ∧
+     (∃ _ : Hom Obj.identity Obj.aspect_infinite, True)) :=
   n_is_hub
 
 /-!
@@ -126,10 +126,10 @@ theorem foundation_is_sound :
        Hom.comp f g = Hom.id Obj.aspect_empty ∧
        Hom.comp g f = Hom.id Obj.aspect_infinite) ∧
     -- n is hub
-    (((∃ f : Hom Obj.aspect_empty Obj.identity, True) ∧
-      (∃ g : Hom Obj.aspect_infinite Obj.identity, True)) ∧
-     ((∃ f : Hom Obj.identity Obj.aspect_empty, True) ∧
-      (∃ g : Hom Obj.identity Obj.aspect_infinite, True))) :=
+    (((∃ _ : Hom Obj.aspect_empty Obj.identity, True) ∧
+      (∃ _ : Hom Obj.aspect_infinite Obj.identity, True)) ∧
+     ((∃ _ : Hom Obj.identity Obj.aspect_empty, True) ∧
+      (∃ _ : Hom Obj.identity Obj.aspect_infinite, True))) :=
   ⟨⟨origin_to_empty_is_unique, origin_to_inf_is_unique,
     empty_to_origin_is_unique, inf_to_origin_is_unique⟩,
    aspects_are_isomorphic, hub_bidirectional⟩
