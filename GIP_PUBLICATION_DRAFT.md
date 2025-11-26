@@ -55,6 +55,8 @@ Our framework builds upon and synthesizes several mathematical traditions:
 
 **Process Philosophy** (Whitehead [11]): The notion of "process" as fundamental rather than "substance" resonates with our treatment of ○ as generative operation rather than static entity.
 
+**Generator-Filter Principle** (Azari [24]): Independent work on meta-variational frameworks provides mathematical validation of GIP's Gen-Res-Act structure. Azari's Information Action functional I[G,F] = ⟨F,G⟩ - E(G,F) corresponds directly to our Cohesion measure, confirming that the Generator (Gen: ∅→n) and Filter (Res: ∞→n) dynamics produce emergent structure through constructive interference. This validates our claim that quantum mechanics and general relativity are limiting cases of the same categorical cycle.
+
 ### 1.3 Overview of Results
 
 We establish the following main results, all mechanically verified in Lean 4:
@@ -639,6 +641,18 @@ theorem information_monotone
 
 *Falsification*: If information loss observed in closed systems AND those systems have high cohesion.
 
+**P5: Path Integral = Cohesion**
+
+*Prediction*: Feynman path integral amplitudes correspond to cohesion measure. High-action paths (low cohesion) destructively interfere; low-action paths (high cohesion) constructively interfere to produce classical trajectories.
+
+*Mathematical Statement*: Cohesion(n) = ∫ exp(-α·I_G + i·S_tot/ℏ) where I_G is information entropy (Gen) and S_tot is physical action (Res).
+
+*Test Protocol*: Compare path integral calculations for quantum systems with cohesion predictions. The α parameter should tune quantum-classical transition: α→0 (quantum regime), α→∞ (classical regime).
+
+*Falsification*: If high-cohesion quantum states show non-classical behavior, or if path integral predictions systematically deviate from cohesion calculations.
+
+*Supporting Work*: Azari [24] independently derives equivalent Generator-Filter dynamics, validating that GIP's Gen-Res-Act cycle produces standard quantum mechanics and general relativity as limiting cases.
+
 ### 9.2 Falsification Criteria Summary
 
 | Criterion | GIP Prediction | Falsifying Observation |
@@ -830,6 +844,8 @@ The Generalized Initial-object Projection demonstrates that the deepest structur
 [22] J. A. Wheeler, "Information, physics, quantum: The search for links," in *Complexity, Entropy, and the Physics of Information*, Addison-Wesley, 1990.
 
 [23] R. Penrose, "Twistor algebra," *Journal of Mathematical Physics*, vol. 8, pp. 345–366, 1967.
+
+[24] E. Azari, "The Generator-Filter Principle: A Meta-Variational Framework for Emergent Systems," Zenodo, 2025. DOI: 10.5281/zenodo.17584733
 
 ---
 
