@@ -30,7 +30,7 @@ Ehsan Azari's Generator-Filter Principle (also called the Meta-Variational Princ
 | **Interplay G ↔ F** | **Autopoietic Cycle** | Gen-Act-Res-Act self-production |
 | **Dynamic Adaptive Geometry** | **Holographic collapse through ○** | Unique factorization, information loss |
 | **Antisymmetric operator J** | **Bifurcation ∅ ≅ ∞** | Conservative dynamics, isomorphism |
-| **Symmetric operator G** | **Act: n → (∅, ∞)** | Dissipative dynamics, return to aspects |
+| **Symmetric operator G** | **Act: n → (∅, ∞)** | MIRROR operator: backward to BOTH aspects simultaneously |
 
 ---
 
@@ -141,9 +141,11 @@ Act : n → (∅, ∞)  (return to dual aspects)
 ```
 
 **Physical Meaning**:
-- **J (antisymmetric)**: The Gen-Res exchange is **reciprocal** — ∅ ≅ ∞ are isomorphic
-- **G (dissipative)**: Act introduces **friction**, collapsing superposition into definite states
-- **Combined**: Reality emerges from the balance of exploration (Gen) and selection (Res)
+- **J (antisymmetric)**: The ∅ ≅ ∞ isomorphism is **conservative** — aspects are equivalent
+- **G (dissipative)**: Act is the **MIRROR** — reflects identity back to BOTH aspects simultaneously
+- **Combined**: Reality emerges from:
+  - FORWARD: Gen and Res (creation from aspects)
+  - BACKWARD: Act (dissolution to aspects)
 
 ---
 
