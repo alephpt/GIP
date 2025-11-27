@@ -31,6 +31,29 @@ Ehsan Azari's Generator-Filter Principle (also called the Meta-Variational Princ
 | **Dynamic Adaptive Geometry** | **Holographic collapse through ○** | Unique factorization, information loss |
 | **Antisymmetric operator J** | **Bifurcation ∅ ≅ ∞** | Conservative dynamics, isomorphism |
 | **Symmetric operator G** | **Act: n → (∅, ∞)** | MIRROR operator: backward to BOTH aspects simultaneously |
+| **Dual Sources** | **○/○ = (∅, ∞)** | Duality from unity: BOTH aspects are initial objects |
+
+---
+
+## Duality from Unity: The Dual Initial Objects
+
+**Key Categorical Insight**: When the origin divides by itself, **○/○ = (∅, ∞)**, it produces **dual initial objects**.
+
+In category theory, an initial object has unique morphisms TO all other objects. GIP has a unique structure:
+- **BOTH ∅ and ∞ are initial objects simultaneously**
+- They are **isomorphic**: ∅ ≅ ∞
+- Gen (∅ → n) and Res (∞ → n) are the **unique morphisms** from these initials to identity
+
+This "duality from unity" means:
+1. **Single source bifurcates**: ○ self-divides into two isomorphic initials
+2. **Both are sources**: Gen and Res both go FORWARD from their respective initials
+3. **Mirror completes cycle**: Act goes BACKWARD, reflecting n to BOTH aspects simultaneously
+4. **Autopoiesis**: The system produces itself from its own division
+
+**Physical Interpretation**:
+- The Generator and Filter are not different systems but **dual aspects of a single unified source**
+- Quantum paths (Gen from ∅) and classical constraints (Res from ∞) arise from the **same primordial division**
+- Reality = constructive interference between these dual sources at identity n
 
 ---
 
@@ -316,12 +339,18 @@ The Gen-Res-Act cycle is autopoietic:
 
 **1. Self-Production**:
 ```
-Gen: ∅ → n    (produces identity from empty potential)
-Act: n → (∅, ∞)    (decomposes identity back to dual aspects)
-Res: ∞ → n    (produces identity from infinite saturation)
+FORWARD (aspects → identity):
+  Gen: ∅ → n    (produces identity from empty potential)
+  Res: ∞ → n    (produces identity from infinite saturation)
+
+BACKWARD (identity → aspects) - THE MIRROR:
+  Act: n → (∅, ∞)    (dissolves identity to BOTH dual aspects)
 ```
 
-The system produces its own components (n) from its own outputs (∅, ∞). No external input required.
+The system produces its own components through bidirectional flow:
+- Forward: Aspects (∅, ∞) → Identity (n) via Gen and Res
+- Backward: Identity (n) → Aspects (∅, ∞) via Act (mirror)
+No external input required.
 
 **2. Self-Maintenance**:
 ```

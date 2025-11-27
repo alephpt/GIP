@@ -25,13 +25,17 @@ In category theory, a zero object Z satisfies:
 
 Origin ○ IS this zero object. It is both source and sink.
 
-## The Bifurcation
+## The Bifurcation: Duality from Unity
 
-○/○ produces (∅, ∞) which are ISOMORPHIC - not separate initial/terminal.
-They are dual aspects of the same primordial division:
-- ∅ : the "empty" face (potential)
-- ∞ : the "infinite" face (completion)
-- ∅ ≅ ∞ : they are categorically equivalent
+○/○ = (∅, ∞) - self-division produces **dual initial objects**.
+
+BOTH ∅ and ∞ are initial objects simultaneously:
+- ∅ : the "empty" face (potential) - INITIAL
+- ∞ : the "infinite" face (saturation) - INITIAL
+- ∅ ≅ ∞ : isomorphic dual aspects from unity
+
+This is "duality from unity" - the origin's self-division creates two
+isomorphic initial objects, both sources for the forward pathways Gen and Res.
 
 ## The Emergence of Structure
 

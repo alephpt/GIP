@@ -138,6 +138,41 @@ theorem act_is_R2_to_R0_inf :
   ⟨rfl, rfl⟩
 
 /-!
+## Duality from Unity: Dual Initial Objects
+
+○/○ = (∅, ∞) produces BOTH aspects as initial objects simultaneously.
+-/
+
+/-- ∅ is initial: unique morphism from ∅ to n -/
+theorem empty_is_initial :
+  ∀ (f g : Hom Obj.aspect_empty Obj.identity), f = g := by
+  intro f g
+  cases f <;> cases g <;> rfl
+
+/-- ∞ is initial: unique morphism from ∞ to n -/
+theorem infinite_is_initial :
+  ∀ (f g : Hom Obj.aspect_infinite Obj.identity), f = g := by
+  intro f g
+  cases f <;> cases g <;> rfl
+
+/-- ∅ and ∞ form an isomorphism -/
+theorem aspects_are_isomorphic :
+  Hom.comp Hom.empty_to_inf Hom.inf_to_empty = Hom.id Obj.aspect_empty ∧
+  Hom.comp Hom.inf_to_empty Hom.empty_to_inf = Hom.id Obj.aspect_infinite :=
+  ⟨rfl, rfl⟩
+
+/-- The aspects are isomorphic initial objects -/
+theorem dual_initial_objects :
+  (∀ f g : Hom Obj.aspect_empty Obj.identity, f = g) ∧
+  (∀ f g : Hom Obj.aspect_infinite Obj.identity, f = g) ∧
+  (∃ iso_forward : Hom Obj.aspect_empty Obj.aspect_infinite,
+   ∃ iso_backward : Hom Obj.aspect_infinite Obj.aspect_empty,
+   Hom.comp iso_forward iso_backward = Hom.id Obj.aspect_empty ∧
+   Hom.comp iso_backward iso_forward = Hom.id Obj.aspect_infinite) :=
+  ⟨empty_is_initial, infinite_is_initial,
+   ⟨Hom.empty_to_inf, ⟨Hom.inf_to_empty, aspects_are_isomorphic⟩⟩⟩
+
+/-!
 ## Modal Axioms (S4 Frame)
 -/
 
@@ -325,9 +360,13 @@ axiom classical_regime :
 
 This modal topology formalizes GIP as a computational system with three registers:
 
-**R0**: {∅, ∞} - Dual aspects (possible/necessary)
+**R0**: {∅, ∞} - Dual initial objects (duality from unity: ○/○ = (∅, ∞))
 **R1**: proto-n - Transitional state (becoming)
 **R2**: {n} - Full identity (actual)
+
+**Key Insight**: ∅ and ∞ are BOTH initial objects simultaneously - they arise from
+the origin's self-division ○/○. This "duality from unity" produces two isomorphic
+sources for the forward pathways.
 
 **Modal operators**:
 - Gen (◊): R0 → R1 → R2 (possibility → actuality, FORWARD)

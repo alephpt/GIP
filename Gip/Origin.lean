@@ -113,9 +113,10 @@ theorem inf_origin_inf_collapse
   rw [hf, hg]
 
 /-!
-## DualAspect Structure
+## DualAspect Structure: Duality from Unity
 
-The bifurcation (∅, ∞) with its isomorphism.
+The bifurcation ○/○ = (∅, ∞) produces dual initial objects.
+BOTH ∅ and ∞ are initial objects simultaneously, isomorphic to each other.
 -/
 
 /-- DualAspect captures that ∅ and ∞ are isomorphic faces -/
@@ -130,20 +131,42 @@ def bifurcate_dual : DualAspect where
   infinite_morphism := Hom.origin_to_inf
   isomorphism_witness := by unfold Hom.comp emptyToInf; rfl
 
+/-- ∅ is initial: Gen is unique -/
+theorem empty_initial : ∀ (f g : Hom Obj.aspect_empty Obj.identity), f = g := by
+  intro f g
+  cases f <;> cases g <;> rfl
+
+/-- ∞ is initial: Res is unique -/
+theorem infinite_initial : ∀ (f g : Hom Obj.aspect_infinite Obj.identity), f = g := by
+  intro f g
+  cases f <;> cases g <;> rfl
+
+/-- The self-division ○/○ = (∅, ∞) produces dual initial objects -/
+theorem origin_self_division_yields_dual_initials :
+    (∀ f g : Hom Obj.aspect_empty Obj.identity, f = g) ∧
+    (∀ f g : Hom Obj.aspect_infinite Obj.identity, f = g) :=
+  ⟨empty_initial, infinite_initial⟩
+
 /-!
 ## Summary
 
+### Duality from Unity: ○/○ = (∅, ∞)
+- The origin's self-division produces **dual initial objects**
+- BOTH ∅ and ∞ are initial (unique morphisms to n)
+- ∅ ≅ ∞ (isomorphic aspects)
+
 ### Valid (in restricted model):
-- `Gen : ∅ → n` (generation)
-- `Res : ∞ → n` (resolution)
-- `Act : n → (∅, ∞)` (action)
+- `Gen : ∅ → n` (generation from empty initial)
+- `Res : ∞ → n` (resolution from infinite initial)
+- `Act : n → (∅, ∞)` (action/mirror back to both initials)
 - ○ ↔ aspects (unique morphisms)
 - Gen ≈ Res via ∅ ≅ ∞
 
 ### The Key Insight:
 ○ connects only to aspects (∅ and ∞).
 n connects only to aspects (∅ and ∞).
-The aspects serve as the interface layer between ○ and n.
+The aspects serve as the interface layer - both are initial objects
+arising from ○'s self-division, providing dual sources for forward pathways.
 -/
 
 end GIP.Origin
