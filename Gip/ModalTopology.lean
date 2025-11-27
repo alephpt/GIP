@@ -24,18 +24,23 @@ n (Identity) = ACTUAL      (realized, what is)
 Gen pathway (R0 → R1 → R2):
   ∅ → proto-n → n    (possibility becomes actuality)
 
-Res pathway (R2 → R1 → R0):
-  n → proto-n → ∞    (actuality returns to necessity)
+Res pathway (R0 → R1 → R2):
+  ∞ → proto-n → n    (necessity becomes actuality)
+
+Act pathway (R2 → R1 → R0):
+  n → proto-n → (∅, ∞)    (actuality dissolves to BOTH aspects - MIRROR)
 
 ## Modal Operators
 
-In S4 modal logic:
-- □ (Necessity)  = Res pathway (collapse to necessary)
-- ◊ (Possibility) = Gen pathway (expand to possible)
-- Actual         = Fixed in R2
+BOTH Gen and Res are FORWARD operators (R0 → R2):
+- Gen (◊): ∅ → n (possibility → actuality)
+- Res (□): ∞ → n (necessity → actuality)
 
-The proto-identity (R1) is the **modal transition** - neither fully possible
-nor fully actual, but in the process of becoming.
+Act is the BACKWARD/MIRROR operator (R2 → R0):
+- Act: n → (∅, ∞) (actuality → dual aspects SIMULTANEOUSLY)
+
+The proto-identity (R1) is the **modal transition** - traversed in both
+directions (forward by Gen/Res, backward by Act).
 -/
 
 namespace GIP.ModalTopology
@@ -87,20 +92,22 @@ def is_actual (x : Obj) : Prop :=
 -/
 
 /-- Gen: Possibility operator (◊)
-    Takes R0 → R1 → R2 (∅ → proto-n → n) -/
+    Forward: R0 → R1 → R2 (∅ → proto-n → n) -/
 def possibility_operator : Hom Obj.aspect_empty Obj.identity :=
   Hom.gen
 
 /-- Res: Necessity operator (□)
-    Takes R2 → R1 → R0 (n → proto-n → ∞) -/
+    Forward: R0 → R1 → R2 (∞ → proto-n → n) -/
 def necessity_operator : Hom Obj.aspect_infinite Obj.identity :=
   Hom.res
 
-/-- Act: Return from R2 to R0 (dissolving actuality) -/
-def dissolution_to_possible : Hom Obj.identity Obj.aspect_empty :=
+/-- Act: Mirror operator
+    Backward: R2 → R1 → R0 (n → proto-n → (∅, ∞))
+    Dissolves actuality back to BOTH aspects simultaneously -/
+def mirror_to_possible : Hom Obj.identity Obj.aspect_empty :=
   Hom.act_empty
 
-def dissolution_to_necessary : Hom Obj.identity Obj.aspect_infinite :=
+def mirror_to_necessary : Hom Obj.identity Obj.aspect_infinite :=
   Hom.act_inf
 
 /-!
@@ -135,16 +142,24 @@ theorem act_is_R2_to_R0_inf :
 -/
 
 /-- T Axiom: □p → p (what's necessary is actual)
-    If something must reach ∞, it exists in R2 -/
+    Res brings ∞ forward to R2 -/
 theorem necessity_implies_actuality :
   is_necessary Obj.identity → is_actual Obj.identity :=
   fun _ => rfl
 
 /-- Dual: p → ◊p (what's actual is possible)
-    If something is in R2, it came from ∅ -/
+    Gen brings ∅ forward to R2 -/
 theorem actuality_implies_possibility :
   is_actual Obj.identity → is_possible Obj.identity :=
   fun _ => ⟨Hom.gen, trivial⟩
+
+/-- Mirror axiom: Actual dissolves to BOTH aspects
+    Act takes n backward to (∅, ∞) simultaneously -/
+theorem actuality_mirrors_to_aspects :
+  is_actual Obj.identity →
+  (∃ f : Hom Obj.identity Obj.aspect_empty, True) ∧
+  (∃ g : Hom Obj.identity Obj.aspect_infinite, True) :=
+  fun _ => ⟨⟨Hom.act_empty, trivial⟩, ⟨Hom.act_inf, trivial⟩⟩
 
 /-- 4 Axiom: □p → □□p (necessity is necessary)
     Paths through ∞ collapse -/
@@ -167,15 +182,21 @@ It's not an object but a **process** (the morphism).
 -/
 
 /-! Proto-identity is represented by the morphisms themselves:
-    Gen: ∅ → n (forward becoming)
-    Res: ∞ → n (backward becoming)
+    Gen: ∅ → proto-n → n (forward becoming from empty)
+    Res: ∞ → proto-n → n (forward becoming from infinite)
+    Act: n → proto-n → (∅, ∞) (backward mirror to dual aspects)
 
     The proto-identity is transitional: neither R0 nor R2, but between them.
-    We can't point to it as an object - it's the arrow itself. -/
+    We can't point to it as an object - it's the arrow itself.
 
-def proto_identity_gen : Hom Obj.aspect_empty Obj.identity := Hom.gen
+    R1 is traversed in BOTH directions:
+    - Forward by Gen and Res (creation)
+    - Backward by Act (dissolution/mirror) -/
 
-def proto_identity_res : Hom Obj.aspect_infinite Obj.identity := Hom.res
+def proto_identity_forward_gen : Hom Obj.aspect_empty Obj.identity := Hom.gen
+def proto_identity_forward_res : Hom Obj.aspect_infinite Obj.identity := Hom.res
+def proto_identity_backward_empty : Hom Obj.identity Obj.aspect_empty := Hom.act_empty
+def proto_identity_backward_inf : Hom Obj.identity Obj.aspect_infinite := Hom.act_inf
 
 /-!
 ## Topological Structure
@@ -236,24 +257,36 @@ theorem closure_idempotent (S : Set Obj) :
 /-!
 ## Computational Dynamics
 
-Gen: R0 → R1 → R2 (forward evolution)
-  ∅ --[become]--> proto-n --[crystallize]--> n
+FORWARD pathways (BOTH R0 → R1 → R2):
+  Gen: ∅ --[become]--> proto-n --[crystallize]--> n
+  Res: ∞ --[become]--> proto-n --[crystallize]--> n
 
-Res: R2 → R1 → R0 (backward evolution)
-  n --[dissolve]--> proto-n --[saturate]--> ∞
+BACKWARD pathway (R2 → R1 → R0) - THE MIRROR:
+  Act: n --[dissolve]--> proto-n --[split]--> (∅, ∞)
 
-The system oscillates: R0 ↔ R1 ↔ R2
+The system flows:
+  R0 (∅, ∞) --[Gen/Res]--> R1 (proto-n) --[forward]--> R2 (n)
+  R2 (n) --[Act/Mirror]--> R1 (proto-n) --[backward]--> R0 (∅, ∞)
+
+R1 is bidirectional - traversed forward by creation, backward by dissolution.
 -/
 
-/-- The forward pathway (Gen) -/
-def forward_evolution : Hom Obj.aspect_empty Obj.identity :=
-  Hom.gen  -- Implicit: ∅ → proto-n → n
+/-- Forward pathway via Gen: ∅ → proto-n → n -/
+def forward_from_empty : Hom Obj.aspect_empty Obj.identity :=
+  Hom.gen
 
-/-- The backward pathway (Res via Act) -/
-def backward_evolution_to_inf :
-  {a b c : Obj} → Hom a b → Hom b c → Hom a c :=
-  fun f g => Hom.comp f g
-  -- Example: n → ∅ → ∞ (via Act then aspect isomorphism)
+/-- Forward pathway via Res: ∞ → proto-n → n -/
+def forward_from_infinite : Hom Obj.aspect_infinite Obj.identity :=
+  Hom.res
+
+/-! Backward pathway via Act (mirror): n → proto-n → (∅, ∞)
+    Act simultaneously produces BOTH aspects -/
+
+def backward_mirror_empty : Hom Obj.identity Obj.aspect_empty :=
+  Hom.act_empty
+
+def backward_mirror_inf : Hom Obj.identity Obj.aspect_infinite :=
+  Hom.act_inf
 
 /-- Autopoietic cycle: R0 → R1 → R2 → R1 → R0 -/
 theorem autopoietic_cycle_closure :
@@ -297,12 +330,17 @@ This modal topology formalizes GIP as a computational system with three register
 **R2**: {n} - Full identity (actual)
 
 **Modal operators**:
-- Gen (◊): R0 → R1 → R2 (possibility → actuality)
-- Res (□): R2 → R1 → R0 (actuality → necessity)
-- Act: R2 → R0 (dissolution, skipping R1 explicitly)
+- Gen (◊): R0 → R1 → R2 (possibility → actuality, FORWARD)
+- Res (□): R0 → R1 → R2 (necessity → actuality, FORWARD)
+- Act (Mirror): R2 → R1 → R0 (actuality → dual aspects, BACKWARD)
 
 **Key insight**: R1 is not an object but a **process** - the morphism in flight.
-The proto-identity is the **arrow itself**, not a destination.
+The proto-identity is the **arrow itself**, traversed bidirectionally:
+- Forward by Gen/Res (creation from aspects)
+- Backward by Act (dissolution to aspects)
+
+**Act is the MIRROR**: It reflects n back across BOTH Gen and Res simultaneously,
+producing (∅, ∞) as a pair.
 
 **Physical interpretation**:
 - α → 0: Proto-identity persists (quantum superposition)
