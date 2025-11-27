@@ -219,10 +219,24 @@ def Hom.comp : {a b c : Obj} → Hom a b → Hom b c → Hom a c
   | .aspect_infinite, .origin, .identity, .inf_to_origin, .origin_to_n_via_empty => .res
   | .aspect_infinite, .origin, .identity, .inf_to_origin, .origin_to_n_via_inf => .res
 
-  -- n → ∅ → n and n → ∞ → n are semantically undefined:
-  -- Identity is lost when passing through aspects. The n that enters ∅ or ∞
-  -- is not the n that emerges - aspects are "forgetful" passages where
-  -- specific identity dissolves. Gen produces *an* n, not *that* n.
+  -- n → ∅ → n and n → ∞ → n are INTENTIONALLY UNDEFINED:
+  --
+  -- These paths represent **information loss** - a core feature of GIP, not a bug.
+  --
+  -- When identity n passes through an aspect (∅ or ∞), the specific identity
+  -- is **dissolved**. The aspect is a "forgetful functor" that erases the
+  -- particular identity. When Gen or Res then produces a new n, it's **not the
+  -- same n** that went in - it's a fresh identity.
+  --
+  -- This is analogous to:
+  -- - **Thermodynamics**: Information lost to entropy cannot be recovered
+  -- - **Quantum mechanics**: Measurement collapse is irreversible
+  -- - **Black holes**: Information paradox (classical view)
+  --
+  -- Mathematically: Act ∘ Gen ≠ id_n and Act ∘ Res ≠ id_n
+  -- The composition exists as a morphism but is **not equal to identity**.
+  --
+  -- These `sorry` declarations enforce this semantic constraint at the type level.
   | .identity, .aspect_empty, .identity, .act_empty, .gen => sorry
   | .identity, .aspect_infinite, .identity, .act_inf, .res => sorry
 

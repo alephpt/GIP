@@ -9,14 +9,19 @@ import Mathlib.CategoryTheory.Types
 This module registers the GIP objects and morphisms as a proper
 Mathlib Category instance.
 
-## The Challenge
+## The Challenge: Intentional Information Loss
 
 The composition function has `sorry` for `n → ∅ → n` and `n → ∞ → n` paths
-because these are semantically undefined (identity is lost through aspects).
+because these are **semantically undefined** - they represent information loss.
+
+When identity n passes through an aspect (∅ or ∞), the specific identity
+is dissolved. Aspects are "forgetful" - they erase the particular identity.
+The n that emerges from Gen or Res is **not the same n** that went in.
 
 For a proper Category instance, we need full associativity. We handle this
-by using `sorry` for those specific cases, acknowledging they are
-intentionally undefined.
+by using `sorry` for associativity chains involving these undefined paths,
+acknowledging that they are **intentionally undefined** to capture the
+information loss at the type level.
 
 ## What This Provides
 

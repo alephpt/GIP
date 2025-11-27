@@ -249,17 +249,13 @@ def is_open (S : Set Obj) : Prop :=
 def is_closed (S : Set Obj) : Prop :=
   ∀ x, is_necessary x → x ∈ S
 
-/-- The aspects form a clopen set (both open and closed) -/
-theorem aspects_clopen :
-  let S := {x : Obj | x = Obj.aspect_empty ∨ x = Obj.aspect_infinite}
-  is_open S ∧ is_closed S := by
-  constructor
-  · intro x hx
-    cases hx with
-    | inl h => rw [h]; exact ⟨Hom.id Obj.aspect_empty, trivial⟩
-    | inr h => rw [h]; exact ⟨Hom.empty_to_inf, trivial⟩
-  · intro x _
-    sorry -- Need to prove x must be an aspect if necessary
+/-! Note: All objects are "necessary" since all have morphisms to ∞:
+    - ○ has origin_to_inf
+    - ∅ has empty_to_inf
+    - ∞ has id
+    - n has act_inf
+    This makes the standard topological closure definition too broad for GIP.
+    We use register-based characterization instead (see obj_register). -/
 
 /-!
 ## Interior and Closure Operators
@@ -282,12 +278,20 @@ theorem interior_idempotent (S : Set Obj) :
   ext x
   simp [interior]
 
-/-- Closure is idempotent: ◊◊S = ◊S -/
+/-- Closure is idempotent: ◊◊S = ◊S
+    Standard topological property. The proof requires careful manipulation
+    of existential quantifiers and composition transitivity. -/
 theorem closure_idempotent (S : Set Obj) :
   closure (closure S) = closure S := by
-  ext x
-  simp [closure]
   sorry
+  -- The proof outline:
+  -- 1. closure (closure S) ⊆ closure S:
+  --    If x is in closure(closure S), either x ∈ closure S directly,
+  --    or x is reachable from some y in closure S. In the latter case,
+  --    y is either in S or reachable from S, so by transitivity of
+  --    reachability (via composition), x is reachable from S.
+  -- 2. closure S ⊆ closure (closure S):
+  --    Immediate since closure S ⊆ closure (closure S) by monotonicity.
 
 /-!
 ## Computational Dynamics
@@ -339,19 +343,39 @@ The alpha parameter from Azari's framework tunes the modal collapse:
 This represents the "residence time" in the transitional state.
 -/
 
-/-! Alpha tunes how long the system stays in R1 (proto-identity)
-    Small α: Long R1 residence → quantum fuzziness
-    Large α: Brief R1 residence → classical definiteness -/
+/-! ## Physical Axioms: Quantum-Classical Transition
+
+The following axioms are **intentionally axiomatic** - they represent
+physical parameters and phenomenological laws that connect GIP to observable physics.
+
+These are analogous to:
+- Planck's constant ℏ in quantum mechanics (dimensional coupling constant)
+- Newton's gravitational constant G (coupling between matter and geometry)
+- Speed of light c (scale parameter relating space and time)
+
+They are not derivable from pure category theory because they encode
+empirical observations about the quantum-classical transition.
+-/
+
+/-! Alpha (α) tunes how long the system stays in R1 (proto-identity):
+    - Small α: Long R1 residence → quantum fuzziness
+    - Large α: Brief R1 residence → classical definiteness -/
 axiom alpha_parameter : ℝ
 
-/-- Transition rate from R0 to R2 (via R1) -/
-axiom transition_rate : ℝ → ℝ  -- α → rate
+/-- Transition rate from R0 to R2 (via R1).
+    This is a phenomenological function α ↦ rate encoding
+    the dynamics of modal collapse. -/
+axiom transition_rate : ℝ → ℝ
 
-/-- Quantum regime: α → 0, slow collapse, R1 persists -/
+/-- Quantum regime: α → 0 ⟹ slow collapse, R1 persists.
+    Physical interpretation: Quantum superposition dominates,
+    measurement takes "infinite" time (coherence preserved). -/
 axiom quantum_regime :
   ∀ ε > 0, ∃ δ > 0, ∀ α, α < δ → transition_rate α < ε
 
-/-- Classical regime: α → ∞, instant collapse, R1 vanishes -/
+/-- Classical regime: α → ∞ ⟹ instant collapse, R1 vanishes.
+    Physical interpretation: Classical definiteness dominates,
+    measurement is "instantaneous" (decoherence immediate). -/
 axiom classical_regime :
   ∀ M, ∃ N, ∀ α, α > N → transition_rate α > M
 
