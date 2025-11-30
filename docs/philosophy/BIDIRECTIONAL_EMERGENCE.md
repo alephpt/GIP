@@ -1,5 +1,7 @@
 # Bidirectional Emergence: The Complete Model
 
+> **⚠️ IMPORTANT NOTE (Nov 30, 2025)**: The November 24 refactoring revealed that bidirectional cycles are mathematically impossible in standard category theory. This document represents the philosophical aspiration which would require additional mathematical structure (e.g., adjunctions, dagger categories) to formalize. The actual implementation follows a one-way flow: ∅ → 𝟙 → n → ∞.
+
 ## Critical Insight
 
 **WRONG** (linear model): ○ → ∅ → 𝟙 → n → ∞ (sequential path)
