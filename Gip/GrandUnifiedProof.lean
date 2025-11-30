@@ -72,7 +72,8 @@ theorem hub_bidirectional :
      (∃ _ : Hom Obj.aspect_infinite Obj.identity, True)) ∧
     ((∃ _ : Hom Obj.identity Obj.aspect_empty, True) ∧
      (∃ _ : Hom Obj.identity Obj.aspect_infinite, True)) :=
-  n_is_hub
+  ⟨⟨⟨Hom.gen, trivial⟩, ⟨Hom.res, trivial⟩⟩,
+   ⟨⟨Hom.act_empty, trivial⟩, ⟨Hom.act_inf, trivial⟩⟩⟩
 
 /-!
 ## Part 4: Information Collapse

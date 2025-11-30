@@ -24,10 +24,10 @@ Between aspects:
 - `inf_to_empty`: ∞ → ∅ (inverse)
 
 To/from hub n:
-- `gen`: ∅ → n (generation)
-- `res`: ∞ → n (resolution)
-- `act_empty`: n → ∅ (action)
-- `act_inf`: n → ∞ (action)
+- `gen`: ∅ → n (generation through ProtoIdentity)
+- `res`: ∞ → n (resolution through ProtoIdentity)
+- `act_empty`: n → ∅ (action through ProtoIdentity)
+- `act_inf`: n → ∞ (action through ProtoIdentity)
 -/
 
 namespace GIP.Intermediate
@@ -82,30 +82,33 @@ abbrev infiniteToEmpty : Hom Obj.aspect_infinite Obj.aspect_empty := infToEmpty
 
 /-- Round trip is identity -/
 theorem aspect_iso_roundtrip_empty :
-    Hom.comp emptyToInfinite infiniteToEmpty = Hom.id Obj.aspect_empty :=
-  empty_inf_empty
+    Hom.comp emptyToInfinite infiniteToEmpty = Hom.id Obj.aspect_empty := by
+  rfl
 
 theorem aspect_iso_roundtrip_inf :
-    Hom.comp infiniteToEmpty emptyToInfinite = Hom.id Obj.aspect_infinite :=
-  inf_empty_inf
+    Hom.comp infiniteToEmpty emptyToInfinite = Hom.id Obj.aspect_infinite := by
+  rfl
 
 /-!
 ## Hub Morphisms
 
 n is the hub - it has bidirectional flow with aspects.
+
+Note: Gen, Res, Act are functions through ProtoIdentity, not categorical morphisms.
+We provide categorical interpretations for compatibility.
 -/
 
-/-- Generation: ∅ → n -/
-abbrev generation : Hom Obj.aspect_empty Obj.identity := Gen
+/-- Generation: ∅ → n (categorical morphism) -/
+abbrev generation : Hom Obj.aspect_empty Obj.identity := Hom.gen
 
-/-- Resolution: ∞ → n -/
-abbrev resolution : Hom Obj.aspect_infinite Obj.identity := Res
+/-- Resolution: ∞ → n (categorical morphism) -/
+abbrev resolution : Hom Obj.aspect_infinite Obj.identity := Hom.res
 
-/-- Action to empty: n → ∅ -/
-abbrev actionEmpty : Hom Obj.identity Obj.aspect_empty := act.to_empty
+/-- Action to empty: n → ∅ (categorical morphism) -/
+abbrev actionEmpty : Hom Obj.identity Obj.aspect_empty := Hom.act_empty
 
-/-- Action to infinite: n → ∞ -/
-abbrev actionInf : Hom Obj.identity Obj.aspect_infinite := act.to_infinite
+/-- Action to infinite: n → ∞ (categorical morphism) -/
+abbrev actionInf : Hom Obj.identity Obj.aspect_infinite := Hom.act_inf
 
 /-!
 ## Coherence
@@ -114,8 +117,8 @@ Gen and Res are "the same" via the isomorphism.
 -/
 
 /-- Gen = Res via ∅ ≅ ∞ -/
-theorem gen_res_coherent : Hom.comp emptyToInfinite resolution = generation :=
-  gen_res_coherence
+theorem gen_res_coherent : Hom.comp emptyToInfinite resolution = generation := by
+  rfl
 
 /-!
 ## Summary
@@ -128,10 +131,20 @@ theorem gen_res_coherent : Hom.comp emptyToInfinite resolution = generation :=
 | `infiniteToOrigin` | ∞ → ○ | Return to origin |
 | `emptyToInfinite` | ∅ → ∞ | Aspect isomorphism |
 | `infiniteToEmpty` | ∞ → ∅ | Inverse isomorphism |
-| `generation` | ∅ → n | Into hub |
-| `resolution` | ∞ → n | Into hub |
-| `actionEmpty` | n → ∅ | From hub |
-| `actionInf` | n → ∞ | From hub |
+| `generation` | ∅ → n | Into hub (through ProtoIdentity) |
+| `resolution` | ∞ → n | Into hub (through ProtoIdentity) |
+| `actionEmpty` | n → ∅ | From hub (through ProtoIdentity) |
+| `actionInf` | n → ∞ | From hub (through ProtoIdentity) |
+
+## ProtoIdentity Context
+
+All transformations flow through ProtoIdentity (1):
+- Gen = iota.gen ∘ gamma.gen : ∅ → 1 → n
+- Res = tau.res ∘ epsilon.res : ∞ → 1 → n
+- Act splits n through both pathways, returning (∅, ∞) tuple
+
+The categorical morphisms (Hom) provide a compatibility layer over the
+fundamental conduit architecture.
 -/
 
 end GIP.Intermediate

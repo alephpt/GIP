@@ -80,10 +80,10 @@ structure OriginAsProcess where
 
 /-- The canonical process view -/
 def origin_as_process : OriginAsProcess where
-  generate := Gen
-  resolve := Res
-  act_empty := act.to_empty
-  act_inf := act.to_infinite
+  generate := Hom.gen
+  resolve := Hom.res
+  act_empty := Hom.act_empty
+  act_inf := Hom.act_inf
 
 /-!
 ## Section 3: The Identity of Object and Process
@@ -143,12 +143,12 @@ The aspects participate in transformations.
 theorem aspects_are_transformations :
     (∃ _ : Hom Obj.aspect_empty Obj.identity, True) ∧
     (∃ _ : Hom Obj.aspect_infinite Obj.identity, True) :=
-  ⟨⟨Gen, trivial⟩, ⟨Res, trivial⟩⟩
+  ⟨⟨Hom.gen, trivial⟩, ⟨Hom.res, trivial⟩⟩
 
 /-- The transformations define the aspects -/
 theorem transformations_are_aspects :
-    Gen = origin_as_process.generate ∧
-    Res = origin_as_process.resolve := ⟨rfl, rfl⟩
+    Hom.gen = origin_as_process.generate ∧
+    Hom.res = origin_as_process.resolve := ⟨rfl, rfl⟩
 
 /-!
 ## Section 6: The Grand Unity

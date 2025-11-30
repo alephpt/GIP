@@ -85,8 +85,8 @@ theorem dual_aspects_isomorphic :
 
 /-- Gen = Res via the isomorphism -/
 theorem generation_resolution_coherent :
-    Hom.comp emptyToInf Res = Gen :=
-  gen_res_coherence
+    Hom.comp emptyToInf Hom.res = Hom.gen := by
+  rfl
 
 /-!
 ## Paths Through Aspects

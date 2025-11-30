@@ -3,59 +3,77 @@ import Gip.Foundations
 /-!
 # Basic GIP Definitions
 
-Re-exports from the restricted origin model Foundations.
+Re-exports from the ProtoIdentity convergence model in Foundations.
 
 ## The Model
 
-- **○** connects only to aspects (∅ and ∞)
-- **∅ ≅ ∞** are isomorphic dual aspects
-- **n** is the hub (connects to aspects, not directly to ○)
+- **○ (Origin)** is the zero object with three aspects
+- **ProtoIdentity (1)** is the convergence point for all conduits
+- **Four bidirectional conduits** connect aspects through ProtoIdentity:
+  - gamma: ∅ ↔ 1
+  - iota: 1 ↔ n
+  - tau: n ↔ 1
+  - epsilon: 1 ↔ ∞
+- **Composed transformations**:
+  - Gen = iota.gen ∘ gamma.gen : ∅ → 1 → n
+  - Res = tau.res ∘ epsilon.res : ∞ → 1 → n
+  - Act splits n through both pathways
 -/
 
 namespace GIP.Basic
 
 open GIP.Foundations
 
--- Objects
+-- Core Types
+abbrev GIPAspect := Aspect
+abbrev EmptyAspect := Aspect.empty
+abbrev IdentityAspect := Aspect.identity
+abbrev InfiniteAspect := Aspect.infinite
+
+-- Objects (for compatibility)
 abbrev GIPObj := Obj
 abbrev Origin := Obj.origin
 abbrev Empty := Obj.aspect_empty
 abbrev Infinite := Obj.aspect_infinite
 abbrev Identity := Obj.identity
 
--- Morphisms
-abbrev GIPHom := Hom
+-- The convergence point
+abbrev Proto := ProtoIdentity
 
--- Origin morphisms (○ ↔ aspects only)
-abbrev originToEmpty := Hom.origin_to_empty
-abbrev originToInf := Hom.origin_to_inf
-abbrev emptyToOrigin := Hom.empty_to_origin
-abbrev infToOrigin := Hom.inf_to_origin
+-- The conduits
+noncomputable abbrev γ := gamma  -- ∅ ↔ 1
+noncomputable abbrev ι := iota   -- 1 ↔ n
+noncomputable abbrev τ := tau    -- n ↔ 1
+noncomputable abbrev ε := epsilon -- 1 ↔ ∞
 
--- Aspect isomorphism
-abbrev emptyToInfinite := emptyToInf
-abbrev infiniteToEmpty := infToEmpty
+-- The composed transformations
+noncomputable abbrev gen := Gen  -- ∅ → 1 → n
+noncomputable abbrev res := Res  -- ∞ → 1 → n
+noncomputable abbrev act := Act  -- n → (∅, ∞)
 
--- Hub morphisms
-abbrev gen := Gen
-abbrev res := Res
+-- Section properties
+theorem gamma_section : gamma.gen ∘ gamma.res = id := gamma_is_section
+theorem iota_section : iota.res ∘ iota.gen = id := iota_is_section
+theorem tau_section : tau.gen ∘ tau.res = id := tau_is_section
+theorem epsilon_section : epsilon.res ∘ epsilon.gen = id := epsilon_is_section
 
--- Origin properties (○ ↔ aspects uniqueness)
-theorem origin_to_empty_unique (f g : Hom Origin Empty) : f = g :=
-  morphismOriginToEmpty_unique f g
+-- Non-closure properties
+theorem path_D_asymmetry : ¬ (∀ e, (gamma.res ∘ iota.res ∘ iota.gen ∘ gamma.gen) e = e) :=
+  path_D_does_not_close
 
-theorem origin_to_inf_unique (f g : Hom Origin Infinite) : f = g :=
-  morphismOriginToInf_unique f g
+theorem path_B_asymmetry : ¬ (∀ inf, (epsilon.gen ∘ tau.gen ∘ tau.res ∘ epsilon.res) inf = inf) :=
+  path_B_does_not_close
 
-theorem empty_to_origin_unique (f g : Hom Empty Obj.origin) : f = g :=
-  morphismEmptyToOrigin_unique f g
+-- Holographic properties
+theorem gen_reverberation (e : manifest the_origin Aspect.empty) :
+  Res ((Act (Gen e)).2) = Gen e := Gen_reverberates_in_Res e
 
-theorem inf_to_origin_unique (f g : Hom Infinite Obj.origin) : f = g :=
-  morphismInfToOrigin_unique f g
+theorem res_reverberation (inf : manifest the_origin Aspect.infinite) :
+  Gen ((Act (Res inf)).1) = Res inf := Res_reverberates_in_Gen inf
 
--- Aspect isomorphism
-theorem aspects_iso : ∃ (f : Hom Empty Infinite) (g : Hom Infinite Empty),
-    Hom.comp f g = Hom.id Empty ∧ Hom.comp g f = Hom.id Infinite :=
-  aspects_isomorphic
+-- Cohesion and survival
+noncomputable abbrev coh := cohesion
+abbrev survival := survival_threshold
+abbrev survives := survives_cycle
 
 end GIP.Basic

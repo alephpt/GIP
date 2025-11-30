@@ -3,21 +3,34 @@ import Gip.Foundations
 /-!
 # Core GIP Types
 
-Re-exports the foundational types from `Foundations.lean`.
+Re-exports the foundational types from `Foundations.lean` with the ProtoIdentity model.
 
-## The Zero Object Model
+## The ProtoIdentity Convergence Model
 
-- **○** (Origin) is the zero object
-- **○/○ = (∅ ≅ ∞)** produces isomorphic dual aspects
-- **{N}** emerges as the universe of structures
+- **○** (Origin) is the zero object with three aspects
+- **ProtoIdentity (1)** is the convergence point for all transformations
+- **Four conduits** (gamma, iota, tau, epsilon) connect aspects through ProtoIdentity
+- **{N}** emerges through composed transformations
 -/
 
 namespace GIP.CoreTypes
 
 open GIP.Foundations
 
-/-- The GIP objects, re-exported from Foundations -/
-abbrev Aspect := Obj
+/-- The three aspects of the Origin -/
+abbrev GIPAspect := Aspect
+
+/-- Empty aspect -/
+abbrev EmptyAspect := Aspect.empty
+
+/-- Identity aspect -/
+abbrev IdentityAspect := Aspect.identity
+
+/-- Infinite aspect -/
+abbrev InfiniteAspect := Aspect.infinite
+
+/-- The GIP objects (for categorical compatibility) -/
+abbrev GIPObj := Obj
 
 /-- Origin ○ - the zero object -/
 abbrev Origin := Obj.origin
@@ -25,25 +38,39 @@ abbrev Origin := Obj.origin
 /-- Empty aspect ∅ -/
 abbrev AspectEmpty := Obj.aspect_empty
 
-/-- Infinite aspect ∞ (isomorphic to ∅) -/
+/-- Infinite aspect ∞ -/
 abbrev AspectInfinite := Obj.aspect_infinite
 
 /-- Identity n - the hub -/
 abbrev Identity := Obj.identity
 
-/-- The "type" of the origin - this is the zero object itself -/
-def OriginType := Unit
+/-- The ProtoIdentity convergence point -/
+abbrev Proto := ProtoIdentity
 
-/-- The unique origin -/
-def the_origin : OriginType := ()
+/-- The Origin type from axioms -/
+abbrev GIPOriginType := OriginType
 
-/-- Any origin equals the_origin - THEOREM -/
-theorem origin_is_unique (o : OriginType) : o = the_origin := by
-  cases o; rfl
+/-- The unique origin instance -/
+noncomputable abbrev gip_origin := the_origin
 
-/-- The aspects are isomorphic -/
-theorem aspects_iso : ∃ (f : Hom AspectEmpty AspectInfinite) (g : Hom AspectInfinite AspectEmpty),
-    Hom.comp f g = Hom.id AspectEmpty ∧ Hom.comp g f = Hom.id AspectInfinite :=
-  aspects_isomorphic
+/-- Any origin equals the_origin -/
+theorem gip_origin_is_unique (o : OriginType) : o = the_origin := origin_is_unique o
+
+/-- The conduits -/
+noncomputable abbrev gamma_conduit := gamma
+noncomputable abbrev iota_conduit := iota
+noncomputable abbrev tau_conduit := tau
+noncomputable abbrev epsilon_conduit := epsilon
+
+/-- The fundamental transformations -/
+noncomputable abbrev generation := Gen
+noncomputable abbrev resolution := Res
+noncomputable abbrev action := Act
+
+/-- Section properties of the conduits -/
+theorem gamma_is_section_property : gamma.gen ∘ gamma.res = id := gamma_is_section
+theorem iota_is_section_property : iota.res ∘ iota.gen = id := iota_is_section
+theorem tau_is_section_property : tau.gen ∘ tau.res = id := tau_is_section
+theorem epsilon_is_section_property : epsilon.res ∘ epsilon.gen = id := epsilon_is_section
 
 end GIP.CoreTypes
