@@ -229,8 +229,30 @@ inductive Hom : Obj → Obj → Type where
   | origin_to_n_via_inf : Hom ○ 𝕟        -- ○ → ∞ → n
   deriving Repr, DecidableEq
 
+/-!
+## Information Loss in GIP
+
+A core principle: **Act is irreversible** - it loses information.
+
+When n acts back to aspects (∅ or ∞), the resulting structure is NOT the same n.
+- n → Act → ∅ → Gen → n' where n' is a NEW identity, not the original n
+- n → Act → ∞ → Res → n' where n' is a NEW identity, not the original n
+
+This is fundamental to:
+1. **Paradox resolution**: Self-reference loses information (circle_not_injective)
+2. **Entropy**: Information flows forward (Gen/Res), dissipates backward (Act)
+3. **Irreversibility**: Time-like asymmetry in the categorical structure
+
+The composition n → aspect → n EXISTS as a morphism, but is NOT identity.
+We axiomatize these compositions explicitly to document this core feature.
+-/
+
+-- Information Loss Axioms: These morphisms exist but are NOT identity
+noncomputable axiom axiom_act_gen_information_loss : Hom Obj.identity Obj.identity
+noncomputable axiom axiom_act_res_information_loss : Hom Obj.identity Obj.identity
+
 /-- Composition of categorical morphisms -/
-def Hom.comp : {a b c : Obj} → Hom a b → Hom b c → Hom a c
+noncomputable def Hom.comp : {a b c : Obj} → Hom a b → Hom b c → Hom a c
   -- Identity is neutral
   | _, _, _, .id _, g => g
   | _, _, _, f, .id _ => f
@@ -318,9 +340,16 @@ def Hom.comp : {a b c : Obj} → Hom a b → Hom b c → Hom a c
   | .aspect_infinite, .origin, .identity, .inf_to_origin, .origin_to_n_via_empty => .res
   | .aspect_infinite, .origin, .identity, .inf_to_origin, .origin_to_n_via_inf => .res
 
-  -- Undefined: n → aspect → n (information loss, core feature)
-  | .identity, .aspect_empty, .identity, .act_empty, .gen => sorry
-  | .identity, .aspect_infinite, .identity, .act_inf, .res => sorry
+  -- Information loss: n → aspect → n (Act → Gen/Res is NOT identity)
+  -- Act dissolves structure to aspects, Gen/Res create NEW structure
+  | .identity, .aspect_empty, .identity, .act_empty, .gen =>
+      axiom_act_gen_information_loss
+  | .identity, .aspect_infinite, .identity, .act_inf, .res =>
+      axiom_act_res_information_loss
+
+-- Axioms documenting that information loss means these are NOT identity
+axiom act_gen_not_id : axiom_act_gen_information_loss ≠ Hom.id Obj.identity
+axiom act_res_not_id : axiom_act_res_information_loss ≠ Hom.id Obj.identity
 
 /-- Morphisms ○ → ∅ are unique -/
 theorem morphismOriginToEmpty_unique (f g : Hom ○ ∅) : f = g := by

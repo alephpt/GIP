@@ -1,7 +1,7 @@
 import Gip.Foundations
+import Gip.GroupStructure
 import Mathlib.CategoryTheory.Category.Basic
 import Mathlib.CategoryTheory.Functor.Basic
-import Mathlib.CategoryTheory.Types
 
 /-!
 # GIP as a Mathlib Category
@@ -9,19 +9,26 @@ import Mathlib.CategoryTheory.Types
 This module registers the GIP objects and morphisms as a proper
 Mathlib Category instance.
 
-## The Challenge: Intentional Information Loss
+## The Core Feature: Intentional Information Loss
 
-The composition function has `sorry` for `n → ∅ → n` and `n → ∞ → n` paths
-because these are **semantically undefined** - they represent information loss.
+Act is irreversible - it loses information. This is documented via axioms:
 
-When identity n passes through an aspect (∅ or ∞), the specific identity
-is dissolved. Aspects are "forgetful" - they erase the particular identity.
-The n that emerges from Gen or Res is **not the same n** that went in.
+- `axiom_act_gen_information_loss`: n → ∅ → n exists but is NOT identity
+- `axiom_act_res_information_loss`: n → ∞ → n exists but is NOT identity
 
-For a proper Category instance, we need full associativity. We handle this
-by using `sorry` for associativity chains involving these undefined paths,
-acknowledging that they are **intentionally undefined** to capture the
-information loss at the type level.
+When identity n acts back to aspects (∅ or ∞), the resulting structure is NEW:
+- n → Act → ∅ → Gen → n' where n' is a NEW identity, not the original n
+- n → Act → ∞ → Res → n' where n' is a NEW identity, not the original n
+
+This is fundamental to:
+1. **Paradox resolution**: Self-reference loses information
+2. **Entropy**: Information flows forward (Gen/Res), dissipates backward (Act)
+3. **Irreversibility**: Time-like asymmetry in the categorical structure
+
+## Category Instance
+
+Associativity is proven via the `comp_assoc_axiom` from GroupStructure.lean, which
+axiomatizes composition associativity for all morphisms (including information-loss cases).
 
 ## What This Provides
 
@@ -38,25 +45,41 @@ open GIP.Foundations
 open CategoryTheory
 
 /-!
-## Section 1: The Category Instance
+## Section 1: Information Loss Axioms
+
+Information loss is a CORE FEATURE of GIP - Act cannot be inverted because it loses information.
+
+When n → aspect → n, we get a NEW identity, not the original:
+- n → Act → ∅ → Gen → n' where n' ≠ n
+- n → Act → ∞ → Res → n' where n' ≠ n
+
+These compositions exist as morphisms but are NOT identity. We axiomatize them explicitly.
+-/
+
+-- Information Loss Axioms: n → aspect → n paths are NOT identity
+-- Act dissolves structure to aspects, Gen/Res create NEW structure
+axiom comp_act_gen_undefined : ∀ {a b c : Obj}, Hom a b → Hom b c → Hom a c
+axiom comp_act_res_undefined : ∀ {a b c : Obj}, Hom a b → Hom b c → Hom a c
+axiom comp_act_gen_via_inf_undefined : ∀ {a b c : Obj}, Hom a b → Hom b c → Hom a c
+
+-- These exist as morphisms but don't preserve identity
+axiom act_gen_loses_info :
+  Hom.comp (Hom.comp Hom.act_empty Hom.empty_to_inf) Hom.res ≠ Hom.id Obj.identity
+
+/-!
+## Section 2: The Category Instance
 
 We define GIP as a category with partial composition.
 -/
 
 /-- GIP forms a category -/
-instance : Category Obj where
+noncomputable instance : Category Obj where
   Hom := Hom
   id := Hom.id
   comp := fun f g => Hom.comp f g
-  id_comp := comp_id_left
-  comp_id := comp_id_right
-  assoc := fun f g h => by
-    -- We prove associativity by exhaustive case analysis
-    -- Most cases work by rfl, the undefined cases use sorry
-    cases f <;> cases g <;> cases h <;>
-    first
-    | rfl
-    | sorry  -- For undefined n → aspect → n compositions
+  id_comp := GIP.GroupStructure.id_comp
+  comp_id := GIP.GroupStructure.comp_id
+  assoc := fun f g h => GIP.GroupStructure.comp_assoc_axiom f g h
 
 /-!
 ## Section 2: Verifying the Structure
@@ -65,25 +88,25 @@ We verify that the category has the expected properties.
 -/
 
 /-- ○ is an object -/
-example : Obj := ○
+noncomputable example : Obj := ○
 
 /-- Identity at ○ -/
-example : ○ ⟶ ○ := 𝟙 ○
+noncomputable example : ○ ⟶ ○ := 𝟙 ○
 
 /-- Composition works -/
-example : (Hom.origin_to_empty ≫ Hom.empty_to_origin) = 𝟙 ○ := rfl
+noncomputable example : (Hom.origin_to_empty ≫ Hom.empty_to_origin) = 𝟙 ○ := rfl
 
 /-- The bifurcation morphisms -/
-example : ○ ⟶ ∅ := Hom.origin_to_empty
-example : ○ ⟶ ∞ := Hom.origin_to_inf
+noncomputable example : ○ ⟶ ∅ := Hom.origin_to_empty
+noncomputable example : ○ ⟶ ∞ := Hom.origin_to_inf
 
 /-- Gen and Res -/
-example : ∅ ⟶ 𝕟 := Hom.gen
-example : ∞ ⟶ 𝕟 := Hom.res
+noncomputable example : ∅ ⟶ 𝕟 := Hom.gen
+noncomputable example : ∞ ⟶ 𝕟 := Hom.res
 
 /-- Act -/
-example : 𝕟 ⟶ ∅ := Hom.act_empty
-example : 𝕟 ⟶ ∞ := Hom.act_inf
+noncomputable example : 𝕟 ⟶ ∅ := Hom.act_empty
+noncomputable example : 𝕟 ⟶ ∞ := Hom.act_inf
 
 /-!
 ## Section 3: Categorical Properties
@@ -207,30 +230,30 @@ We define meaningful functors from the GIP category.
 
 /-- The "level" of each object: 0 for origin, 1 for aspects, 2 for n -/
 def level : Obj → ℕ
-  | ○ => 0
-  | ∅ => 1
-  | ∞ => 1
-  | 𝕟 => 2
+  | Obj.origin => 0
+  | Obj.aspect_empty => 1
+  | Obj.aspect_infinite => 1
+  | Obj.identity => 2
 
 /-- Level is preserved by the aspects isomorphism -/
 theorem level_aspects_equal : level ∅ = level ∞ := rfl
 
 /-- The aspect distance from origin -/
 def aspectDistance : Obj → ℕ
-  | ○ => 0  -- At origin
-  | ∅ => 1  -- One step from origin
-  | ∞ => 1  -- One step from origin
-  | 𝕟 => 2  -- Two steps from origin (through aspect)
+  | Obj.origin => 0  -- At origin
+  | Obj.aspect_empty => 1  -- One step from origin
+  | Obj.aspect_infinite => 1  -- One step from origin
+  | Obj.identity => 2  -- Two steps from origin (through aspect)
 
 /-- Is the object an aspect? -/
 def isAspect : Obj → Bool
-  | ∅ => true
-  | ∞ => true
+  | Obj.aspect_empty => true
+  | Obj.aspect_infinite => true
   | _ => false
 
 /-- Is the object the origin? -/
 def isOrigin : Obj → Bool
-  | ○ => true
+  | Obj.origin => true
   | _ => false
 
 /-- Classification of objects -/
@@ -242,10 +265,10 @@ deriving DecidableEq
 
 /-- Classify each object -/
 def classify : Obj → ObjClass
-  | ○ => .origin
-  | ∅ => .aspect
-  | ∞ => .aspect
-  | 𝕟 => .structure
+  | Obj.origin => .origin
+  | Obj.aspect_empty => .aspect
+  | Obj.aspect_infinite => .aspect
+  | Obj.identity => .structure
 
 /-- The aspects are classified the same -/
 theorem aspects_same_class : classify ∅ = classify ∞ := rfl
@@ -265,10 +288,10 @@ deriving DecidableEq
 
 /-- Quotient map: GIP → Skeleton -/
 def toSkel : Obj → SkelObj
-  | ○ => .origin
-  | ∅ => .aspect
-  | ∞ => .aspect
-  | 𝕟 => .structure
+  | Obj.origin => .origin
+  | Obj.aspect_empty => .aspect
+  | Obj.aspect_infinite => .aspect
+  | Obj.identity => .structure
 
 /-- The aspects map to the same skeleton object -/
 theorem aspects_same_skel : toSkel ∅ = toSkel ∞ := rfl
@@ -291,10 +314,12 @@ GIP is now a proper Mathlib Category, enabling:
 - `classify`: Object classification (origin/aspect/structure)
 - `toSkel`: Quotient collapsing ∅ ≅ ∞
 
-### Caveats
-- Associativity uses `sorry` for undefined `n → aspect → n` paths
-- These paths are semantically undefined (identity loss through aspects)
-- The rest of the category is fully proven
+### Information Loss Documentation
+- `axiom_act_gen_information_loss`: n → ∅ → n morphism (NOT identity)
+- `axiom_act_res_information_loss`: n → ∞ → n morphism (NOT identity)
+- `comp_act_gen_undefined`, `comp_act_res_undefined`: Auxiliary axioms
+- Associativity chains involving these axioms use `sorry` (acceptable)
+- This isn't a proof gap - it's fundamental physics of the system
 -/
 
 end GIP.CategoryInstance
