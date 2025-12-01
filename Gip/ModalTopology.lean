@@ -1,4 +1,5 @@
 import Gip.Foundations
+import Gip.GroupStructure
 
 /-!
 # Modal Topology: Register-Based Formalization
@@ -279,19 +280,42 @@ theorem interior_idempotent (S : Set Obj) :
   simp [interior]
 
 /-- Closure is idempotent: ◊◊S = ◊S
-    Standard topological property. The proof requires careful manipulation
-    of existential quantifiers and composition transitivity. -/
+    Standard topological property. The proof uses reachability transitivity
+    from GroupStructure.lean to show that reaching closure S is equivalent
+    to reaching S itself. -/
 theorem closure_idempotent (S : Set Obj) :
   closure (closure S) = closure S := by
-  sorry
-  -- The proof outline:
-  -- 1. closure (closure S) ⊆ closure S:
-  --    If x is in closure(closure S), either x ∈ closure S directly,
-  --    or x is reachable from some y in closure S. In the latter case,
-  --    y is either in S or reachable from S, so by transitivity of
-  --    reachability (via composition), x is reachable from S.
-  -- 2. closure S ⊆ closure (closure S):
-  --    Immediate since closure S ⊆ closure (closure S) by monotonicity.
+  ext x
+  unfold closure
+  constructor
+  · -- closure (closure S) ⊆ closure S
+    intro ⟨hx_poss, hx_reach⟩
+    constructor
+    · exact hx_poss
+    · cases hx_reach with
+      | inl h => exact h.2  -- x ∈ closure S already gives what we need
+      | inr h =>
+        -- x is reachable from some y in closure S
+        obtain ⟨y, ⟨hy_poss, hy_reach⟩, f, _⟩ := h
+        cases hy_reach with
+        | inl hy_in_S =>
+          -- y ∈ S, so x is reachable from S
+          right
+          exact ⟨y, hy_in_S, f, trivial⟩
+        | inr hy_from_S =>
+          -- y is reachable from some z ∈ S
+          obtain ⟨z, hz_in_S, g, _⟩ := hy_from_S
+          -- By transitivity: z → y → x implies z → x
+          right
+          have trans := GIP.GroupStructure.reachability_trans ⟨g, trivial⟩ ⟨f, trivial⟩
+          obtain ⟨h, _⟩ := trans
+          exact ⟨z, hz_in_S, h, trivial⟩
+  · -- closure S ⊆ closure (closure S)
+    intro ⟨hx_poss, hx_reach⟩
+    constructor
+    · exact hx_poss
+    · left
+      exact ⟨hx_poss, hx_reach⟩
 
 /-!
 ## Computational Dynamics
