@@ -22,6 +22,9 @@ import Gip.ProcessIdentity
 
 -- Extended modules (these may have their own issues to address)
 import Gip.Factorization
+import Gip.GroupStructure
+import Gip.ToposStructure
+import Gip.RingStructure
 import Gip.ModalTopology
 import Gip.Examples
 import Gip.ParadoxIsomorphism
