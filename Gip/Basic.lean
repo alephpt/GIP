@@ -66,10 +66,10 @@ theorem path_B_asymmetry : ¬ (∀ inf, (epsilon.gen ∘ tau.gen ∘ tau.res ∘
 
 -- Holographic properties
 theorem gen_reverberation (e : manifest the_origin Aspect.empty) :
-  Res ((Act (Gen e)).2) = Gen e := Gen_reverberates_in_Res e
+  Res ((ActSplit (GenToIdentity e)).2) = Gen e := Gen_reverberates_in_Res e
 
 theorem res_reverberation (inf : manifest the_origin Aspect.infinite) :
-  Gen ((Act (Res inf)).1) = Res inf := Res_reverberates_in_Gen inf
+  Gen ((ActSplit (ResToIdentity inf)).1) = Res inf := Res_reverberates_in_Gen inf
 
 -- Cohesion and survival
 noncomputable abbrev coh := cohesion

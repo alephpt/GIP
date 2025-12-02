@@ -295,9 +295,9 @@ theorem identity_exp_nontrivial :
   ∃ (f : proto_exponential 𝕟), f ≠ Hom.id 𝕟 := by
   -- The composition act_empty ∘ gen is an endomorphism n → n
   use Hom.comp Hom.act_empty Hom.gen
-  -- From Foundations line 345-346: act_empty ∘ gen = axiom_act_gen_information_loss
-  -- From Foundations line 351: axiom_act_gen_information_loss ≠ id
+  -- From Foundations: act_empty ∘ gen = axiom_act_gen_information_loss ≠ id
   -- This represents information loss through reflection: n → ∅ → n
+  rw [← act_gen_is_comp]
   exact act_gen_not_id
 
 /-!

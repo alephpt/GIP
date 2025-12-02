@@ -54,33 +54,14 @@ With ∅ ≅ ∞, Gen and Res are "the same transformation" viewed from differen
 Note: These are now functional properties, not categorical morphisms.
 -/
 
-/-- Gen and Res produce the same identity structure from isomorphic inputs.
-
-    This is a foundational axiom about ProtoIdentity convergence: the two
-    pathways from dual aspects (∅ and ∞) converge through ProtoIdentity to
-    produce identical identity structures.
-
-    Path analysis:
-    - Gen: ∅ → gamma.gen → 1 → iota.gen → n
-    - Res: ∞ → epsilon.res → 1 → tau.res → n
-
-    Philosophically: ∅ and ∞ are isomorphic dual aspects (∅ ≅ ∞) arising
-    from the origin's self-division. Their flows through ProtoIdentity (1)
-    may pass through different intermediate states (gamma.gen e ≠ epsilon.res inf
-    in general), but the forward continuation to identity (n) produces the same
-    result due to the universal convergence property of ProtoIdentity.
-
-    This axiom captures the essential insight that ProtoIdentity mediates
-    between duality (the aspects) and unity (the identity), making the two
-    paths functionally equivalent despite their different origins.
-
-    Justification: This is a core architectural principle, not derivable from
-    more primitive axioms. It defines what it means for ProtoIdentity to be
-    the "convergence point" - paths from dual initial objects merge here to
-    produce unified structure. -/
-axiom gen_res_coherence_functional :
-    ∀ (e : manifest the_origin Aspect.empty) (inf : manifest the_origin Aspect.infinite),
-    Gen e = Res inf
+/-- Gen and Res produce the same ProtoIdentity from isomorphic inputs -/
+theorem gen_res_coherence_functional (e : manifest the_origin Aspect.empty) :
+    Gen e = Res (aspect_iso.to_inf e) := by
+  -- Unfold the definitions of Gen and Res
+  unfold Gen Res
+  -- Gen e = gamma.gen e, Res inf = epsilon.res inf
+  -- By proto_coherence: gamma.gen e = epsilon.res (aspect_iso.to_inf e)
+  rw [proto_coherence]
 
 /-!
 ## Functional Paths
@@ -89,15 +70,15 @@ Since ○ only connects to aspects, all paths between ○ and n go through ∅ o
 Using the functional Act which returns a pair.
 -/
 
-/-- Extract empty component from Act -/
+/-- Extract empty component from ActSplit -/
 noncomputable def act_to_empty (n : manifest the_origin Aspect.identity) :
     manifest the_origin Aspect.empty :=
-  (Act n).1
+  (ActSplit n).1
 
-/-- Extract infinite component from Act -/
+/-- Extract infinite component from ActSplit -/
 noncomputable def act_to_infinite (n : manifest the_origin Aspect.identity) :
     manifest the_origin Aspect.infinite :=
-  (Act n).2
+  (ActSplit n).2
 
 /-!
 ## Categorical Compatibility Layer
@@ -206,16 +187,16 @@ theorem origin_self_division_yields_dual_initials :
 Act returns a pair (∅, ∞), demonstrating the mirror/split nature.
 -/
 
-/-- Act produces both empty and infinite aspects -/
+/-- ActSplit produces both empty and infinite aspects -/
 theorem act_produces_dual_aspects (n : manifest the_origin Aspect.identity) :
     ∃ (e : manifest the_origin Aspect.empty) (inf : manifest the_origin Aspect.infinite),
-    Act n = (e, inf) := by
-  exact ⟨(Act n).1, (Act n).2, rfl⟩
+    ActSplit n = (e, inf) := by
+  exact ⟨(ActSplit n).1, (ActSplit n).2, rfl⟩
 
-/-- Act is the functional mirror operator -/
+/-- ActSplit is the functional mirror operator -/
 theorem act_is_mirror :
     ∀ n : manifest the_origin Aspect.identity,
-    act_to_empty n = (Act n).1 ∧ act_to_infinite n = (Act n).2 := by
+    act_to_empty n = (ActSplit n).1 ∧ act_to_infinite n = (ActSplit n).2 := by
   intro n
   constructor <;> rfl
 

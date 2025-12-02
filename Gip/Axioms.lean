@@ -1,13 +1,20 @@
-/-!
-# Axioms
+import Gip.Foundations
 
-This file has been gutted as it was based on a deprecated formalization
-and was causing project-wide build failures. It needs to be re-written
-from scratch using the new core logic.
+/-!
+# GIP Axioms
+
+This module re-exports the foundational axioms from Foundations.lean
+for organizational clarity. All axioms are defined in Foundations.lean
+to avoid circular dependencies.
+
+See Foundations.lean for the actual axiom definitions.
 -/
 
 namespace GIP.Axioms
 
--- Content to be re-implemented here.
+open GIP.Foundations
+
+-- All axioms are defined in Foundations.lean
+-- This module provides a central import point for axiom-using code
 
 end GIP.Axioms

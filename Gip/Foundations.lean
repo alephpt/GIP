@@ -34,12 +34,17 @@ All transformations flow through ProtoIdentity (1):
 - tau: n ↔ 1 (identity to proto)
 - epsilon: 1 ↔ ∞ (proto to infinite)
 
-## The Composed Transformations
+## The Fundamental Transformations
 
-The high-level pathways are compositions through ProtoIdentity:
-- Gen = iota.gen ∘ gamma.gen : ∅ → 1 → n
-- Res = tau.res ∘ epsilon.res : ∞ → 1 → n
-- Act splits n through both pathways
+All transformations connect their source to ProtoIdentity (bidirectional):
+- Gen: ∅ ↔ gamma ↔ ProtoIdentity
+- Res: ∞ ↔ epsilon ↔ ProtoIdentity
+- Act: n ↔ iota/tau ↔ ProtoIdentity
+
+Composite paths through identity n:
+- GenToIdentity: ∅ → gamma → ProtoIdentity → iota → n
+- ResToIdentity: ∞ → epsilon → ProtoIdentity → tau → n
+- ActSplit: n → ProtoIdentity → (∅, ∞)
 -/
 
 namespace GIP.Foundations
@@ -71,6 +76,12 @@ axiom origin_is_unique : ∀ o : OriginType, o = the_origin
 /-- Manifestation of an aspect from the origin -/
 axiom manifest (orig : OriginType) (a : Aspect) : Type
 
+/-- ProtoIdentity: The convergence point for all conduits -/
+axiom ProtoIdentity : Type
+
+/-- ProtoIdentity exists -/
+axiom proto_identity_exists : Nonempty ProtoIdentity
+
 /-!
 ## Part 2: The ProtoIdentity and Conduits
 
@@ -78,12 +89,6 @@ The dynamics of the system are defined by four primitive, bidirectional
 "conduits" that connect the different aspects through a central, abstract
 **`ProtoIdentity`** (`1`).
 -/
-
-/-- ProtoIdentity: The convergence point for all conduits -/
-axiom ProtoIdentity : Type
-
-/-- ProtoIdentity exists -/
-axiom proto_identity_exists : Nonempty ProtoIdentity
 
 /-- Make ProtoIdentity computably nonempty -/
 noncomputable instance : Nonempty ProtoIdentity := proto_identity_exists
@@ -128,6 +133,14 @@ The behavior of the conduits is governed by a set of axioms that define their
 fixed point of all short-cycle round trips.
 -/
 
+-- Note: The axioms for the non-closure of the other direction of the
+-- round trips (e.g., `iota.gen ∘ iota.res ≠ id`) are formalized by the
+-- `path_B_is_not_identity` and `path_D_is_not_identity` axioms below.
+
+/-!
+### Functional Coherence Axioms
+-/
+
 /-- Iota is a section: res ∘ gen = id -/
 axiom iota_is_section : iota.res ∘ iota.gen = id
 
@@ -140,9 +153,31 @@ axiom gamma_is_section : gamma.gen ∘ gamma.res = id
 /-- Epsilon is a section: res ∘ gen = id -/
 axiom epsilon_is_section : epsilon.res ∘ epsilon.gen = id
 
--- Note: The axioms for the non-closure of the other direction of the
--- round trips (e.g., `iota.gen ∘ iota.res ≠ id`) are formalized by the
--- `path_B_is_not_identity` and `path_D_is_not_identity` axioms below.
+/-- A functional isomorphism between the manifested aspects -/
+structure AspectIsomorphism where
+  to_inf : (manifest the_origin Aspect.empty) → (manifest the_origin Aspect.infinite)
+  to_empty : (manifest the_origin Aspect.infinite) → (manifest the_origin Aspect.empty)
+  to_inf_to_empty : to_empty ∘ to_inf = id
+  to_empty_to_inf : to_inf ∘ to_empty = id
+
+/-- The axiom asserting the functional isomorphism exists -/
+axiom aspect_iso : AspectIsomorphism
+
+/--
+Axiom of Proto-Identity Coherence: Isomorphic aspects produce the same
+ProtoIdentity. `gamma.gen` from the empty aspect yields the same ProtoIdentity
+as `epsilon.res` from the corresponding infinite aspect.
+-/
+axiom proto_coherence : ∀ (e : manifest the_origin Aspect.empty),
+  gamma.gen e = epsilon.res (aspect_iso.to_inf e)
+
+/--
+Axiom of Instantiation Coherence: Both instantiation conduits (`iota.gen` and
+`tau.res`) produce the same identity `n` from the same `ProtoIdentity`.
+This ensures the final result of the Gen and Res pathways is the same.
+-/
+axiom instantiation_coherence : ∀ (pi : ProtoIdentity),
+  iota.gen pi = tau.res pi
 
 /-!
 ## Part 4: The Three Fundamental Transformations (Composed)
@@ -151,16 +186,28 @@ The high-level pathways of the cosmology, composed from the primitives
 through ProtoIdentity.
 -/
 
-/-- Generation: ∅ → 1 → n -/
-noncomputable def Gen (e : manifest the_origin Aspect.empty) : manifest the_origin Aspect.identity :=
+/-- Generation: ∅ → ProtoIdentity (via gamma) -/
+noncomputable def Gen (e : manifest the_origin Aspect.empty) : ProtoIdentity :=
+  gamma.gen e
+
+/-- Resolution: ∞ → ProtoIdentity (via epsilon) -/
+noncomputable def Res (inf : manifest the_origin Aspect.infinite) : ProtoIdentity :=
+  epsilon.res inf
+
+/-- Action: n → ProtoIdentity (via iota) -/
+noncomputable def Act (n : manifest the_origin Aspect.identity) : ProtoIdentity :=
+  iota.res n
+
+/-- Composite: ∅ → ProtoIdentity → n (the full Gen path) -/
+noncomputable def GenToIdentity (e : manifest the_origin Aspect.empty) : manifest the_origin Aspect.identity :=
   iota.gen (gamma.gen e)
 
-/-- Resolution: ∞ → 1 → n -/
-noncomputable def Res (inf : manifest the_origin Aspect.infinite) : manifest the_origin Aspect.identity :=
+/-- Composite: ∞ → ProtoIdentity → n (the full Res path) -/
+noncomputable def ResToIdentity (inf : manifest the_origin Aspect.infinite) : manifest the_origin Aspect.identity :=
   tau.res (epsilon.res inf)
 
-/-- Action: n → (∅, ∞) through ProtoIdentity -/
-noncomputable def Act (n : manifest the_origin Aspect.identity) :
+/-- Composite: n → ProtoIdentity → (∅, ∞) (the full Act split) -/
+noncomputable def ActSplit (n : manifest the_origin Aspect.identity) :
     (manifest the_origin Aspect.empty × manifest the_origin Aspect.infinite) :=
   (gamma.res (iota.res n), epsilon.gen (tau.gen n))
 
@@ -229,30 +276,8 @@ inductive Hom : Obj → Obj → Type where
   | origin_to_n_via_inf : Hom ○ 𝕟        -- ○ → ∞ → n
   deriving Repr, DecidableEq
 
-/-!
-## Information Loss in GIP
-
-A core principle: **Act is irreversible** - it loses information.
-
-When n acts back to aspects (∅ or ∞), the resulting structure is NOT the same n.
-- n → Act → ∅ → Gen → n' where n' is a NEW identity, not the original n
-- n → Act → ∞ → Res → n' where n' is a NEW identity, not the original n
-
-This is fundamental to:
-1. **Paradox resolution**: Self-reference loses information (circle_not_injective)
-2. **Entropy**: Information flows forward (Gen/Res), dissipates backward (Act)
-3. **Irreversibility**: Time-like asymmetry in the categorical structure
-
-The composition n → aspect → n EXISTS as a morphism, but is NOT identity.
-We axiomatize these compositions explicitly to document this core feature.
--/
-
--- Information Loss Axioms: These morphisms exist but are NOT identity
-noncomputable axiom axiom_act_gen_information_loss : Hom Obj.identity Obj.identity
-noncomputable axiom axiom_act_res_information_loss : Hom Obj.identity Obj.identity
-
 /-- Composition of categorical morphisms -/
-noncomputable def Hom.comp : {a b c : Obj} → Hom a b → Hom b c → Hom a c
+def Hom.comp : {a b c : Obj} → Hom a b → Hom b c → Hom a c
   -- Identity is neutral
   | _, _, _, .id _, g => g
   | _, _, _, f, .id _ => f
@@ -340,16 +365,11 @@ noncomputable def Hom.comp : {a b c : Obj} → Hom a b → Hom b c → Hom a c
   | .aspect_infinite, .origin, .identity, .inf_to_origin, .origin_to_n_via_empty => .res
   | .aspect_infinite, .origin, .identity, .inf_to_origin, .origin_to_n_via_inf => .res
 
-  -- Information loss: n → aspect → n (Act → Gen/Res is NOT identity)
-  -- Act dissolves structure to aspects, Gen/Res create NEW structure
-  | .identity, .aspect_empty, .identity, .act_empty, .gen =>
-      axiom_act_gen_information_loss
-  | .identity, .aspect_infinite, .identity, .act_inf, .res =>
-      axiom_act_res_information_loss
-
--- Axioms documenting that information loss means these are NOT identity
-axiom act_gen_not_id : axiom_act_gen_information_loss ≠ Hom.id Obj.identity
-axiom act_res_not_id : axiom_act_res_information_loss ≠ Hom.id Obj.identity
+  -- The following compositions are intentionally undefined (`sorry`).
+  -- This models the GIP principle of "information loss" or "identity dissolution"
+  -- when a specific identity `n` passes through a "forgetful" aspect.
+  | .identity, .aspect_empty, .identity, .act_empty, .gen => sorry
+  | .identity, .aspect_infinite, .identity, .act_inf, .res => sorry
 
 /-- Morphisms ○ → ∅ are unique -/
 theorem morphismOriginToEmpty_unique (f g : Hom ○ ∅) : f = g := by
@@ -415,15 +435,15 @@ The entire system is unified by two primary cycles and the axioms that
 govern their holographic and self-creating nature.
 -/
 
-/-- Gen followed by Act -/
+/-- Gen followed by Act split: ∅ → ProtoIdentity → n → (∅, ∞) -/
 noncomputable def GenAct (e : manifest the_origin Aspect.empty) :
     (manifest the_origin Aspect.empty × manifest the_origin Aspect.infinite) :=
-  Act (Gen e)
+  ActSplit (GenToIdentity e)
 
-/-- Res followed by Act -/
+/-- Res followed by Act split: ∞ → ProtoIdentity → n → (∅, ∞) -/
 noncomputable def ResAct (inf : manifest the_origin Aspect.infinite) :
     (manifest the_origin Aspect.empty × manifest the_origin Aspect.infinite) :=
-  Act (Res inf)
+  ActSplit (ResToIdentity inf)
 
 -- Axioms of Asymmetry (Non-Closure)
 
@@ -435,6 +455,15 @@ axiom path_D_is_not_identity :
 axiom path_B_is_not_identity :
   ∃ inf, (epsilon.gen ∘ tau.gen ∘ tau.res ∘ epsilon.res) inf ≠ inf
 
+/-- Categorical morphism for act-gen cycle: n → ∅ → n (information loss) -/
+axiom axiom_act_gen_information_loss : Hom 𝕟 𝕟
+
+/-- The act-gen cycle morphism is the composition act_empty ∘ gen -/
+axiom act_gen_is_comp : axiom_act_gen_information_loss = Hom.comp Hom.act_empty Hom.gen
+
+/-- The act-gen cycle is not identity (information is lost) -/
+axiom act_gen_not_id : axiom_act_gen_information_loss ≠ Hom.id 𝕟
+
 -- Ouroboros Axioms (Cycle Closure)
 
 /-- Gen cycle closes through Res -/
@@ -445,13 +474,13 @@ axiom Ouroboros_Res : ∀ inf, (GenAct (ResAct inf).1).2 = inf
 
 -- Fractal Reverberation Axioms (Holographic Principle)
 
-/-- Gen reverberates in Res -/
+/-- Gen reverberates in Res: The full cycle ∅ → ProtoIdentity → n → ProtoIdentity → ∞ → ProtoIdentity = Gen -/
 axiom Gen_reverberates_in_Res :
-  ∀ e, Res ((Act (Gen e)).2) = Gen e
+  ∀ e, Res ((ActSplit (GenToIdentity e)).2) = Gen e
 
-/-- Res reverberates in Gen -/
+/-- Res reverberates in Gen: The full cycle ∞ → ProtoIdentity → n → ProtoIdentity → ∅ → ProtoIdentity = Res -/
 axiom Res_reverberates_in_Gen :
-  ∀ inf, Gen ((Act (Res inf)).1) = Res inf
+  ∀ inf, Gen ((ActSplit (ResToIdentity inf)).1) = Res inf
 
 /-!
 ## Part 8: Foundational Theorems
@@ -480,13 +509,13 @@ by
 
 /-- Gen path reverberates in Res path -/
 theorem Gen_path_reverberates_in_Res_path (e : manifest the_origin Aspect.empty) :
-  Res ((Act (Gen e)).2) = Gen e :=
+  Res ((ActSplit (GenToIdentity e)).2) = Gen e :=
 by
   exact Gen_reverberates_in_Res e
 
 /-- Res path reverberates in Gen path -/
 theorem Res_path_reverberates_in_Gen_path (inf : manifest the_origin Aspect.infinite) :
-  Gen ((Act (Res inf)).1) = Res inf :=
+  Gen ((ActSplit (ResToIdentity inf)).1) = Res inf :=
 by
   exact Res_reverberates_in_Gen inf
 

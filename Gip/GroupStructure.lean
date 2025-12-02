@@ -191,16 +191,16 @@ The high-level transformations (Gen, Res, Act) inherit algebraic properties
 from the underlying conduit structure.
 -/
 
-/-- Gen composed with Act produces a split through empty aspect -/
+/-- GenToIdentity composed with ActSplit produces a split through empty aspect -/
 theorem gen_act_split (e : manifest the_origin Aspect.empty) :
-  (Act (Gen e)).1 = gamma.res (iota.res (iota.gen (gamma.gen e))) := by
-  unfold Gen Act
+  (ActSplit (GenToIdentity e)).1 = gamma.res (iota.res (iota.gen (gamma.gen e))) := by
+  unfold GenToIdentity ActSplit
   rfl
 
-/-- Res composed with Act produces a split through infinite aspect -/
+/-- ResToIdentity composed with ActSplit produces a split through infinite aspect -/
 theorem res_act_split (inf : manifest the_origin Aspect.infinite) :
-  (Act (Res inf)).2 = epsilon.gen (tau.gen (tau.res (epsilon.res inf))) := by
-  unfold Res Act
+  (ActSplit (ResToIdentity inf)).2 = epsilon.gen (tau.gen (tau.res (epsilon.res inf))) := by
+  unfold ResToIdentity ActSplit
   rfl
 
 /-!
