@@ -4,12 +4,12 @@ import Gip.Foundations
 # Cohesion and Type Selection Through Survival
 
 Cohesion measures structural integrity using both:
-1. ProtoIdentity-specific cohesion for manifest structures
+1. Phi-specific cohesion for manifest structures
 2. Metric space cohesion for generic types
 
 Structures with sufficient cohesion survive the cycle and form {N}.
 
-## The ProtoIdentity Model Context
+## The Phi Model Context
 
 - The origin undergoes self-division into dual pathways
 - Cohesion measures invariance through gamma→1→iota vs epsilon→1→tau cycles
@@ -21,19 +21,19 @@ namespace GIP.Cohesion
 open GIP.Foundations
 
 /-!
-## ProtoIdentity-Specific Cohesion
+## Phi-Specific Cohesion
 
 For manifest structures from the origin.
 -/
 
-/-- ProtoIdentity cohesion measure -/
+/-- Phi cohesion measure -/
 noncomputable abbrev proto_cohesion (n : manifest the_origin Aspect.identity) : ℝ :=
   GIP.Foundations.cohesion n
 
 /-- Survival threshold -/
 abbrev survival_threshold := GIP.Foundations.survival_threshold
 
-/-- ProtoIdentity survival predicate -/
+/-- Phi survival predicate -/
 abbrev proto_survives (n : manifest the_origin Aspect.identity) : Prop :=
   GIP.Foundations.survives_cycle n
 
@@ -90,11 +90,11 @@ structure InferredType (α : Type*) [MetricSpace α] where
   nonempty : members.Nonempty
 
 /-!
-## ProtoIdentity Cycle Cohesion
+## Phi Cycle Cohesion
 
 Cohesion measures structural invariance through the tau→1→tau cycle.
 The origin's self-division creates dual pathways (Gen via gamma→iota, Res via epsilon→tau),
-and cohesion measures how well structure survives the round trip through ProtoIdentity.
+and cohesion measures how well structure survives the round trip through Phi.
 -/
 
 /-- Cohesion through the tau pathway measures reconstruction quality -/

@@ -25,7 +25,7 @@ open GIP.Foundations
 
 We re-state the three fundamental transformations from `Foundations.lean` that
 define the GIP dynamics. These are all based on the underlying conduits that
-flow through the ProtoIdentity convergence point (1).
+flow through the Phi convergence point (1).
 -/
 
 /--
