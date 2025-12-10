@@ -6,14 +6,14 @@ import Mathlib.Algebra.Ring.Defs
 /-!
 # GIP Ring Structure
 
-This module establishes ring-theoretic properties of the ProtoIdentity morphism system,
+This module establishes ring-theoretic properties of the Phi (Φ) morphism system,
 completing the algebraic foundation for modal topology.
 
 ## Ring Construction
 
 A ring requires:
 1. **Abelian group under addition (+)**
-   - Addition via coproduct: ∅ ⊔ ∞ → 1 (convergence to ProtoIdentity)
+   - Addition via coproduct: ∅ ⊔ ∞ → 1 (convergence to Phi (Φ))
    - Zero: Origin (○)
    - Commutativity: ∅ ⊔ ∞ = ∞ ⊔ ∅ (by isomorphism)
    - Associativity: (a ⊔ b) ⊔ c = a ⊔ (b ⊔ c)
@@ -27,13 +27,13 @@ A ring requires:
    - Left: f ∘ (g ⊔ h) = (f ∘ g) ⊔ (f ∘ h)
    - Right: (f ⊔ g) ∘ h = (f ∘ h) ⊔ (g ∘ h)
 
-## ProtoIdentity Convergence as Addition
+## Phi (Φ) Convergence as Addition
 
-The key insight: When gamma (∅ → 1) and epsilon (∞ → 1) converge to ProtoIdentity,
+The key insight: When gamma (∅ → 1) and epsilon (∞ → 1) converge to Phi (Φ),
 they form a coproduct structure. This convergence IS addition:
 - gamma.gen e₁: ∅ → 1
 - epsilon.gen e₂: ∞ → 1
-- Both paths merge at ProtoIdentity, then continue through iota/tau to n
+- Both paths merge at Phi (Φ), then continue through iota/tau to n
 
 The morphism view: Gen (∅ → n) and Res (∞ → n) are the composed injections
 of the coproduct ∅ ⊔ ∞ → n.
@@ -43,11 +43,11 @@ of the coproduct ∅ ⊔ ∞ → n.
 Morphism composition is already proven associative (GroupStructure.comp_assoc).
 The identity morphism on 𝕟 serves as the multiplicative unit.
 
-## Distributivity via ProtoIdentity
+## Distributivity via Phi (Φ)
 
 The critical property: Composition distributes over coproduct because all paths
-flow through ProtoIdentity. When we compose before or after the coproduct convergence,
-the ProtoIdentity mediates the distribution.
+flow through Phi (Φ). When we compose before or after the coproduct convergence,
+the Phi (Φ) mediates the distribution.
 
 -/
 
@@ -60,7 +60,7 @@ open GIP.ToposStructure
 /-!
 ## Part 1: Additive Structure (Coproduct)
 
-The coproduct ∅ ⊔ ∞ → n via ProtoIdentity serves as addition.
+The coproduct ∅ ⊔ ∞ → n via Phi (Φ) serves as addition.
 -/
 
 /-- The sum type representing the coproduct ∅ ⊔ ∞ -/
@@ -69,7 +69,7 @@ inductive CoproductAspect : Type where
   | inr : CoproductAspect  -- Right injection (from ∞)
   deriving Repr, DecidableEq
 
-/-- The coproduct morphism from ∅ ⊔ ∞ to 𝕟 via ProtoIdentity convergence -/
+/-- The coproduct morphism from ∅ ⊔ ∞ to 𝕟 via Phi (Φ) convergence -/
 def coprod_to_identity : CoproductAspect → Hom ∅ 𝕟 ⊕ Hom ∞ 𝕟
   | .inl => Sum.inl Hom.gen  -- ∅ → 1 → n
   | .inr => Sum.inr Hom.res  -- ∞ → 1 → n
@@ -114,10 +114,10 @@ theorem add_comm (a b : CoproductAspect) :
 
 /-- Associativity of coproduct convergence -/
 theorem add_assoc (a b c : CoproductAspect) :
-  -- All paths through ProtoIdentity associate via composition associativity
+  -- All paths through Phi (Φ) associate via composition associativity
   True := trivial
 
-/-- Additive inverse: Every morphism through ProtoIdentity has a reflection via Act -/
+/-- Additive inverse: Every morphism through Phi (Φ) has a reflection via Act -/
 noncomputable def morphism_neg (a : CoproductAspect) : Hom 𝕟 𝕟 :=
   match a with
   | .inl => Hom.comp Hom.act_empty Hom.gen  -- n → ∅ → n (reflection)
@@ -166,20 +166,20 @@ theorem mul_one {a b : Obj} (f : Hom a b) :
 The key property connecting coproduct (addition) with composition (multiplication).
 
 Distributivity holds because:
-1. All paths flow through ProtoIdentity
+1. All paths flow through Phi (Φ)
 2. Composition respects the coproduct structure
-3. ProtoIdentity mediates the distribution
+3. Phi (Φ) mediates the distribution
 
 The proof strategy:
 - Show that composing before coproduct = composing after coproduct
 - Use the fact that Gen and Res are universal injections
-- Leverage ProtoIdentity convergence properties
+- Leverage Phi (Φ) convergence properties
 -/
 
 /-- Left distributivity: f ∘ (g ⊔ h) = (f ∘ g) ⊔ (f ∘ h)
 
     When we compose f with the coproduct of g and h, the result equals
-    the coproduct of (f ∘ g) and (f ∘ h) because ProtoIdentity convergence
+    the coproduct of (f ∘ g) and (f ∘ h) because Phi (Φ) convergence
     preserves the coproduct structure under composition.
 -/
 -- Axiom: Morphisms exist for distributivity (placeholder for full categorical proof)
@@ -195,7 +195,7 @@ theorem left_distrib {a b c : Obj} (f : Hom a b)
 /-- Right distributivity: (f ⊔ g) ∘ h = (f ∘ h) ⊔ (g ∘ h)
 
     When we compose the coproduct of f and g with h, the result equals
-    the coproduct of (f ∘ h) and (g ∘ h) because ProtoIdentity convergence
+    the coproduct of (f ∘ h) and (g ∘ h) because Phi (Φ) convergence
     preserves the coproduct structure under composition.
 -/
 theorem right_distrib {a b c : Obj}
@@ -205,8 +205,8 @@ theorem right_distrib {a b c : Obj}
   -- Morphisms exist through the coproduct structure
   exact exists_distrib_morphisms a c
 
-/-- Distributivity for specific morphisms through ProtoIdentity -/
-theorem proto_distributivity :
+/-- Distributivity for specific morphisms through Phi (Φ) -/
+theorem phi_distributivity :
   -- Composition with Gen distributes over Act split
   ∀ (n : Hom 𝕟 𝕟),
   ∃ (path_empty : Hom 𝕟 𝕟) (path_inf : Hom 𝕟 𝕟),
@@ -214,7 +214,7 @@ theorem proto_distributivity :
     Hom.comp n (Hom.comp Hom.act_empty Hom.gen) = path_empty ∧
     Hom.comp n (Hom.comp Hom.act_inf Hom.res) = path_inf := by
   intro n
-  -- The paths exist through ProtoIdentity convergence
+  -- The paths exist through Phi (Φ) convergence
   exact ⟨Hom.comp n (Hom.comp Hom.act_empty Hom.gen),
          Hom.comp n (Hom.comp Hom.act_inf Hom.res),
          rfl, rfl⟩
@@ -228,7 +228,7 @@ monoid Hom(n, n) using the coproduct convergence structure.
 
 /-- Addition on endomorphisms via round-trip through aspects -/
 noncomputable def endo_add (f g : Hom 𝕟 𝕟) : Hom 𝕟 𝕟 :=
-  -- f sends n → ∅ → n, g sends n → ∞ → n, both converge through ProtoIdentity
+  -- f sends n → ∅ → n, g sends n → ∞ → n, both converge through Phi (Φ)
   let f_path := Hom.comp (Hom.comp f Hom.act_empty) Hom.gen
   let g_path := Hom.comp (Hom.comp g Hom.act_inf) Hom.res
   -- The sum is the convergence (we choose one path as representative)
@@ -245,7 +245,7 @@ axiom endo_add_commutative : ∀ (f g : Hom 𝕟 𝕟),
 axiom endo_act_gen_right_identity : ∀ (f : Hom 𝕟 𝕟),
   Hom.comp (Hom.comp f Hom.act_empty) Hom.gen = f
 
-/-- Addition on endomorphisms is associative via ProtoIdentity convergence -/
+/-- Addition on endomorphisms is associative via Phi (Φ) convergence -/
 theorem endo_add_assoc (f g h : Hom 𝕟 𝕟) :
   endo_add (endo_add f g) h = endo_add f (endo_add g h) := by
   unfold endo_add
@@ -305,13 +305,13 @@ theorem export_additive_structure :
   · exact ⟨zero_morphism, add_zero⟩
   · exact aspects_isomorphic_detailed
 
-/-- Export: Composition distributes over coproduct via ProtoIdentity -/
+/-- Export: Composition distributes over coproduct via Phi (Φ) -/
 theorem export_distributivity :
   ∀ (n : Hom 𝕟 𝕟),
   ∃ (path_empty path_inf : Hom 𝕟 𝕟),
     Hom.comp n (Hom.comp Hom.act_empty Hom.gen) = path_empty ∧
     Hom.comp n (Hom.comp Hom.act_inf Hom.res) = path_inf :=
-  proto_distributivity
+  phi_distributivity
 
 /-- Export: The endomorphism monoid has ring-like structure -/
 theorem export_endomorphism_ring :
@@ -321,8 +321,8 @@ theorem export_endomorphism_ring :
     Hom.comp f (endo_add g h) = endo_add (Hom.comp f g) (Hom.comp f h)) := by
   exact ⟨endo_add_assoc, ⟨endo_zero, endo_add_zero⟩, endo_mul_add_distrib⟩
 
-/-- Key insight: ProtoIdentity convergence IS the ring addition -/
-theorem proto_identity_is_ring_addition :
+/-- Key insight: Phi (Φ) convergence IS the ring addition -/
+theorem phi_is_ring_addition :
   -- The coproduct ∅ ⊔ ∞ → 1 provides ring addition structure
   (∃ inj_empty : Hom ∅ 𝕟, ∃ inj_inf : Hom ∞ 𝕟,
     (∀ f : Hom ∅ 𝕟, f = inj_empty) ∧
@@ -340,10 +340,10 @@ theorem proto_identity_is_ring_addition :
 This module establishes the ring-theoretic structure of GIP:
 
 ### 1. Additive Structure (Abelian Group)
-- **Addition**: Coproduct convergence ∅ ⊔ ∞ → 1 → n via ProtoIdentity
+- **Addition**: Coproduct convergence ∅ ⊔ ∞ → 1 → n via Phi (Φ)
 - **Zero**: Origin morphism (round trip through ○)
 - **Commutativity**: Via aspect isomorphism ∅ ≅ ∞
-- **Associativity**: Via composition associativity through ProtoIdentity
+- **Associativity**: Via composition associativity through Phi (Φ)
 - **Inverses**: Via Act reflection (n → ∅/∞ → n)
 
 ### 2. Multiplicative Structure (Monoid)
@@ -354,7 +354,7 @@ This module establishes the ring-theoretic structure of GIP:
 
 ### 3. Distributivity
 - **Key Property**: Composition distributes over coproduct convergence
-- **Mechanism**: ProtoIdentity mediates distribution
+- **Mechanism**: Phi (Φ) mediates distribution
 - **Left**: f ∘ (g ⊔ h) = (f ∘ g) ⊔ (f ∘ h)
 - **Right**: (f ⊔ g) ∘ h = (f ∘ h) ⊔ (g ∘ h)
 
@@ -377,7 +377,7 @@ This provides the algebraic foundation for:
 - □(p ∧ q) = □p ∧ □q (necessity distributes over conjunction via duality)
 - Modal composition laws through morphism associativity
 
-The ProtoIdentity convergence structure IS the ring addition operation,
+The Phi (Φ) convergence structure IS the ring addition operation,
 and morphism composition IS the ring multiplication operation.
 
 **Export for ModalTopology.lean**:

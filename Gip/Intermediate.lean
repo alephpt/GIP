@@ -24,10 +24,10 @@ Between aspects:
 - `inf_to_empty`: ∞ → ∅ (inverse)
 
 To/from hub n:
-- `gen`: ∅ → n (generation through ProtoIdentity)
-- `res`: ∞ → n (resolution through ProtoIdentity)
-- `act_empty`: n → ∅ (action through ProtoIdentity)
-- `act_inf`: n → ∞ (action through ProtoIdentity)
+- `gen`: ∅ → n (generation through Phi (Φ))
+- `res`: ∞ → n (resolution through Phi (Φ))
+- `act_empty`: n → ∅ (action through Phi (Φ))
+- `act_inf`: n → ∞ (action through Phi (Φ))
 -/
 
 namespace GIP.Intermediate
@@ -94,7 +94,7 @@ theorem aspect_iso_roundtrip_inf :
 
 n is the hub - it has bidirectional flow with aspects.
 
-Note: Gen, Res, Act are functions through ProtoIdentity, not categorical morphisms.
+Note: Gen, Res, Act are functions through Phi (Φ), not categorical morphisms.
 We provide categorical interpretations for compatibility.
 -/
 
@@ -131,14 +131,14 @@ theorem gen_res_coherent : Hom.comp emptyToInfinite resolution = generation := b
 | `infiniteToOrigin` | ∞ → ○ | Return to origin |
 | `emptyToInfinite` | ∅ → ∞ | Aspect isomorphism |
 | `infiniteToEmpty` | ∞ → ∅ | Inverse isomorphism |
-| `generation` | ∅ → n | Into hub (through ProtoIdentity) |
-| `resolution` | ∞ → n | Into hub (through ProtoIdentity) |
-| `actionEmpty` | n → ∅ | From hub (through ProtoIdentity) |
-| `actionInf` | n → ∞ | From hub (through ProtoIdentity) |
+| `generation` | ∅ → n | Into hub (through Phi (Φ)) |
+| `resolution` | ∞ → n | Into hub (through Phi (Φ)) |
+| `actionEmpty` | n → ∅ | From hub (through Phi (Φ)) |
+| `actionInf` | n → ∞ | From hub (through Phi (Φ)) |
 
-## ProtoIdentity Context
+## Phi (Φ) Context
 
-All transformations flow through ProtoIdentity (1):
+All transformations flow through Phi (Φ) (1):
 - Gen = iota.gen ∘ gamma.gen : ∅ → 1 → n
 - Res = tau.res ∘ epsilon.res : ∞ → 1 → n
 - Act splits n through both pathways, returning (∅, ∞) tuple

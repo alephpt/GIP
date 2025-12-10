@@ -23,13 +23,13 @@ A topos requires:
 
 From Gip/Foundations.lean:
 - **Origin (○)**: Zero object (both initial and terminal)
-- **ProtoIdentity (1)**: Convergence point for all conduits
+- **Phi (Φ) (1)**: Convergence point for all conduits
 - **Dual aspects**: ∅ ≅ ∞ (from ○/○ bifurcation)
-- **Identity (n)**: Realized structure via ProtoIdentity
+- **Identity (n)**: Realized structure via Phi (Φ)
 
 ## Key Insight for Modal Topology
 
-The Origin as zero object + dual initial objects (∅, ∞) + ProtoIdentity convergence
+The Origin as zero object + dual initial objects (∅, ∞) + Phi (Φ) convergence
 provides the categorical foundation for modal operators:
 - Gen: ∅ → 1 → n (possibility operator)
 - Res: ∞ → 1 → n (necessity operator)
@@ -153,9 +153,9 @@ theorem dual_initial_objects_to_identity :
    aspects_isomorphic_detailed⟩
 
 /-!
-## Part 3: Coproduct via ProtoIdentity
+## Part 3: Coproduct via Phi (Φ)
 
-The convergence of gamma (∅ → 1) and epsilon (∞ → 1) to ProtoIdentity
+The convergence of gamma (∅ → 1) and epsilon (∞ → 1) to Phi (Φ)
 represents a coproduct structure: ∅ ⊔ ∞ → 1 → n.
 
 In the categorical model, Gen and Res represent the coproduct injections
@@ -167,8 +167,8 @@ The universal property: any pair of morphisms from ∅ and ∞ to some target
 factors uniquely through n.
 -/
 
-/-- ProtoIdentity convergence represents coproduct of aspects to identity -/
-theorem proto_identity_coproduct_structure :
+/-- Phi (Φ) convergence represents coproduct of aspects to identity -/
+theorem phi_coproduct_structure :
   ∃ (inj_empty : Hom ∅ 𝕟) (inj_inf : Hom ∞ 𝕟),
     (∀ (f g : Hom ∅ 𝕟), f = inj_empty) ∧
     (∀ (f g : Hom ∞ 𝕟), f = inj_inf) := by
@@ -219,18 +219,18 @@ such that every monomorphism m: A → B is a pullback of true along a unique
 characteristic morphism χ_m: B → Ω.
 
 In GIP:
-- ProtoIdentity (1) serves as the terminal object for the conduit structure
-- Identity (n) can serve as Ω, characterizing which structures pass through ProtoIdentity
+- Phi (Φ) (1) serves as the terminal object for the conduit structure
+- Identity (n) can serve as Ω, characterizing which structures pass through Phi (Φ)
 - ∅ can alternatively serve as Ω, characterizing the "empty possibility" structure
 
 We choose n as Ω since it represents "realized structure" - the Boolean truth
-of whether something has materialized through ProtoIdentity.
+of whether something has materialized through Phi (Φ).
 -/
 
 /-- The subobject classifier for GIP is the identity object -/
 def Ω : Obj := 𝕟
 
-/-- The truth morphism from aspects to Ω represents "passage through ProtoIdentity" -/
+/-- The truth morphism from aspects to Ω represents "passage through Phi (Φ)" -/
 def truth_empty : Hom ∅ Ω := Hom.gen
 def truth_inf : Hom ∞ Ω := Hom.res
 
@@ -253,8 +253,8 @@ theorem truth_morphisms_are_characteristics :
   truth_empty = Hom.gen ∧ truth_inf = Hom.res := by
   exact ⟨rfl, rfl⟩
 
-/-- The subobject classifier characterizes emergence through ProtoIdentity -/
-theorem omega_characterizes_protoidentity_passage :
+/-- The subobject classifier characterizes emergence through Phi (Φ) -/
+theorem omega_characterizes_phi_passage :
   (truth_empty = Hom.gen) ∧ (truth_inf = Hom.res) :=
   ⟨rfl, rfl⟩
 
@@ -266,7 +266,7 @@ as an object in the category. Full exponentials require additional structure.
 
 For GIP, we can identify some exponential-like structures:
 - The set of endomorphisms on each object
-- The ProtoIdentity convergence as a "function space" mediator
+- The Phi (Φ) convergence as a "function space" mediator
 
 However, full exponential objects in GIP require extending the object type or
 working within the existing structure. We provide the foundational characterization.
@@ -307,7 +307,7 @@ While GIP doesn't have arbitrary binary products, it has specific product-like s
 - The pair (∅, ∞) as the dual aspects (product-like via Act)
 - Origin as the zero product (terminal object)
 
-Coproducts are realized via ProtoIdentity convergence.
+Coproducts are realized via Phi (Φ) convergence.
 -/
 
 /-- Act produces a product-like pair of aspects from identity -/
@@ -340,9 +340,9 @@ theorem origin_bifurcation_pushout :
     Hom.comp f iso = g := by
   exact ⟨Hom.origin_to_empty, Hom.origin_to_inf, Hom.empty_to_inf, rfl⟩
 
-/-- ProtoIdentity convergence creates a pullback-like structure:
+/-- Phi (Φ) convergence creates a pullback-like structure:
     Gen and Res pull back from n to the dual aspects -/
-theorem proto_identity_convergence_pullback :
+theorem phi_convergence_pullback :
   ∃ (_ : Hom ∅ 𝕟) (_ : Hom ∞ 𝕟) (_ : Hom ∅ ∞), True := by
   exact ⟨Hom.gen, Hom.res, Hom.empty_to_inf, trivial⟩
 
@@ -367,14 +367,14 @@ theorem export_dual_initial :
     Hom.comp inv iso = Hom.id ∞) :=
   dual_initial_objects_to_identity
 
-/-- Export: Subobject classifier Ω = n characterizes ProtoIdentity passage -/
+/-- Export: Subobject classifier Ω = n characterizes Phi (Φ) passage -/
 theorem export_subobject_classifier :
   Ω = 𝕟 ∧
   (∃ true_empty : Hom ∅ Ω, true_empty = Hom.gen) ∧
   (∃ true_inf : Hom ∞ Ω, true_inf = Hom.res) :=
   ⟨rfl, ⟨Hom.gen, rfl⟩, ⟨Hom.res, rfl⟩⟩
 
-/-- Export: ProtoIdentity provides coproduct structure -/
+/-- Export: Phi (Φ) provides coproduct structure -/
 theorem export_coproduct :
   ∃ (inj_empty : Hom ∅ 𝕟) (inj_inf : Hom ∞ 𝕟),
     (∀ f : Hom ∅ 𝕟, f = inj_empty) ∧
@@ -402,9 +402,9 @@ This module establishes the topos-theoretic structure of GIP:
 - They are isomorphic (∅ ≅ ∞)
 - Arise from origin self-division: ○/○ = (∅, ∞)
 
-### 3. Coproduct via ProtoIdentity
-- **gamma**: ∅ → 1 (ProtoIdentity)
-- **epsilon**: ∞ → 1 (ProtoIdentity)
+### 3. Coproduct via Phi (Φ)
+- **gamma**: ∅ → 1 (Phi (Φ))
+- **epsilon**: ∞ → 1 (Phi (Φ))
 - **Gen**: ∅ → 1 → n (coproduct injection composed)
 - **Res**: ∞ → 1 → n (coproduct injection composed)
 
@@ -412,7 +412,7 @@ This module establishes the topos-theoretic structure of GIP:
 - **Ω = n** (identity object)
 - **true_empty = Gen**: ∅ → n
 - **true_inf = Res**: ∞ → n
-- Characterizes "passage through ProtoIdentity"
+- Characterizes "passage through Phi (Φ)"
 
 ### 5. Exponentials (Partial)
 - Endomorphisms as proto-exponential structure
@@ -422,7 +422,7 @@ This module establishes the topos-theoretic structure of GIP:
 - Terminal: Origin ○
 - Initial: Origin ○ (zero object)
 - Products: Act splits to (∅, ∞)
-- Coproducts: ProtoIdentity convergence
+- Coproducts: Phi (Φ) convergence
 
 ### Key Insight for Modal Topology
 
@@ -431,7 +431,7 @@ The topos structure provides the categorical semantics for modal operators:
 - **Necessity (□)**: Res represents "what must be" (∞ → n)
 - **Mirror (Act)**: Reflection back to dual aspects (n → ∅, ∞)
 
-The zero object Origin + dual initial objects + ProtoIdentity convergence
+The zero object Origin + dual initial objects + Phi (Φ) convergence
 forms the complete categorical foundation for modal logic in GIP.
 
 -/
