@@ -38,7 +38,7 @@ open GIP.Foundations
 ## The Three Transformations
 
 All are functionally valid in the restricted model.
-Using the ProtoIdentity-based functions from Foundations.
+Using the Phi (Φ)-based functions from Foundations.
 -/
 
 -- Gen, Res, and Act are imported from Foundations as functions
@@ -54,14 +54,14 @@ With ∅ ≅ ∞, Gen and Res are "the same transformation" viewed from differen
 Note: These are now functional properties, not categorical morphisms.
 -/
 
-/-- Gen and Res produce the same ProtoIdentity from isomorphic inputs -/
+/-- Gen and Res produce the same Phi (Φ) from isomorphic inputs -/
 theorem gen_res_coherence_functional (e : manifest the_origin Aspect.empty) :
     Gen e = Res (aspect_iso.to_inf e) := by
   -- Unfold the definitions of Gen and Res
   unfold Gen Res
   -- Gen e = gamma.gen e, Res inf = epsilon.res inf
-  -- By proto_coherence: gamma.gen e = epsilon.res (aspect_iso.to_inf e)
-  rw [proto_coherence]
+  -- By phi_coherence: gamma.gen e = epsilon.res (aspect_iso.to_inf e)
+  rw [phi_coherence]
 
 /-!
 ## Functional Paths
@@ -209,8 +209,8 @@ theorem act_is_mirror :
 - ∅ ≅ ∞ (isomorphic aspects)
 
 ### Valid (in restricted model):
-- `Gen : ∅ → n` (generation from empty initial, through ProtoIdentity)
-- `Res : ∞ → n` (resolution from infinite initial, through ProtoIdentity)
+- `Gen : ∅ → n` (generation from empty initial, through Phi (Φ))
+- `Res : ∞ → n` (resolution from infinite initial, through Phi (Φ))
 - `Act : n → (∅, ∞)` (action/mirror back to both initials as a pair)
 - ○ ↔ aspects (unique morphisms in categorical view)
 - Gen ≈ Res via ∅ ≅ ∞
@@ -220,7 +220,7 @@ theorem act_is_mirror :
 n connects only to aspects (∅ and ∞).
 The aspects serve as the interface layer - both are initial objects
 arising from ○'s self-division, providing dual sources for forward pathways.
-All transformations flow through ProtoIdentity as the convergence point.
+All transformations flow through Phi (Φ) as the convergence point.
 -/
 
 end GIP.Origin

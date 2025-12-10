@@ -3,13 +3,13 @@ import Gip.Foundations
 /-!
 # Core GIP Types
 
-Re-exports the foundational types from `Foundations.lean` with the ProtoIdentity model.
+Re-exports the foundational types from `Foundations.lean` with the Phi (Φ) model.
 
-## The ProtoIdentity Convergence Model
+## The Phi (Φ) Convergence Model
 
 - **○** (Origin) is the zero object with three aspects
-- **ProtoIdentity (1)** is the convergence point for all transformations
-- **Four conduits** (gamma, iota, tau, epsilon) connect aspects through ProtoIdentity
+- **Phi (Φ)** is the convergence point for all transformations
+- **Four conduits** (gamma, iota, tau, epsilon) connect aspects through Phi (Φ)
 - **{N}** emerges through composed transformations
 -/
 
@@ -44,8 +44,8 @@ abbrev AspectInfinite := Obj.aspect_infinite
 /-- Identity n - the hub -/
 abbrev Identity := Obj.identity
 
-/-- The ProtoIdentity convergence point -/
-abbrev Proto := ProtoIdentity
+/-- The Phi (Φ) convergence point -/
+abbrev Proto := Phi
 
 /-- The Origin type from axioms -/
 abbrev GIPOriginType := OriginType

@@ -3,20 +3,20 @@ import Gip.Foundations
 /-!
 # Basic GIP Definitions
 
-Re-exports from the ProtoIdentity convergence model in Foundations.
+Re-exports from the Phi (Φ) convergence model in Foundations.
 
 ## The Model
 
 - **○ (Origin)** is the zero object with three aspects
-- **ProtoIdentity (1)** is the convergence point for all conduits
-- **Four bidirectional conduits** connect aspects through ProtoIdentity:
-  - gamma: ∅ ↔ 1
-  - iota: 1 ↔ n
-  - tau: n ↔ 1
-  - epsilon: 1 ↔ ∞
+- **Phi (Φ)** is the convergence point for all conduits
+- **Four bidirectional conduits** connect aspects through Phi (Φ):
+  - gamma: ∅ ↔ Φ
+  - iota: Φ ↔ n
+  - tau: n ↔ Φ
+  - epsilon: Φ ↔ ∞
 - **Composed transformations**:
-  - Gen = iota.gen ∘ gamma.gen : ∅ → 1 → n
-  - Res = tau.res ∘ epsilon.res : ∞ → 1 → n
+  - Gen = iota.gen ∘ gamma.gen : ∅ → Φ → n
+  - Res = tau.res ∘ epsilon.res : ∞ → Φ → n
   - Act splits n through both pathways
 -/
 
@@ -38,17 +38,17 @@ abbrev Infinite := Obj.aspect_infinite
 abbrev Identity := Obj.identity
 
 -- The convergence point
-abbrev Proto := ProtoIdentity
+abbrev Proto := Phi
 
 -- The conduits
-noncomputable abbrev γ := gamma  -- ∅ ↔ 1
-noncomputable abbrev ι := iota   -- 1 ↔ n
-noncomputable abbrev τ := tau    -- n ↔ 1
-noncomputable abbrev ε := epsilon -- 1 ↔ ∞
+noncomputable abbrev γ := gamma  -- ∅ ↔ Φ
+noncomputable abbrev ι := iota   -- Φ ↔ n
+noncomputable abbrev τ := tau    -- n ↔ Φ
+noncomputable abbrev ε := epsilon -- Φ ↔ ∞
 
 -- The composed transformations
-noncomputable abbrev gen := Gen  -- ∅ → 1 → n
-noncomputable abbrev res := Res  -- ∞ → 1 → n
+noncomputable abbrev gen := Gen  -- ∅ → Φ → n
+noncomputable abbrev res := Res  -- ∞ → Φ → n
 noncomputable abbrev act := Act  -- n → (∅, ∞)
 
 -- Section properties

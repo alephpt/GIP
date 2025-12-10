@@ -4,17 +4,17 @@ import Mathlib.Algebra.Group.Defs
 /-!
 # GIP Group Structure
 
-This module formalizes the group-theoretic properties of the ProtoIdentity morphism system.
+This module formalizes the group-theoretic properties of the Phi (Φ) morphism system.
 
 ## Architecture
 
 From Gip/Foundations.lean:
-- **ProtoIdentity (1)**: Central convergence point
+- **Phi (Φ)**: Central convergence point
 - **Four conduits** (bidirectional):
-  - gamma: ∅ ↔ 1
-  - epsilon: 1 ↔ ∞
-  - iota: 1 ↔ n
-  - tau: n ↔ 1
+  - gamma: ∅ ↔ Φ
+  - epsilon: Φ ↔ ∞
+  - iota: Φ ↔ n
+  - tau: n ↔ Φ
 - **Section axioms** (partial inverses):
   - iota.res ∘ iota.gen = id
   - tau.gen ∘ tau.res = id
@@ -124,25 +124,25 @@ theorem epsilon_left_inverse :
   epsilon_is_section
 
 /-!
-## Part 4: ProtoIdentity Endomorphisms
+## Part 4: Phi (Φ) Endomorphisms
 
-Endomorphisms on ProtoIdentity (morphisms from ProtoIdentity to itself)
+Endomorphisms on Phi (Φ) (morphisms from Phi to itself)
 can be composed to form algebraic structures.
 -/
 
-/-- An endomorphism on ProtoIdentity is a morphism from ProtoIdentity to itself -/
+/-- An endomorphism on Phi (Φ) is a morphism from Phi to itself -/
 def ProtoEndomorphism : Type :=
-  ProtoIdentity → ProtoIdentity
+  Phi → Phi
 
-/-- Composition of ProtoIdentity endomorphisms -/
+/-- Composition of Phi (Φ) endomorphisms -/
 def endo_comp (f g : ProtoEndomorphism) : ProtoEndomorphism :=
   f ∘ g
 
-/-- Identity endomorphism on ProtoIdentity -/
+/-- Identity endomorphism on Phi (Φ) -/
 def endo_id : ProtoEndomorphism :=
   id
 
-/-- ProtoIdentity endomorphisms form a monoid -/
+/-- Phi (Φ) endomorphisms form a monoid -/
 instance : Monoid ProtoEndomorphism where
   mul := endo_comp
   one := endo_id
@@ -153,33 +153,33 @@ instance : Monoid ProtoEndomorphism where
 /-!
 ## Part 5: Conduit Round-Trip Properties
 
-The conduits exhibit interesting round-trip properties through ProtoIdentity.
+The conduits exhibit interesting round-trip properties through Phi (Φ).
 -/
 
-/-- Iota round-trip through ProtoIdentity -/
+/-- Iota round-trip through Phi (Φ) -/
 theorem iota_round_trip :
-  ∀ p : ProtoIdentity, iota.res (iota.gen p) = p := by
+  ∀ p : Phi, iota.res (iota.gen p) = p := by
   intro p
   have h := iota_is_section
   exact congr_fun h p
 
-/-- Tau round-trip through ProtoIdentity -/
+/-- Tau round-trip through Phi (Φ) -/
 theorem tau_round_trip :
-  ∀ p : ProtoIdentity, tau.gen (tau.res p) = p := by
+  ∀ p : Phi, tau.gen (tau.res p) = p := by
   intro p
   have h := tau_is_section
   exact congr_fun h p
 
-/-- Gamma round-trip through ProtoIdentity -/
+/-- Gamma round-trip through Phi (Φ) -/
 theorem gamma_round_trip :
-  ∀ p : ProtoIdentity, gamma.gen (gamma.res p) = p := by
+  ∀ p : Phi, gamma.gen (gamma.res p) = p := by
   intro p
   have h := gamma_is_section
   exact congr_fun h p
 
-/-- Epsilon round-trip through ProtoIdentity -/
+/-- Epsilon round-trip through Phi (Φ) -/
 theorem epsilon_round_trip :
-  ∀ p : ProtoIdentity, epsilon.res (epsilon.gen p) = p := by
+  ∀ p : Phi, epsilon.res (epsilon.gen p) = p := by
   intro p
   have h := epsilon_is_section
   exact congr_fun h p
@@ -264,9 +264,9 @@ This module establishes the group-theoretic foundation for GIP:
 
 1. **Morphism Monoid**: All morphisms form a monoid under composition
 2. **Section Properties**: Conduits exhibit inverse-like behavior via sections
-3. **ProtoIdentity Endomorphisms**: Endomorphisms form a monoid
+3. **Phi Endomorphisms**: Endomorphisms form a monoid
 4. **Composition Transitivity**: Essential for modal topology closure proofs
-5. **Round-Trip Properties**: Conduits preserve structure through ProtoIdentity
+5. **Round-Trip Properties**: Conduits preserve structure through Phi
 
 Key exports for ModalTopology.lean:
 - `comp_trans`: Composition creates transitive morphisms
