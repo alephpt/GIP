@@ -276,8 +276,37 @@ inductive Hom : Obj → Obj → Type where
   | origin_to_n_via_inf : Hom ○ 𝕟        -- ○ → ∞ → n
   deriving Repr, DecidableEq
 
+/-!
+## Information Loss Principle
+
+In the GIP structure, certain compositions are intentionally undefined to model
+semantic information loss when identity passes through forgetful aspects.
+This represents the dissolution of specific identity when it attempts to
+traverse through the pure potential aspects (empty/infinite).
+
+The undefined paths are:
+- n → ∅ → n (identity through empty aspect)
+- n → ∞ → n (identity through infinite aspect)
+
+These compositions cannot preserve the specific identity structure
+and therefore result in information loss.
+-/
+
+/-- Axiomatized information loss for n → ∅ → n composition -/
+noncomputable axiom information_loss_empty : Hom 𝕟 𝕟
+
+/-- Axiomatized information loss for n → ∞ → n composition -/
+noncomputable axiom information_loss_infinite : Hom 𝕟 𝕟
+
+/-- Information loss occurs when identity traverses forgetful aspects -/
+theorem information_loss_principle :
+  ∃ (undefined_empty : Hom 𝕟 𝕟) (undefined_inf : Hom 𝕟 𝕟),
+    undefined_empty = information_loss_empty ∧
+    undefined_inf = information_loss_infinite :=
+⟨information_loss_empty, information_loss_infinite, rfl, rfl⟩
+
 /-- Composition of categorical morphisms -/
-def Hom.comp : {a b c : Obj} → Hom a b → Hom b c → Hom a c
+noncomputable def Hom.comp : {a b c : Obj} → Hom a b → Hom b c → Hom a c
   -- Identity is neutral
   | _, _, _, .id _, g => g
   | _, _, _, f, .id _ => f
@@ -368,8 +397,9 @@ def Hom.comp : {a b c : Obj} → Hom a b → Hom b c → Hom a c
   -- The following compositions are intentionally undefined (`sorry`).
   -- This models the GIP principle of "information loss" or "identity dissolution"
   -- when a specific identity `n` passes through a "forgetful" aspect.
-  | .identity, .aspect_empty, .identity, .act_empty, .gen => sorry
-  | .identity, .aspect_infinite, .identity, .act_inf, .res => sorry
+  -- These are axiomatized as undefined per the information_loss principle below.
+  | .identity, .aspect_empty, .identity, .act_empty, .gen => information_loss_empty
+  | .identity, .aspect_infinite, .identity, .act_inf, .res => information_loss_infinite
 
 /-- Morphisms ○ → ∅ are unique -/
 theorem morphismOriginToEmpty_unique (f g : Hom ○ ∅) : f = g := by

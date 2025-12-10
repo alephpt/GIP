@@ -1,7 +1,6 @@
 import Gip.Foundations
 import Mathlib.CategoryTheory.Category.Basic
 import Mathlib.CategoryTheory.Functor.Basic
-import Mathlib.CategoryTheory.Types
 
 /-!
 # GIP as a Mathlib Category
@@ -43,8 +42,16 @@ open CategoryTheory
 We define GIP as a category with partial composition.
 -/
 
+/-- Identity is left neutral for composition -/
+lemma comp_id_left {a b : Obj} (f : Hom a b) : Hom.comp (Hom.id a) f = f := by
+  cases f <;> rfl
+
+/-- Identity is right neutral for composition -/
+lemma comp_id_right {a b : Obj} (f : Hom a b) : Hom.comp f (Hom.id b) = f := by
+  cases f <;> rfl
+
 /-- GIP forms a category -/
-instance : Category Obj where
+noncomputable instance : Category Obj where
   Hom := Hom
   id := Hom.id
   comp := fun f g => Hom.comp f g
@@ -56,9 +63,9 @@ instance : Category Obj where
     cases f <;> cases g <;> cases h <;>
     first
     | rfl
-    -- This `sorry` is intentional. It corresponds to the undefined compositions
-    -- `n → aspect → n` in `Foundations.lean`, which model the semantic
-    -- principle of identity dissolution. The category is deliberately partial.
+    -- These cases correspond to the information_loss axioms from Foundations.lean
+    -- which model semantic information loss when identity traverses forgetful aspects.
+    -- The associativity proof for these undefined compositions is intentionally left as sorry.
     | sorry  -- For undefined n → aspect → n compositions
 
 /-!
@@ -71,7 +78,7 @@ We verify that the category has the expected properties.
 example : Obj := ○
 
 /-- Identity at ○ -/
-example : ○ ⟶ ○ := 𝟙 ○
+noncomputable example : ○ ⟶ ○ := 𝟙 ○
 
 /-- Composition works -/
 example : (Hom.origin_to_empty ≫ Hom.empty_to_origin) = 𝟙 ○ := rfl
@@ -210,30 +217,30 @@ We define meaningful functors from the GIP category.
 
 /-- The "level" of each object: 0 for origin, 1 for aspects, 2 for n -/
 def level : Obj → ℕ
-  | ○ => 0
-  | ∅ => 1
-  | ∞ => 1
-  | 𝕟 => 2
+  | Obj.origin => 0
+  | Obj.aspect_empty => 1
+  | Obj.aspect_infinite => 1
+  | Obj.identity => 2
 
 /-- Level is preserved by the aspects isomorphism -/
-theorem level_aspects_equal : level ∅ = level ∞ := rfl
+theorem level_aspects_equal : level Obj.aspect_empty = level Obj.aspect_infinite := rfl
 
 /-- The aspect distance from origin -/
 def aspectDistance : Obj → ℕ
-  | ○ => 0  -- At origin
-  | ∅ => 1  -- One step from origin
-  | ∞ => 1  -- One step from origin
-  | 𝕟 => 2  -- Two steps from origin (through aspect)
+  | Obj.origin => 0  -- At origin
+  | Obj.aspect_empty => 1  -- One step from origin
+  | Obj.aspect_infinite => 1  -- One step from origin
+  | Obj.identity => 2  -- Two steps from origin (through aspect)
 
 /-- Is the object an aspect? -/
 def isAspect : Obj → Bool
-  | ∅ => true
-  | ∞ => true
+  | Obj.aspect_empty => true
+  | Obj.aspect_infinite => true
   | _ => false
 
 /-- Is the object the origin? -/
 def isOrigin : Obj → Bool
-  | ○ => true
+  | Obj.origin => true
   | _ => false
 
 /-- Classification of objects -/
@@ -245,13 +252,13 @@ deriving DecidableEq
 
 /-- Classify each object -/
 def classify : Obj → ObjClass
-  | ○ => .origin
-  | ∅ => .aspect
-  | ∞ => .aspect
-  | 𝕟 => .structure
+  | Obj.origin => .origin
+  | Obj.aspect_empty => .aspect
+  | Obj.aspect_infinite => .aspect
+  | Obj.identity => .structure
 
 /-- The aspects are classified the same -/
-theorem aspects_same_class : classify ∅ = classify ∞ := rfl
+theorem aspects_same_class : classify Obj.aspect_empty = classify Obj.aspect_infinite := rfl
 
 /-!
 ### The Skeleton Functor
@@ -268,13 +275,13 @@ deriving DecidableEq
 
 /-- Quotient map: GIP → Skeleton -/
 def toSkel : Obj → SkelObj
-  | ○ => .origin
-  | ∅ => .aspect
-  | ∞ => .aspect
-  | 𝕟 => .structure
+  | Obj.origin => .origin
+  | Obj.aspect_empty => .aspect
+  | Obj.aspect_infinite => .aspect
+  | Obj.identity => .structure
 
 /-- The aspects map to the same skeleton object -/
-theorem aspects_same_skel : toSkel ∅ = toSkel ∞ := rfl
+theorem aspects_same_skel : toSkel Obj.aspect_empty = toSkel Obj.aspect_infinite := rfl
 
 /-!
 ## Summary
