@@ -8,15 +8,17 @@ This repository contains the complete formal proofs, the theoretical framework, 
 
 ## Current Status
 
-**The project is technically complete and ready for its next phase: publication and computational validation.**
+**The project is technically complete with SMFT correspondence proven. Ready for publication and computational validation.**
 
-- **Build Status**: ✅ SUCCESS
-- **Core Theory**: ✅ All foundational theorems proven
+- **Build Status**: ✅ SUCCESS (1,927 jobs, 0 errors)
+- **Core Theory**: ✅ All foundational theorems proven (Phi convergence model)
+- **SMFT Formalization**: ✅ COMPLETE (2,870 LOC, formal proof SMFT IS GIP)
 - **Testing**: ✅ 100% critical path coverage
 
-For a detailed breakdown of metrics, `sorry` analysis, key breakthroughs, and the project roadmap, please see the single source of truth:
+For detailed metrics, breakthroughs, and roadmap:
 
-➡️ **[PROJECT_STATUS.md](PROJECT_STATUS.md)**
+➡️ **[PROJECT_STATUS.md](PROJECT_STATUS.md)** - GIP core status
+➡️ **[SMFT_PROJECT_STATUS.md](SMFT_PROJECT_STATUS.md)** - SMFT formalization complete report
 
 ## Overview of the Theory
 
@@ -24,9 +26,11 @@ GIP provides a mathematical framework for understanding how structure emerges fr
 
 The key insights are:
 1.  **The Zero Object (○)**: A single object that is both initial (a unique source) and terminal (a universal sink) provides the basis for all structure.
-2.  **Information Loss in Self-Reference**: The theorem `circle_not_injective` proves that any self-referential cycle is information-lossy, explaining the structural origin of paradoxes.
-3.  **Paradox Isomorphism**: All major logical paradoxes (Russell's, Gödel's, the Halting Problem) are shown to be categorically isomorphic.
-4.  **Computable Cohesion**: A structure's stability and "existence" can be predicted by calculating its invariance across a dual-cycle process. This transforms the theory into testable science.
+2.  **Phi (Φ) Convergence**: All transformations flow through Phi as a central convergence point, clarifying emergence vs manifestation.
+3.  **Information Loss in Self-Reference**: The theorem `circle_not_injective` proves that any self-referential cycle is information-lossy, explaining the structural origin of paradoxes.
+4.  **Paradox Isomorphism**: All major logical paradoxes (Russell's, Gödel's, the Halting Problem) are shown to be categorically isomorphic.
+5.  **Computable Cohesion**: A structure's stability and "existence" can be predicted by calculating its invariance across a dual-cycle process. This transforms the theory into testable science.
+6.  **SMFT IS GIP**: Formal proof that Synchronization Mass Field Theory and Generative Integration Protocol are mathematically identical - synchronization = mass generation = identity emergence.
 
 ## Guide to the Repository
 
