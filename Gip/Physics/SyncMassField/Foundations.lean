@@ -97,10 +97,10 @@ section Potential
 structure PotentialParameters where
   /-- Mass parameter μ² (negative for symmetry breaking) -/
   μ_squared : ℝ
-  /-- Self-coupling constant lambda > 0 -/
-  lambda : ℝ
+  /-- Self-coupling constant λ > 0 -/
+  lam : ℝ
   /-- Positivity constraint on coupling -/
-  lambda_pos : 0 < lambda
+  lam_pos : 0 < lam
 
 /--
 The Mexican hat potential V(R) = -μ²R²/2 + λR⁴/4
@@ -109,7 +109,7 @@ This potential drives spontaneous symmetry breaking when μ² < 0,
 creating a non-zero minimum that breaks the U(1) symmetry.
 -/
 noncomputable def mexicanHatPotential (params : PotentialParameters) (R : ℝ) : ℝ :=
-  -params.μ_squared * R^2 / 2 + params.lambda * R^4 / 4
+  -params.μ_squared * R^2 / 2 + params.lam * R^4 / 4
 
 /-- The potential evaluated at a real scalar field configuration -/
 noncomputable def potentialDensity (params : PotentialParameters)
@@ -126,7 +126,7 @@ def isSymmetryBreaking (params : PotentialParameters) : Prop :=
 /-- The vacuum expectation value (VEV) for the symmetry-broken phase -/
 noncomputable def vacuumExpectationValue (params : PotentialParameters)
     (_ : isSymmetryBreaking params) : ℝ :=
-  Real.sqrt (-params.μ_squared / params.lambda)
+  Real.sqrt (-params.μ_squared / params.lam)
 
 /--
 Theorem: In the symmetry-broken phase, the VEV minimizes the potential
