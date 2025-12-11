@@ -15,10 +15,9 @@ This repository contains the complete formal proofs, the theoretical framework, 
 - **SMFT Formalization**: ✅ COMPLETE (2,870 LOC, formal proof SMFT IS GIP)
 - **Testing**: ✅ 100% critical path coverage
 
-For detailed metrics, breakthroughs, and roadmap:
+For detailed status and metrics:
 
-➡️ **[PROJECT_STATUS.md](PROJECT_STATUS.md)** - GIP core status
-➡️ **[SMFT_PROJECT_STATUS.md](SMFT_PROJECT_STATUS.md)** - SMFT formalization complete report
+➡️ **[docs/status/PROJECT_STATUS.md](docs/status/PROJECT_STATUS.md)** - Complete project status, metrics, and roadmap
 
 ## Overview of the Theory
 
@@ -32,20 +31,27 @@ The key insights are:
 5.  **Computable Cohesion**: A structure's stability and "existence" can be predicted by calculating its invariance across a dual-cycle process. This transforms the theory into testable science.
 6.  **SMFT IS GIP**: Formal proof that Synchronization Mass Field Theory and Generative Integration Protocol are mathematically identical - synchronization = mass generation = identity emergence.
 
-## Guide to the Repository
+## Repository Structure
 
-This repository is organized to support research, review, and further development.
-
-| File / Directory | Description |
+| Directory | Description |
 |---|---|
-| **[PROJECT_STATUS.md](PROJECT_STATUS.md)** | **START HERE.** The single source of truth for project status, metrics, and roadmap. |
-| **`Gip/`** | The complete Lean 4 source code containing all definitions and proofs. |
-| **`Test/`** | The test suite used to verify the formalization. |
-| **`docs/`** | The complete conceptual documentation for the project. |
-| ├─ **[docs/THEORY.md](docs/THEORY.md)** | A high-level overview of the GIP theoretical foundations. |
-| ├─ **[docs/FORMAL_FRAMEWORK.md](docs/FORMAL_FRAMEWORK.md)** | The definitive, publication-ready paper detailing the formal framework. |
-| ├─ **[docs/COMPUTATIONAL_GUIDE.md](docs/COMPUTATIONAL_GUIDE.md)** | The technical specification for computationally testing the theory's predictions. |
-| **[CONTRIBUTING.md](CONTRIBUTING.md)** | Guidelines for contributing to the project. |
+| **[`docs/`](docs/)** | **START HERE** - Complete documentation |
+| ├─ [`status/`](docs/status/) | Project status and metrics |
+| ├─ [`theory/`](docs/theory/) | Core theoretical foundations |
+| ├─ [`guides/`](docs/guides/) | Usage and implementation guides |
+| └─ [`publications/`](docs/publications/) | Publication-ready papers |
+| **[`Gip/`](Gip/)** | Complete Lean 4 source code (10,336 LOC) |
+| **[`Test/`](Test/)** | Comprehensive test suite |
+| **[`archive/`](archive/)** | Historical development documents |
+| **[`scripts/`](scripts/)** | Build and utility scripts |
+| **[CONTRIBUTING.md](CONTRIBUTING.md)** | Contribution guidelines |
+
+## Key Documentation
+
+- **Status**: [docs/status/PROJECT_STATUS.md](docs/status/PROJECT_STATUS.md) - Current state and roadmap
+- **Theory**: [docs/theory/FOUNDATIONS.md](docs/theory/FOUNDATIONS.md) - Core concepts with Phi model
+- **Usage**: [docs/guides/USAGE.md](docs/guides/USAGE.md) - How to use the library
+- **SMFT**: [docs/theory/SMFT_THEORY.md](docs/theory/SMFT_THEORY.md) - Physics correspondence
 
 ## Quick Start
 
