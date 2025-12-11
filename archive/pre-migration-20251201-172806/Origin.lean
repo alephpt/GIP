@@ -1,0 +1,245 @@
+import Gip.Foundations
+
+/-!
+# Origin Theory: The Restricted Model
+
+This module defines the higher-level transformations,
+grounded in the restricted origin model:
+
+- **○** connects only to aspects (∅ and ∞)
+- **∅ ≅ ∞** are isomorphic dual aspects
+- **n** is the hub (connects to aspects, not directly to ○)
+
+## The Structure
+
+```
+        ○
+       ↗ ↖
+      ↙   ↘
+     ∅  ≅  ∞
+      ↓   ↓
+   Gen   Res
+      ↘ ↙
+       n (hub)
+      ↙ ↘
+   Act   Act
+      ↓   ↓
+     ∅  ≅  ∞
+      ↘   ↙
+        ○
+```
+-/
+
+namespace GIP.Origin
+
+open GIP.Foundations
+
+/-!
+## The Three Transformations
+
+All are functionally valid in the restricted model.
+Using the ProtoIdentity-based functions from Foundations.
+-/
+
+-- Gen, Res, and Act are imported from Foundations as functions
+-- We create aliases for clarity in this module
+noncomputable abbrev gen := Gen
+noncomputable abbrev res := Res
+noncomputable abbrev act := Act
+
+/-!
+## Path Properties
+
+With ∅ ≅ ∞, Gen and Res are "the same transformation" viewed from different aspects.
+Note: These are now functional properties, not categorical morphisms.
+-/
+
+/-- Gen and Res produce the same identity structure from isomorphic inputs.
+
+    This is a foundational axiom about ProtoIdentity convergence: the two
+    pathways from dual aspects (∅ and ∞) converge through ProtoIdentity to
+    produce identical identity structures.
+
+    Path analysis:
+    - Gen: ∅ → gamma.gen → 1 → iota.gen → n
+    - Res: ∞ → epsilon.res → 1 → tau.res → n
+
+    Philosophically: ∅ and ∞ are isomorphic dual aspects (∅ ≅ ∞) arising
+    from the origin's self-division. Their flows through ProtoIdentity (1)
+    may pass through different intermediate states (gamma.gen e ≠ epsilon.res inf
+    in general), but the forward continuation to identity (n) produces the same
+    result due to the universal convergence property of ProtoIdentity.
+
+    This axiom captures the essential insight that ProtoIdentity mediates
+    between duality (the aspects) and unity (the identity), making the two
+    paths functionally equivalent despite their different origins.
+
+    Justification: This is a core architectural principle, not derivable from
+    more primitive axioms. It defines what it means for ProtoIdentity to be
+    the "convergence point" - paths from dual initial objects merge here to
+    produce unified structure. -/
+axiom gen_res_coherence_functional :
+    ∀ (e : manifest the_origin Aspect.empty) (inf : manifest the_origin Aspect.infinite),
+    Gen e = Res inf
+
+/-!
+## Functional Paths
+
+Since ○ only connects to aspects, all paths between ○ and n go through ∅ or ∞.
+Using the functional Act which returns a pair.
+-/
+
+/-- Extract empty component from Act -/
+noncomputable def act_to_empty (n : manifest the_origin Aspect.identity) :
+    manifest the_origin Aspect.empty :=
+  (Act n).1
+
+/-- Extract infinite component from Act -/
+noncomputable def act_to_infinite (n : manifest the_origin Aspect.identity) :
+    manifest the_origin Aspect.infinite :=
+  (Act n).2
+
+/-!
+## Categorical Compatibility Layer
+
+For proofs that still need categorical morphisms, we use the Hom structure
+from Foundations which provides a categorical view of the conduit model.
+-/
+
+/-- From n back to ○ via ∅ using categorical morphisms -/
+def identityToOriginViaEmpty : Hom 𝕟 ○ :=
+  Hom.n_to_origin_via_empty
+
+/-- From n back to ○ via ∞ using categorical morphisms -/
+def identityToOriginViaInf : Hom 𝕟 ○ :=
+  Hom.n_to_origin_via_inf
+
+/-- From ○ to n via ∅ using categorical morphisms -/
+def originToIdentityViaEmpty : Hom ○ 𝕟 :=
+  Hom.origin_to_n_via_empty
+
+/-- From ○ to n via ∞ using categorical morphisms -/
+def originToIdentityViaInf : Hom ○ 𝕟 :=
+  Hom.origin_to_n_via_inf
+
+/-!
+## Information Collapse
+
+Paths from aspects through ○ collapse - uniqueness on both ends.
+Using the categorical layer for these proofs.
+-/
+
+/-- Paths ∅ → ○ → ∅ are unique -/
+theorem empty_origin_empty_collapse
+    (f₁ f₂ : Hom ∅ ○) (g₁ g₂ : Hom ○ ∅) :
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ := by
+  have hf : f₁ = f₂ := morphismEmptyToOrigin_unique f₁ f₂
+  have hg : g₁ = g₂ := morphismOriginToEmpty_unique g₁ g₂
+  rw [hf, hg]
+
+/-- Paths ∅ → ○ → ∞ are unique -/
+theorem empty_origin_inf_collapse
+    (f₁ f₂ : Hom ∅ ○) (g₁ g₂ : Hom ○ ∞) :
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ := by
+  have hf : f₁ = f₂ := morphismEmptyToOrigin_unique f₁ f₂
+  have hg : g₁ = g₂ := morphismOriginToInf_unique g₁ g₂
+  rw [hf, hg]
+
+/-- Paths ∞ → ○ → ∅ are unique -/
+theorem inf_origin_empty_collapse
+    (f₁ f₂ : Hom ∞ ○) (g₁ g₂ : Hom ○ ∅) :
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ := by
+  have hf : f₁ = f₂ := morphismInfToOrigin_unique f₁ f₂
+  have hg : g₁ = g₂ := morphismOriginToEmpty_unique g₁ g₂
+  rw [hf, hg]
+
+/-- Paths ∞ → ○ → ∞ are unique -/
+theorem inf_origin_inf_collapse
+    (f₁ f₂ : Hom ∞ ○) (g₁ g₂ : Hom ○ ∞) :
+    Hom.comp f₁ g₁ = Hom.comp f₂ g₂ := by
+  have hf : f₁ = f₂ := morphismInfToOrigin_unique f₁ f₂
+  have hg : g₁ = g₂ := morphismOriginToInf_unique g₁ g₂
+  rw [hf, hg]
+
+/-!
+## DualAspect Structure: Duality from Unity
+
+The bifurcation ○/○ = (∅, ∞) produces dual initial objects.
+BOTH ∅ and ∞ are initial objects simultaneously, isomorphic to each other.
+Using the categorical compatibility layer.
+-/
+
+/-- DualAspect captures that ∅ and ∞ are isomorphic faces -/
+structure DualAspect where
+  empty_morphism : Hom ○ ∅
+  infinite_morphism : Hom ○ ∞
+  isomorphism_witness : Hom.comp empty_morphism emptyToInf = infinite_morphism
+
+/-- The canonical dual aspect from ○ -/
+def bifurcate_dual : DualAspect where
+  empty_morphism := Hom.origin_to_empty
+  infinite_morphism := Hom.origin_to_inf
+  isomorphism_witness := by
+    unfold Hom.comp emptyToInf
+    -- This follows from the composition rules in Foundations
+    rfl
+
+/-- ∅ is initial: morphisms from ∅ to n are unique (Gen) -/
+theorem empty_initial : ∀ (f g : Hom ∅ 𝕟), f = g := by
+  intro f g
+  cases f; cases g; rfl
+
+/-- ∞ is initial: morphisms from ∞ to n are unique (Res) -/
+theorem infinite_initial : ∀ (f g : Hom ∞ 𝕟), f = g := by
+  intro f g
+  cases f; cases g; rfl
+
+/-- The self-division ○/○ = (∅, ∞) produces dual initial objects -/
+theorem origin_self_division_yields_dual_initials :
+    (∀ f g : Hom ∅ 𝕟, f = g) ∧
+    (∀ f g : Hom ∞ 𝕟, f = g) :=
+  ⟨empty_initial, infinite_initial⟩
+
+/-!
+## Functional Properties of Act
+
+Act returns a pair (∅, ∞), demonstrating the mirror/split nature.
+-/
+
+/-- Act produces both empty and infinite aspects -/
+theorem act_produces_dual_aspects (n : manifest the_origin Aspect.identity) :
+    ∃ (e : manifest the_origin Aspect.empty) (inf : manifest the_origin Aspect.infinite),
+    Act n = (e, inf) := by
+  exact ⟨(Act n).1, (Act n).2, rfl⟩
+
+/-- Act is the functional mirror operator -/
+theorem act_is_mirror :
+    ∀ n : manifest the_origin Aspect.identity,
+    act_to_empty n = (Act n).1 ∧ act_to_infinite n = (Act n).2 := by
+  intro n
+  constructor <;> rfl
+
+/-!
+## Summary
+
+### Duality from Unity: ○/○ = (∅, ∞)
+- The origin's self-division produces **dual initial objects**
+- BOTH ∅ and ∞ are initial (unique morphisms to n)
+- ∅ ≅ ∞ (isomorphic aspects)
+
+### Valid (in restricted model):
+- `Gen : ∅ → n` (generation from empty initial, through ProtoIdentity)
+- `Res : ∞ → n` (resolution from infinite initial, through ProtoIdentity)
+- `Act : n → (∅, ∞)` (action/mirror back to both initials as a pair)
+- ○ ↔ aspects (unique morphisms in categorical view)
+- Gen ≈ Res via ∅ ≅ ∞
+
+### The Key Insight:
+○ connects only to aspects (∅ and ∞).
+n connects only to aspects (∅ and ∞).
+The aspects serve as the interface layer - both are initial objects
+arising from ○'s self-division, providing dual sources for forward pathways.
+All transformations flow through ProtoIdentity as the convergence point.
+-/
+
+end GIP.Origin

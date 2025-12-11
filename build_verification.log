@@ -1,0 +1,148 @@
+⚠ [1914/1927] Replayed Gip.ParadoxIsomorphism
+warning: Gip/ParadoxIsomorphism.lean:133:8: declaration uses 'sorry'
+⚠ [1920/1927] Replayed Gip.BayesianCore
+warning: Gip/BayesianCore.lean:63:0: using 'exit' to interrupt Lean
+✔ [1922/1927] Built Gip.GroupStructure (1.3s)
+⚠ [1923/1927] Built Gip.ModalTopology (1.1s)
+warning: Gip/ModalTopology.lean:78:5: unused variable `f`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/ModalTopology.lean:82:5: unused variable `f`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/ModalTopology.lean:151:10: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Gip/ModalTopology.lean:151:22: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Gip/ModalTopology.lean:157:10: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Gip/ModalTopology.lean:157:22: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Gip/ModalTopology.lean:196:5: unused variable `f`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/ModalTopology.lean:197:5: unused variable `g`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/ModalTopology.lean:203:5: unused variable `f`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/ModalTopology.lean:274:43: unused variable `f`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/ModalTopology.lean:356:5: unused variable `path`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [1924/1927] Built Gip.ToposStructure (1.2s)
+warning: Gip/ToposStructure.lean:70:5: unused variable `f`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/ToposStructure.lean:91:5: unused variable `f`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/ToposStructure.lean:112:17: unused variable `f`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/ToposStructure.lean:113:17: unused variable `f`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/ToposStructure.lean:173:10: unused variable `g`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/ToposStructure.lean:174:10: unused variable `g`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/ToposStructure.lean:194:18: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Gip/ToposStructure.lean:200:18: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Gip/ToposStructure.lean:206:16: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Gip/ToposStructure.lean:212:18: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Gip/ToposStructure.lean:239:13: unused variable `χ`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/ToposStructure.lean:240:13: unused variable `χ`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/ToposStructure.lean:241:13: unused variable `χ`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/ToposStructure.lean:242:13: unused variable `χ`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/ToposStructure.lean:291:10: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+warning: Gip/ToposStructure.lean:357:17: unused variable `f`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/ToposStructure.lean:358:17: unused variable `f`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+⚠ [1925/1927] Built Gip.RingStructure (1.1s)
+warning: Gip/RingStructure.lean:108:18: unused variable `a`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/RingStructure.lean:108:20: unused variable `b`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/RingStructure.lean:116:19: unused variable `a`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/RingStructure.lean:116:21: unused variable `b`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/RingStructure.lean:116:23: unused variable `c`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/RingStructure.lean:186:48: unused variable `f`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/RingStructure.lean:186:50: unused variable `g`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/RingStructure.lean:188:36: unused variable `f`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/RingStructure.lean:189:3: unused variable `g_left`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/RingStructure.lean:189:30: unused variable `h_right`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/RingStructure.lean:191:5: unused variable `left`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/RingStructure.lean:191:22: unused variable `right`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/RingStructure.lean:202:3: unused variable `f_left`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/RingStructure.lean:202:30: unused variable `g_right`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/RingStructure.lean:202:58: unused variable `h`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/RingStructure.lean:204:5: unused variable `left`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/RingStructure.lean:204:22: unused variable `right`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Gip/RingStructure.lean:233:6: unused variable `g_path`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+✔ [1926/1927] Built Gip (957ms)
+Build completed successfully (1927 jobs).
